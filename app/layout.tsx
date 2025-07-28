@@ -6,14 +6,14 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://capitalfirm.vercel.app'),
-  title: 'Capital Firm - Professional Financial Services',
-  description: 'Expert financial services and investment solutions for your business and personal needs.',
-  keywords: 'financial services, investment, capital, business finance, wealth management',
+  title: 'Capital Firm - Raise Capital with an Unfair Advantage',
+  description: 'Revolutionize your fundraising journey with our results-driven approach. Unlocking access to capital globally for private equity, venture capital funds and emerging businesses.',
+  keywords: 'capital raising, fundraising, private equity, venture capital, investment, capital access, fundraising services',
   authors: [{ name: 'Capital Firm' }],
   robots: 'index, follow',
   openGraph: {
-    title: 'Capital Firm - Professional Financial Services',
-    description: 'Expert financial services and investment solutions for your business and personal needs.',
+    title: 'Capital Firm - Raise Capital with an Unfair Advantage',
+    description: 'Revolutionize your fundraising journey with our results-driven approach. Unlocking access to capital globally for private equity, venture capital funds and emerging businesses.',
     type: 'website',
     locale: 'en_US',
   },

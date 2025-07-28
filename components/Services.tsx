@@ -1,80 +1,85 @@
 import { 
-  BanknotesIcon, 
   ChartBarIcon, 
-  BuildingOfficeIcon, 
-  ShieldCheckIcon,
+  GlobeAltIcon, 
   UserGroupIcon,
-  CogIcon
+  RocketLaunchIcon,
+  ShieldCheckIcon,
+  CurrencyDollarIcon
 } from '@heroicons/react/24/outline'
 
-const services = [
+const benefits = [
   {
-    name: 'Investment Management',
-    description: 'Professional portfolio management tailored to your financial goals and risk tolerance.',
+    name: 'Marketing & Growth Background',
+    description: 'Extensive background in marketing paired with a technology-driven approach to allow for effective fundraising.',
     icon: ChartBarIcon,
   },
   {
-    name: 'Wealth Planning',
-    description: 'Comprehensive financial planning to secure your future and achieve your dreams.',
-    icon: BanknotesIcon,
+    name: 'Venture Capital Expertise',
+    description: 'Composed of former investment bankers and venture capitalists, our team has a profound understanding of the global investment landscape.',
+    icon: GlobeAltIcon,
   },
   {
-    name: 'Business Finance',
-    description: 'Strategic financial solutions to help your business grow and thrive.',
-    icon: BuildingOfficeIcon,
-  },
-  {
-    name: 'Risk Management',
-    description: 'Protect your assets with our expert risk assessment and mitigation strategies.',
-    icon: ShieldCheckIcon,
-  },
-  {
-    name: 'Retirement Planning',
-    description: 'Secure your golden years with our comprehensive retirement planning services.',
+    name: 'Broad Connections & Unique Business Model',
+    description: 'Global reach and operating on a success-fee basis without charging a retainer, ensuring alignment with our clients\' goals.',
     icon: UserGroupIcon,
   },
   {
-    name: 'Tax Optimization',
-    description: 'Minimize your tax burden with our strategic tax planning and optimization services.',
-    icon: CogIcon,
+    name: 'Proven Track Record',
+    description: 'Over $200M+ capital raised in the last 2 years with a systematic approach to investor introductions and deal closures.',
+    icon: RocketLaunchIcon,
+  },
+  {
+    name: 'Technology-Driven Approach',
+    description: 'Proprietary technology and personal networks for precision targeting and effective outreach efforts.',
+    icon: ShieldCheckIcon,
+  },
+  {
+    name: 'Success-Fee Based',
+    description: 'No retainer fees - we only succeed when you succeed, ensuring perfect alignment with your fundraising goals.',
+    icon: CurrencyDollarIcon,
   },
 ]
 
 export default function Services() {
   return (
-    <div id="services" className="bg-gray-50 py-24 sm:py-32">
+    <section id="process" className="py-24 sm:py-32 bg-black">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base font-semibold leading-7 text-primary-600">Our Services</h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Everything you need to succeed financially
+          <h2 className="text-base font-semibold leading-7 gradient-text">Benefits / 01</h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Why Capital Firm
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            We offer a comprehensive suite of financial services designed to help you achieve your goals, 
-            whether you're an individual investor or a growing business.
+          <p className="mt-6 text-lg leading-8 text-gray-300">
+            From precision investor segmentation to impactful outreach, we tailor strategies, create compelling assets, 
+            and provide comprehensive support - ensuring efficient, cost-effective, and successful fundraising support 
+            from the onset and throughout.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-            {services.map((service) => (
-              <div key={service.name} className="flex flex-col">
-                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
-                  <service.icon className="h-5 w-5 flex-none text-primary-600" aria-hidden="true" />
-                  {service.name}
+            {benefits.map((benefit) => (
+              <div key={benefit.name} className="flex flex-col">
+                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
+                  <benefit.icon className="h-5 w-5 flex-none gradient-text" aria-hidden="true" />
+                  {benefit.name}
                 </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
-                  <p className="flex-auto">{service.description}</p>
-                  <p className="mt-6">
-                    <a href="#contact" className="text-sm font-semibold leading-6 text-primary-600">
-                      Learn more <span aria-hidden="true">→</span>
-                    </a>
-                  </p>
+                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
+                  <p className="flex-auto">{benefit.description}</p>
                 </dd>
               </div>
             ))}
           </dl>
         </div>
+        
+        <div className="mt-16 text-center">
+          <a
+            href="#contact"
+            className="bg-gradient-to-r from-accent-600 to-accent-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-accent-700 hover:to-accent-600 transition-all duration-200 inline-flex items-center gap-2"
+          >
+            Get Started
+          </a>
+        </div>
       </div>
-    </div>
+    </section>
   )
 } 
