@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://capitalfirm.vercel.app'),
+  metadataBase: new URL('https://capitalfirm-vert.vercel.app'),
   title: 'Capital Firm - Raise Capital with an Unfair Advantage',
   description: 'Revolutionize your fundraising journey with our results-driven approach. Unlocking access to capital globally for private equity, venture capital funds and emerging businesses.',
   keywords: 'capital raising, fundraising, private equity, venture capital, investment, capital access, fundraising services',

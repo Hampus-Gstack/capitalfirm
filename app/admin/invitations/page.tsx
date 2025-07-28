@@ -32,7 +32,7 @@ export default function AdminInvitationsPage() {
       invitedAt: '2024-01-15T10:00:00Z',
       status: 'pending',
       token: 'inv_abc123',
-      signupLink: 'https://capitalfirm.vercel.app/signup/inv_abc123'
+      signupLink: 'https://capitalfirm-vert.vercel.app/signup/inv_abc123'
     },
     {
       id: '2',
@@ -43,7 +43,7 @@ export default function AdminInvitationsPage() {
       invitedAt: '2024-01-14T14:30:00Z',
       status: 'accepted',
       token: 'inv_def456',
-      signupLink: 'https://capitalfirm.vercel.app/signup/inv_def456'
+      signupLink: 'https://capitalfirm-vert.vercel.app/signup/inv_def456'
     }
   ])
 
@@ -63,7 +63,7 @@ export default function AdminInvitationsPage() {
     e.preventDefault()
     
     const token = generateToken()
-    const signupLink = `https://capitalfirm.vercel.app/signup/${token}`
+    const signupLink = `https://capitalfirm-vert.vercel.app/signup/${token}`
     
     const newInv: Invitation = {
       id: Date.now().toString(),
