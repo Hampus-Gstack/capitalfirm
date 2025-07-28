@@ -39,11 +39,20 @@ export default function Header() {
           <a href="#resources" className="text-sm font-semibold leading-6 text-gray-300 hover:text-white transition-colors">
             Resources
           </a>
+          <a href="/blog" className="text-sm font-semibold leading-6 text-gray-300 hover:text-white transition-colors">
+            Blog
+          </a>
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
+          <a
+            href="/login"
+            className="text-sm font-semibold leading-6 text-gray-300 hover:text-white transition-colors"
+          >
+            Client Login
+          </a>
           <a
             href="#contact"
-            className="bg-gradient-to-r from-accent-600 to-accent-500 text-white px-6 py-2 rounded-lg font-semibold hover:from-accent-700 hover:to-accent-600 transition-all duration-200"
+            className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-700 hover:to-accent-600 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-200"
           >
             Get Started →
           </a>
@@ -106,8 +115,22 @@ export default function Header() {
                   >
                     Resources
                   </a>
+                  <a
+                    href="/blog"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Blog
+                  </a>
                 </div>
-                <div className="py-6">
+                <div className="py-6 space-y-3">
+                  <a
+                    href="/login"
+                    className="block text-center text-base font-semibold leading-7 text-gray-300 hover:text-white transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Client Login
+                  </a>
                   <a
                     href="#contact"
                     className="bg-gradient-to-r from-accent-600 to-accent-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-accent-700 hover:to-accent-600 transition-all duration-200 block text-center"
