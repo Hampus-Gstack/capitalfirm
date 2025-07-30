@@ -45,6 +45,9 @@ export default function Header() {
           <a href="/presentation" className="text-sm font-semibold leading-6 text-gray-300 hover:text-white transition-colors">
             Presentation
           </a>
+          <a href="/onboarding" className="text-sm font-semibold leading-6 text-gray-300 hover:text-white transition-colors">
+            Onboarding
+          </a>
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
           <a
@@ -131,6 +134,13 @@ export default function Header() {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Presentation
+                  </a>
+                  <a
+                    href="/onboarding"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Onboarding
                   </a>
                 </div>
                 <div className="py-6 space-y-3">
