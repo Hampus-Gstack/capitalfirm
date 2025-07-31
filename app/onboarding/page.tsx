@@ -501,7 +501,12 @@ export default function OnboardingPage() {
                 <p className="text-gray-400 text-sm mb-4">
                   Access our curated collection of successful pitch decks and fundraising materials
                 </p>
-                <div className="text-accent-400 text-sm font-medium">View Resources →</div>
+                <a 
+                  href="#"
+                  className="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors"
+                >
+                  View Resources →
+                </a>
               </div>
 
               <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 hover:border-accent-500 transition-colors cursor-pointer">
@@ -513,7 +518,12 @@ export default function OnboardingPage() {
                 <p className="text-gray-400 text-sm mb-4">
                   Learn how to identify and target the right investors for your specific needs
                 </p>
-                <div className="text-accent-400 text-sm font-medium">View Resources →</div>
+                <a 
+                  href="#"
+                  className="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors"
+                >
+                  View Resources →
+                </a>
               </div>
 
               <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 hover:border-accent-500 transition-colors cursor-pointer">
@@ -525,7 +535,12 @@ export default function OnboardingPage() {
                 <p className="text-gray-400 text-sm mb-4">
                   Understand what investors need and how to prepare your documentation
                 </p>
-                <div className="text-accent-400 text-sm font-medium">View Resources →</div>
+                <a 
+                  href="#"
+                  className="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors"
+                >
+                  View Resources →
+                </a>
               </div>
 
               <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 hover:border-accent-500 transition-colors cursor-pointer">
@@ -537,7 +552,14 @@ export default function OnboardingPage() {
                 <p className="text-gray-400 text-sm mb-4">
                   A definitive guide to efficiently raising capital during market challenges
                 </p>
-                <div className="text-accent-400 text-sm font-medium">View Resources →</div>
+                <a 
+                  href="https://docs.google.com/document/d/1fn6TYCtRYvuFRmMx8r-miV_DO6A__mSlEWK86IuE9os/edit?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors"
+                >
+                  View Guide →
+                </a>
               </div>
             </div>
 
