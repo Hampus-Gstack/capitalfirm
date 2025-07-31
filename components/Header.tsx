@@ -7,22 +7,22 @@ export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const navigationItems = [
-    // Main sections
+  // Frontend (Public-facing) items
+  const frontendItems = [
     { name: 'Home', href: '/', isHome: true },
     { name: 'About', href: '#process' },
     { name: 'Services', href: '#verticals' },
     { name: 'Team', href: '#team' },
-    
-    // Client resources
-    { name: 'Client Portal', href: '/dashboard', isHighlight: true },
-    { name: 'Onboarding', href: '/onboarding' },
-    { name: 'Presentation', href: '/presentation' },
-    
-    // Content & resources
     { name: 'Blog', href: '/blog' },
     { name: 'Resources', href: '#resources' },
     { name: 'Testimonials', href: '#testimonials' },
+    { name: 'Presentation', href: '/presentation' },
+  ]
+
+  // Backend (Client/Admin) items
+  const backendItems = [
+    { name: 'Client Portal', href: '/dashboard', isHighlight: true },
+    { name: 'Onboarding', href: '/onboarding' },
   ]
 
   const adminItems = [
@@ -118,8 +118,16 @@ export default function Header() {
         </div>
         
         <div className="hidden lg:flex lg:gap-x-6" ref={dropdownRef}>
-          {navigationItems.map(item => renderNavItem(item))}
+          {/* Frontend Links */}
+          {frontendItems.map(item => renderNavItem(item))}
+          
+          {/* Backend Dropdown */}
+          {renderDropdown('Client Portal', backendItems, 'backend')}
+          
+          {/* Admin Dropdown */}
           {renderDropdown('Admin', adminItems, 'admin')}
+          
+          {/* Account Dropdown */}
           {renderDropdown('Account', authItems, 'auth')}
         </div>
         
@@ -154,23 +162,23 @@ export default function Header() {
             
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-800">
-                {/* Main Navigation */}
+                {/* Frontend Section */}
                 <div className="space-y-1 py-6">
                   <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    Main
+                    Public Pages
                   </div>
-                  {navigationItems.filter(item => !item.isHighlight).map(item => renderNavItem(item, true))}
+                  {frontendItems.map(item => renderNavItem(item, true))}
                 </div>
                 
-                {/* Client Resources */}
+                {/* Backend Section */}
                 <div className="space-y-1 py-6">
                   <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    Client Resources
+                    Client Portal
                   </div>
-                  {navigationItems.filter(item => item.isHighlight).map(item => renderNavItem(item, true))}
+                  {backendItems.map(item => renderNavItem(item, true))}
                 </div>
                 
-                {/* Admin */}
+                {/* Admin Section */}
                 <div className="space-y-1 py-6">
                   <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Admin
@@ -178,7 +186,7 @@ export default function Header() {
                   {adminItems.map(item => renderNavItem(item, true))}
                 </div>
                 
-                {/* Account */}
+                {/* Account Section */}
                 <div className="space-y-1 py-6">
                   <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Account
