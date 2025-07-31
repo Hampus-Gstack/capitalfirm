@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Meeting {
   id: string;
@@ -16,8 +17,14 @@ interface Meeting {
 }
 
 export default function Dashboard() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
   const [meetings, setMeetings] = useState<Meeting[]>([]);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(() => {
+    // Get tab from URL or default to overview
+    return searchParams.get('tab') || 'overview';
+  });
   const [calendarLinks, setCalendarLinks] = useState({
     calendly: 'https://calendly.com/your-calendar',
     hubspot: 'https://meetings.hubspot.com/your-calendar',
@@ -69,6 +76,22 @@ export default function Dashboard() {
     setMeetings(mockMeetings);
   }, []);
 
+  // Update URL when tab changes
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    const params = new URLSearchParams(searchParams);
+    params.set('tab', tab);
+    router.push(`/dashboard?${params.toString()}`, { scroll: false });
+  };
+
+  // Sync URL state on mount
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl && tabFromUrl !== activeTab) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [searchParams, activeTab]);
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'scheduled': return 'bg-blue-500';
@@ -116,7 +139,7 @@ export default function Dashboard() {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
                     ? 'border-accent-500 text-accent-400'
