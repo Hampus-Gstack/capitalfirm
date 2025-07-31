@@ -533,13 +533,15 @@ export default function OnboardingPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Due Diligence Requirements</h3>
                 <p className="text-gray-400 text-sm mb-4">
-                  Understand what investors need and how to prepare your documentation
+                  Comprehensive checklist covering Finance, Legal, HR, Assets, IT, and Market Analysis
                 </p>
                 <a 
-                  href="#"
+                  href="https://docs.google.com/spreadsheets/d/1_ZYV_ENwFMSGX6m5LrL1UThM4_vjy_ufiaMSiofqteI/edit?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors"
                 >
-                  View Resources →
+                  View Checklist →
                 </a>
               </div>
 
