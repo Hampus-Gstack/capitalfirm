@@ -516,13 +516,15 @@ export default function OnboardingPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Solving For Investor Type</h3>
                 <p className="text-gray-400 text-sm mb-4">
-                  Learn how to identify and target the right investors for your specific needs
+                  Comprehensive matrix covering 7 investor types with stage, deal type, valuation, and outreach strategies
                 </p>
                 <a 
-                  href="#"
+                  href="https://docs.google.com/spreadsheets/d/14zqS5SZGG6aaQ-LsoOaZIZOz3q-X5-S6D1xqUwmNtpU/edit?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors"
                 >
-                  View Resources →
+                  View Matrix →
                 </a>
               </div>
 
