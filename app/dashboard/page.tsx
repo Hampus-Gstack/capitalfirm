@@ -25,6 +25,8 @@ export default function Dashboard() {
     zcal: 'https://zcal.co/your-calendar'
   });
 
+  const [showCalendarSetup, setShowCalendarSetup] = useState(false);
+
   // Generate UTM-tracked calendar links
   const generateUTMLink = (baseUrl: string, source: string) => {
     const utmParams = new URLSearchParams({
@@ -170,10 +172,40 @@ export default function Dashboard() {
               {/* Calendar Integration Setup */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-gray-700 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-3">UTM Tracking Links</h3>
+                  <div className="flex justify-between items-center mb-3">
+                    <h3 className="text-lg font-semibold">UTM Tracking Links</h3>
+                    <button
+                      onClick={() => setShowCalendarSetup(!showCalendarSetup)}
+                      className="text-accent-400 hover:text-accent-300 text-sm"
+                    >
+                      {showCalendarSetup ? 'Hide Setup' : 'Setup URLs'}
+                    </button>
+                  </div>
                   <p className="text-gray-400 text-sm mb-4">
                     Use these links to track meetings from your calendar systems:
                   </p>
+                  
+                  {showCalendarSetup && (
+                    <div className="mb-4 p-4 bg-gray-600 rounded-lg">
+                      <h4 className="text-sm font-semibold mb-3">Update Your Calendar URLs:</h4>
+                      {Object.entries(calendarLinks).map(([platform, baseUrl]) => (
+                        <div key={platform} className="mb-3">
+                          <label className="text-xs text-gray-400 capitalize">{platform}:</label>
+                          <input
+                            type="text"
+                            value={baseUrl}
+                            onChange={(e) => setCalendarLinks(prev => ({
+                              ...prev,
+                              [platform]: e.target.value
+                            }))}
+                            placeholder={`Enter your ${platform} calendar URL`}
+                            className="w-full bg-gray-500 border border-gray-400 rounded px-3 py-2 text-sm mt-1"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
                   <div className="space-y-3">
                     {Object.entries(calendarLinks).map(([platform, baseUrl]) => (
                       <div key={platform} className="flex items-center space-x-3">
@@ -201,16 +233,36 @@ export default function Dashboard() {
                     Connect your calendar systems for automatic meeting tracking:
                   </p>
                   <div className="space-y-3">
-                    <button className="w-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded font-medium transition-colors">
+                    <button 
+                      onClick={() => {
+                        alert('Calendly Integration:\n\n1. Go to Calendly.com > Integrations\n2. Create API key\n3. Add webhook: https://capitalfirm-vert.vercel.app/api/webhooks/calendar\n4. Add CALENDLY_API_KEY to your environment variables');
+                      }}
+                      className="w-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded font-medium transition-colors"
+                    >
                       Connect Calendly
                     </button>
-                    <button className="w-full bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded font-medium transition-colors">
+                    <button 
+                      onClick={() => {
+                        alert('HubSpot Integration:\n\n1. Go to HubSpot Settings > Calendar\n2. Enable calendar integration\n3. Add webhook: https://capitalfirm-vert.vercel.app/api/webhooks/calendar\n4. Add HUBSPOT_API_KEY to your environment variables');
+                      }}
+                      className="w-full bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded font-medium transition-colors"
+                    >
                       Connect HubSpot
                     </button>
-                    <button className="w-full bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded font-medium transition-colors">
+                    <button 
+                      onClick={() => {
+                        alert('Google Calendar Integration:\n\n1. Go to Google Cloud Console\n2. Enable Google Calendar API\n3. Create OAuth credentials\n4. Add GOOGLE_CLIENT_ID to your environment variables');
+                      }}
+                      className="w-full bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded font-medium transition-colors"
+                    >
                       Connect Google Calendar
                     </button>
-                    <button className="w-full bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded font-medium transition-colors">
+                    <button 
+                      onClick={() => {
+                        alert('Zcal Integration:\n\n1. Contact Zcal support for API access\n2. Get API key and webhook URL\n3. Add ZCAL_API_KEY to your environment variables');
+                      }}
+                      className="w-full bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded font-medium transition-colors"
+                    >
                       Connect Zcal
                     </button>
                   </div>
