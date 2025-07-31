@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
+import PWAInstall from '../components/PWAInstall'
+import SWRegister from './sw-register'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,6 +14,13 @@ export const metadata: Metadata = {
   keywords: 'capital raising, fundraising, private equity, venture capital, investment, capital access, fundraising services',
   authors: [{ name: 'Capital Firm' }],
   robots: 'index, follow',
+  manifest: '/manifest.json',
+  themeColor: '#6366f1',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Capital Firm'
+  },
   openGraph: {
     title: 'Capital Firm - Raise Capital with an Unfair Advantage',
     description: 'Revolutionize your fundraising journey with our results-driven approach. Unlocking access to capital globally for private equity, venture capital funds and emerging businesses.',
@@ -23,6 +32,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -36,6 +47,8 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <PWAInstall />
+        <SWRegister />
       </body>
     </html>
   )
