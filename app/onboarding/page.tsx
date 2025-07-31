@@ -108,22 +108,22 @@ export default function OnboardingPage() {
                 ></iframe>
               </div>
               
-                          <div className="flex justify-center space-x-4">
-              <button
-                onClick={() => setActiveStep(1)}
-                disabled={activeStep === 1}
-                className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center"
-              >
-                ← Previous
-              </button>
-              <button
-                onClick={() => setActiveStep(2)}
-                className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center"
-              >
-                Continue to Step Two
-                <ArrowRightIcon className="h-4 w-4 ml-2" />
-              </button>
-            </div>
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={() => setActiveStep(1)}
+                  disabled={activeStep === 1}
+                  className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center"
+                >
+                  ← Previous
+                </button>
+                <button
+                  onClick={() => setActiveStep(2)}
+                  className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center"
+                >
+                  Continue to Step Two
+                  <ArrowRightIcon className="h-4 w-4 ml-2" />
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -178,306 +178,232 @@ export default function OnboardingPage() {
                     {userType === 'funds' ? 'Fund Onboarding Form' : 'Startup Onboarding Form'}
                   </h4>
                   
-                  <form className="space-y-6">
-                    {/* Basic Information */}
-                    <div className="space-y-4">
-                      <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Basic Information</h5>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Fund Name *
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                            placeholder="Enter fund name"
-                          />
+                  {userType === 'funds' ? (
+                    <form className="space-y-6">
+                      {/* Basic Information */}
+                      <div className="space-y-4">
+                        <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Basic Information</h5>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Fund Name *
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                              placeholder="Enter fund name"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Fund Type *
+                            </label>
+                            <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
+                              <option value="">Select fund type</option>
+                              <option value="venture-capital">Venture Capital</option>
+                              <option value="private-equity">Private Equity</option>
+                              <option value="growth-equity">Growth Equity</option>
+                              <option value="angel-fund">Angel Fund</option>
+                              <option value="real-estate">Real Estate Fund</option>
+                              <option value="credit-fund">Credit Fund</option>
+                              <option value="other">Other</option>
+                            </select>
+                          </div>
                         </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Primary Contact Name *
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                              placeholder="Enter contact name"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Job Title *
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                              placeholder="e.g., Managing Partner, GP"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Email Address *
+                            </label>
+                            <input
+                              type="email"
+                              required
+                              className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                              placeholder="Enter email address"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Phone Number
+                            </label>
+                            <input
+                              type="tel"
+                              className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                              placeholder="Enter phone number"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Fund Details */}
+                      <div className="space-y-4">
+                        <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Fund Details</h5>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Fund Size Target *
+                            </label>
+                            <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
+                              <option value="">Select fund size</option>
+                              <option value="under-10m">Under $10M</option>
+                              <option value="10-25m">$10M - $25M</option>
+                              <option value="25-50m">$25M - $50M</option>
+                              <option value="50-100m">$50M - $100M</option>
+                              <option value="100-250m">$100M - $250M</option>
+                              <option value="250-500m">$250M - $500M</option>
+                              <option value="500m-plus">$500M+</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Investment Stage *
+                            </label>
+                            <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
+                              <option value="">Select investment stage</option>
+                              <option value="seed">Seed</option>
+                              <option value="series-a">Series A</option>
+                              <option value="series-b">Series B</option>
+                              <option value="series-c">Series C</option>
+                              <option value="growth">Growth</option>
+                              <option value="late-stage">Late Stage</option>
+                              <option value="buyout">Buyout</option>
+                              <option value="distressed">Distressed</option>
+                              <option value="multiple">Multiple Stages</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Geographic Focus *
+                            </label>
+                            <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
+                              <option value="">Select geographic focus</option>
+                              <option value="north-america">North America</option>
+                              <option value="europe">Europe</option>
+                              <option value="asia-pacific">Asia Pacific</option>
+                              <option value="latin-america">Latin America</option>
+                              <option value="middle-east">Middle East</option>
+                              <option value="africa">Africa</option>
+                              <option value="global">Global</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                              Sector Focus *
+                            </label>
+                            <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
+                              <option value="">Select sector focus</option>
+                              <option value="technology">Technology</option>
+                              <option value="healthcare">Healthcare</option>
+                              <option value="fintech">Fintech</option>
+                              <option value="real-estate">Real Estate</option>
+                              <option value="energy">Energy</option>
+                              <option value="consumer">Consumer</option>
+                              <option value="industrial">Industrial</option>
+                              <option value="multiple">Multiple Sectors</option>
+                            </select>
+                          </div>
+                        </div>
+
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Fund Type *
+                            Investment Range per Deal *
                           </label>
                           <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                            <option value="">Select fund type</option>
-                            <option value="venture-capital">Venture Capital</option>
-                            <option value="private-equity">Private Equity</option>
-                            <option value="growth-equity">Growth Equity</option>
-                            <option value="angel-fund">Angel Fund</option>
-                            <option value="real-estate">Real Estate Fund</option>
-                            <option value="credit-fund">Credit Fund</option>
-                            <option value="other">Other</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Primary Contact Name *
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                            placeholder="Enter contact name"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Job Title *
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                            placeholder="e.g., Managing Partner, GP"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Email Address *
-                          </label>
-                          <input
-                            type="email"
-                            required
-                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                            placeholder="Enter email address"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Phone Number
-                          </label>
-                          <input
-                            type="tel"
-                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                            placeholder="Enter phone number"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Fund Details */}
-                    <div className="space-y-4">
-                      <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Fund Details</h5>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Fund Size Target *
-                          </label>
-                          <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                            <option value="">Select fund size</option>
-                            <option value="under-10m">Under $10M</option>
+                            <option value="">Select investment range</option>
+                            <option value="under-1m">Under $1M</option>
+                            <option value="1-5m">$1M - $5M</option>
+                            <option value="5-10m">$5M - $10M</option>
                             <option value="10-25m">$10M - $25M</option>
                             <option value="25-50m">$25M - $50M</option>
                             <option value="50-100m">$50M - $100M</option>
-                            <option value="100-250m">$100M - $250M</option>
-                            <option value="250-500m">$250M - $500M</option>
-                            <option value="500m-plus">$500M+</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Investment Stage *
-                          </label>
-                          <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                            <option value="">Select investment stage</option>
-                            <option value="seed">Seed</option>
-                            <option value="series-a">Series A</option>
-                            <option value="series-b">Series B</option>
-                            <option value="series-c">Series C</option>
-                            <option value="growth">Growth</option>
-                            <option value="late-stage">Late Stage</option>
-                            <option value="buyout">Buyout</option>
-                            <option value="distressed">Distressed</option>
-                            <option value="multiple">Multiple Stages</option>
+                            <option value="100m-plus">$100M+</option>
                           </select>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Fundraising Timeline */}
+                      <div className="space-y-4">
+                        <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Fundraising Timeline</h5>
+                        
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Geographic Focus *
+                            Timeline Description
                           </label>
-                          <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                            <option value="">Select geographic focus</option>
-                            <option value="north-america">North America</option>
-                            <option value="europe">Europe</option>
-                            <option value="asia-pacific">Asia Pacific</option>
-                            <option value="latin-america">Latin America</option>
-                            <option value="middle-east">Middle East</option>
-                            <option value="africa">Africa</option>
-                            <option value="global">Global</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Sector Focus *
-                          </label>
-                          <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                            <option value="">Select sector focus</option>
-                            <option value="technology">Technology</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="fintech">Fintech</option>
-                            <option value="real-estate">Real Estate</option>
-                            <option value="energy">Energy</option>
-                            <option value="consumer">Consumer</option>
-                            <option value="industrial">Industrial</option>
-                            <option value="multiple">Multiple Sectors</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Investment Range per Deal *
-                        </label>
-                        <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                          <option value="">Select investment range</option>
-                          <option value="under-1m">Under $1M</option>
-                          <option value="1-5m">$1M - $5M</option>
-                          <option value="5-10m">$5M - $10M</option>
-                          <option value="10-25m">$10M - $25M</option>
-                          <option value="25-50m">$25M - $50M</option>
-                          <option value="50-100m">$50M - $100M</option>
-                          <option value="100m-plus">$100M+</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* Fundraising Timeline */}
-                    <div className="space-y-4">
-                      <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Fundraising Timeline</h5>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Fundraising Timeline *
-                          </label>
-                          <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                            <option value="">Select timeline</option>
-                            <option value="immediate">Immediate (0-3 months)</option>
-                            <option value="short">Short term (3-6 months)</option>
-                            <option value="medium">Medium term (6-12 months)</option>
-                            <option value="long">Long term (12+ months)</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Current Fundraising Stage *
-                          </label>
-                          <select required className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                            <option value="">Select stage</option>
-                            <option value="planning">Planning Phase</option>
-                            <option value="pre-marketing">Pre-Marketing</option>
-                            <option value="active-marketing">Active Marketing</option>
-                            <option value="due-diligence">Due Diligence</option>
-                            <option value="closing">Closing</option>
-                            <option value="closed">Fund Closed</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Amount Raised to Date
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                          placeholder="e.g., $25M of $100M target"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Team & Track Record */}
-                    <div className="space-y-4">
-                      <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Team & Track Record</h5>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Number of Investment Professionals
-                          </label>
-                          <input
-                            type="number"
+                          <textarea
                             className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                            placeholder="Enter number"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Years of Investment Experience
-                          </label>
-                          <input
-                            type="number"
-                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                            placeholder="Average years"
+                            rows={3}
+                            placeholder="Describe your fundraising timeline and milestones..."
                           />
                         </div>
                       </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Previous Fund Performance (if applicable)
-                        </label>
-                        <textarea
-                          rows={3}
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                          placeholder="Describe previous fund performance, IRR, exits, etc."
-                        />
-                      </div>
-                    </div>
-
-                    {/* Additional Information */}
-                    <div className="space-y-4">
-                      <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Additional Information</h5>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Specific Fundraising Challenges
-                        </label>
-                        <textarea
-                          rows={3}
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                          placeholder="Describe any specific challenges you're facing in fundraising..."
-                        />
+                      {/* Team & Track Record */}
+                      <div className="space-y-4">
+                        <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Team & Track Record</h5>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Team Experience
+                          </label>
+                          <textarea
+                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                            rows={4}
+                            placeholder="Describe your team's experience, previous exits, and track record..."
+                          />
+                        </div>
                       </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          How did you hear about Capital Firm?
-                        </label>
-                        <select className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-accent-500 transition-colors">
-                          <option value="">Select option</option>
-                          <option value="referral">Referral</option>
-                          <option value="website">Website</option>
-                          <option value="social-media">Social Media</option>
-                          <option value="conference">Conference/Event</option>
-                          <option value="search">Search Engine</option>
-                          <option value="other">Other</option>
-                        </select>
+                      {/* Additional Information */}
+                      <div className="space-y-4">
+                        <h5 className="text-lg font-semibold text-white border-b border-gray-600 pb-2">Additional Information</h5>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
+                            Additional Details
+                          </label>
+                          <textarea
+                            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                            rows={4}
+                            placeholder="Any additional information about your fund..."
+                          />
+                        </div>
                       </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Additional Comments
-                        </label>
-                        <textarea
-                          rows={4}
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                          placeholder="Any additional information you'd like to share..."
-                        />
-                      </div>
-                    </div>
-                  </form>
+                    </form>
+                  ) : (
+                    <StartupOnboardingForm />
+                  )}
 
                   <div className="mt-6 flex justify-center space-x-4">
                     <button
@@ -495,12 +421,6 @@ export default function OnboardingPage() {
                     </button>
                   </div>
                 </div>
-                
-                {userType === 'startups' && (
-                  <div className="mt-8">
-                    <StartupOnboardingForm />
-                  </div>
-                )}
               )}
             </div>
           </div>
@@ -611,62 +531,16 @@ export default function OnboardingPage() {
           <div className="space-y-8">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-4">Step Four</h2>
-              <h3 className="text-xl text-gray-300">Book Your Onboarding Call Below</h3>
+              <h3 className="text-xl text-gray-300">Book Your Onboarding Call</h3>
             </div>
 
             <div className="bg-gray-900 rounded-2xl p-8 border border-gray-700">
               <div className="text-center mb-8">
                 <CalendarIcon className="h-16 w-16 text-accent-400 mx-auto mb-4" />
-                <h3 className="text-2xl font-semibold text-white mb-2">Schedule Your Onboarding Call</h3>
-                <p className="text-gray-400">
-                  Let's discuss your specific needs and create a customized capital raising strategy
+                <h3 className="text-2xl font-bold text-white mb-4">Ready to Get Started?</h3>
+                <p className="text-gray-400 text-lg">
+                  Schedule your onboarding call with our team to discuss your capital raising strategy
                 </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div className="bg-gray-800 rounded-xl p-6">
-                  <h4 className="text-lg font-semibold text-white mb-4">What to Expect</h4>
-                  <ul className="space-y-3 text-gray-300">
-                    <li className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-accent-400 mr-3 mt-0.5" />
-                      <span>30-minute strategy session</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-accent-400 mr-3 mt-0.5" />
-                      <span>Customized approach discussion</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-accent-400 mr-3 mt-0.5" />
-                      <span>Next steps and timeline</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-accent-400 mr-3 mt-0.5" />
-                      <span>Q&A session</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="bg-gray-800 rounded-xl p-6">
-                  <h4 className="text-lg font-semibold text-white mb-4">Preparation</h4>
-                  <ul className="space-y-3 text-gray-300">
-                    <li className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-accent-400 mr-3 mt-0.5" />
-                      <span>Review your business plan</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-accent-400 mr-3 mt-0.5" />
-                      <span>Prepare funding requirements</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-accent-400 mr-3 mt-0.5" />
-                      <span>List your key questions</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-accent-400 mr-3 mt-0.5" />
-                      <span>Have your pitch deck ready</span>
-                    </li>
-                  </ul>
-                </div>
               </div>
 
               <div className="flex justify-center space-x-4">
