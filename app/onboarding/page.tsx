@@ -105,15 +105,22 @@ export default function OnboardingPage() {
                 </div>
               </div>
               
-              <div className="text-center">
-                <button
-                  onClick={() => setActiveStep(2)}
-                  className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center mx-auto"
-                >
-                  Continue to Step Two
-                  <ArrowRightIcon className="h-4 w-4 ml-2" />
-                </button>
-              </div>
+                          <div className="flex justify-center space-x-4">
+              <button
+                onClick={() => setActiveStep(1)}
+                disabled={activeStep === 1}
+                className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center"
+              >
+                ← Previous
+              </button>
+              <button
+                onClick={() => setActiveStep(2)}
+                className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center"
+              >
+                Continue to Step Two
+                <ArrowRightIcon className="h-4 w-4 ml-2" />
+              </button>
+            </div>
             </div>
           </div>
         )}
@@ -469,10 +476,16 @@ export default function OnboardingPage() {
                     </div>
                   </form>
 
-                  <div className="mt-6 text-center">
+                  <div className="mt-6 flex justify-center space-x-4">
+                    <button
+                      onClick={() => setActiveStep(1)}
+                      className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center"
+                    >
+                      ← Previous
+                    </button>
                     <button
                       onClick={() => setActiveStep(3)}
-                      className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center mx-auto"
+                      className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center"
                     >
                       Continue to Step Three
                       <ArrowRightIcon className="h-4 w-4 ml-2" />
@@ -567,10 +580,16 @@ export default function OnboardingPage() {
               </div>
             </div>
 
-            <div className="text-center mt-8">
+            <div className="flex justify-center space-x-4 mt-8">
+              <button
+                onClick={() => setActiveStep(2)}
+                className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center"
+              >
+                ← Previous
+              </button>
               <button
                 onClick={() => setActiveStep(4)}
-                className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center mx-auto"
+                className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center"
               >
                 Continue to Step Four
                 <ArrowRightIcon className="h-4 w-4 ml-2" />
@@ -641,12 +660,20 @@ export default function OnboardingPage() {
                 </div>
               </div>
 
-              <div className="text-center">
-                <button className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center mx-auto text-lg">
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={() => setActiveStep(3)}
+                  className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-4 rounded-lg font-medium transition-all duration-200 flex items-center"
+                >
+                  ← Previous
+                </button>
+                <button className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center text-lg">
                   <CalendarIcon className="h-5 w-5 mr-2" />
                   Book Your Onboarding Call
                 </button>
-                <p className="text-gray-400 text-sm mt-4">
+              </div>
+              <div className="text-center mt-4">
+                <p className="text-gray-400 text-sm">
                   Get started with your capital raising journey today
                 </p>
               </div>
