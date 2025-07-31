@@ -16,13 +16,33 @@ interface Meeting {
   utm_campaign?: string;
 }
 
+interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  status: 'not_started' | 'in_progress' | 'in_review' | 'done';
+  stage: string;
+  assignee: string;
+  dueDate?: string;
+  priority: 'low' | 'medium' | 'high';
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Stage {
+  id: string;
+  name: string;
+  order: number;
+  status: 'not_started' | 'in_progress' | 'completed';
+  tasks: Task[];
+}
+
 export default function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [activeTab, setActiveTab] = useState(() => {
-    // Get tab from URL or default to overview
     return searchParams.get('tab') || 'overview';
   });
   const [calendarLinks, setCalendarLinks] = useState({
@@ -33,6 +53,150 @@ export default function Dashboard() {
   });
 
   const [showCalendarSetup, setShowCalendarSetup] = useState(false);
+  const [stages, setStages] = useState<Stage[]>([
+    {
+      id: '1',
+      name: 'Stage 1: Onboarding',
+      order: 1,
+      status: 'not_started',
+      tasks: [
+        {
+          id: '1',
+          title: 'Onboarding',
+          description: 'Complete client onboarding process',
+          status: 'not_started',
+          stage: '1',
+          assignee: 'Team',
+          priority: 'high',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        }
+      ]
+    },
+    {
+      id: '2',
+      name: 'Stage 2: Setup',
+      order: 2,
+      status: 'not_started',
+      tasks: [
+        {
+          id: '2',
+          title: 'Technical Setup',
+          description: 'Configure technical infrastructure',
+          status: 'not_started',
+          stage: '2',
+          assignee: 'Team',
+          priority: 'high',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        },
+        {
+          id: '3',
+          title: 'ICP',
+          description: 'Define Ideal Customer Profile',
+          status: 'not_started',
+          stage: '2',
+          assignee: 'Team',
+          priority: 'medium',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        },
+        {
+          id: '4',
+          title: 'Pitch Deck',
+          description: 'Create investor pitch deck',
+          status: 'not_started',
+          stage: '2',
+          assignee: 'Team',
+          priority: 'high',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        },
+        {
+          id: '5',
+          title: 'Investor Presentation',
+          description: 'Prepare investor presentation materials',
+          status: 'not_started',
+          stage: '2',
+          assignee: 'Team',
+          priority: 'high',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        }
+      ]
+    },
+    {
+      id: '3',
+      name: 'Stage 3: Campaigns',
+      order: 3,
+      status: 'not_started',
+      tasks: [
+        {
+          id: '6',
+          title: 'List Scraping',
+          description: 'Scrape and compile investor lists',
+          status: 'not_started',
+          stage: '3',
+          assignee: 'Team',
+          priority: 'medium',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        },
+        {
+          id: '7',
+          title: 'Campaign Setup',
+          description: 'Set up outreach campaigns',
+          status: 'not_started',
+          stage: '3',
+          assignee: 'Team',
+          priority: 'high',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        },
+        {
+          id: '8',
+          title: 'Kick-Off',
+          description: 'Launch investor outreach campaign',
+          status: 'not_started',
+          stage: '3',
+          assignee: 'Team',
+          priority: 'high',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        }
+      ]
+    },
+    {
+      id: '4',
+      name: 'Stage 4: Placement',
+      order: 4,
+      status: 'not_started',
+      tasks: []
+    },
+    {
+      id: '5',
+      name: 'Stage 5: Reporting',
+      order: 5,
+      status: 'not_started',
+      tasks: [
+        {
+          id: '9',
+          title: 'Reporting',
+          description: 'Generate campaign reports and analytics',
+          status: 'not_started',
+          stage: '5',
+          assignee: 'Team',
+          priority: 'medium',
+          createdAt: '2024-01-15',
+          updatedAt: '2024-01-15'
+        }
+      ]
+    }
+  ]);
+
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [showNewTaskModal, setShowNewTaskModal] = useState(false);
 
   // Generate UTM-tracked calendar links
   const generateUTMLink = (baseUrl: string, source: string) => {
@@ -111,6 +275,52 @@ export default function Dashboard() {
     }
   };
 
+  const getTaskStatusColor = (status: string) => {
+    switch (status) {
+      case 'not_started': return 'bg-gray-500';
+      case 'in_progress': return 'bg-blue-500';
+      case 'in_review': return 'bg-orange-500';
+      case 'done': return 'bg-green-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'text-red-400';
+      case 'medium': return 'text-yellow-400';
+      case 'low': return 'text-green-400';
+      default: return 'text-gray-400';
+    }
+  };
+
+  const updateTaskStatus = (taskId: string, newStatus: string) => {
+    setStages(prevStages => 
+      prevStages.map(stage => ({
+        ...stage,
+        tasks: stage.tasks.map(task => 
+          task.id === taskId 
+            ? { ...task, status: newStatus as any, updatedAt: new Date().toISOString().split('T')[0] }
+            : task
+        )
+      }))
+    );
+  };
+
+  const updateStageStatus = (stageId: string, newStatus: string) => {
+    setStages(prevStages => 
+      prevStages.map(stage => 
+        stage.id === stageId 
+          ? { ...stage, status: newStatus as any }
+          : stage
+      )
+    );
+  };
+
+  const getTasksByStatus = (status: string) => {
+    return stages.flatMap(stage => stage.tasks).filter(task => task.status === status);
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -135,7 +345,8 @@ export default function Dashboard() {
               { id: 'meetings', name: 'Meetings' },
               { id: 'investments', name: 'Investments' },
               { id: 'documents', name: 'Documents' },
-              { id: 'crm', name: 'CRM' }
+              { id: 'crm', name: 'CRM' },
+              { id: 'project-management', name: 'Project Management' }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -177,6 +388,134 @@ export default function Dashboard() {
               <h3 className="text-lg font-semibold mb-2">Portfolio Companies</h3>
               <p className="text-3xl font-bold text-purple-400">15</p>
               <p className="text-sm text-gray-400">+2 this quarter</p>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'project-management' && (
+          <div className="space-y-8">
+            {/* Project Overview */}
+            <div className="bg-gray-800 rounded-xl p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Project Management</h2>
+                <button 
+                  onClick={() => setShowNewTaskModal(true)}
+                  className="bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                >
+                  + New Task
+                </button>
+              </div>
+
+              {/* Progress Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold mb-4">Progress</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-gray-700 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium">Onboarding</span>
+                      <span className="text-xs text-gray-400">Stage 1</span>
+                    </div>
+                    <div className="w-full bg-gray-600 rounded-full h-2">
+                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '0%' }}></div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-700 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium">Setup</span>
+                      <span className="text-xs text-gray-400">Stage 2</span>
+                    </div>
+                    <div className="w-full bg-gray-600 rounded-full h-2">
+                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '0%' }}></div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-700 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium">Campaigns</span>
+                      <span className="text-xs text-gray-400">Stage 3</span>
+                    </div>
+                    <div className="w-full bg-gray-600 rounded-full h-2">
+                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '0%' }}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stages Section */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold mb-4">Stages</h3>
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                  {stages.map((stage) => (
+                    <div key={stage.id} className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium">{stage.name}</span>
+                        <span className={`w-2 h-2 rounded-full ${getTaskStatusColor(stage.status)}`}></span>
+                      </div>
+                      <p className="text-xs text-gray-400 mb-3">{stage.tasks.length} tasks</p>
+                      <div className="space-y-2">
+                        {stage.tasks.slice(0, 2).map((task) => (
+                          <div key={task.id} className="text-xs text-gray-300">
+                            • {task.title}
+                          </div>
+                        ))}
+                        {stage.tasks.length > 2 && (
+                          <div className="text-xs text-gray-400">
+                            +{stage.tasks.length - 2} more
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Kanban Board */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Task Status</h3>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  {[
+                    { status: 'not_started', title: 'Not Started', count: getTasksByStatus('not_started').length },
+                    { status: 'in_progress', title: 'In Progress', count: getTasksByStatus('in_progress').length },
+                    { status: 'in_review', title: 'In Review', count: getTasksByStatus('in_review').length },
+                    { status: 'done', title: 'Done', count: getTasksByStatus('done').length }
+                  ].map((column) => (
+                    <div key={column.status} className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-medium">{column.title}</h4>
+                        <span className="text-sm text-gray-400">{column.count}</span>
+                      </div>
+                      <div className="space-y-2">
+                        {getTasksByStatus(column.status).map((task) => (
+                          <div 
+                            key={task.id} 
+                            className="bg-gray-600 rounded p-3 cursor-pointer hover:bg-gray-500 transition-colors"
+                            onClick={() => {
+                              setSelectedTask(task);
+                              setShowTaskModal(true);
+                            }}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-sm font-medium">{task.title}</span>
+                              <span className={`text-xs ${getPriorityColor(task.priority)}`}>
+                                {task.priority}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-gray-400">{task.assignee}</span>
+                              <span className={`w-2 h-2 rounded-full ${getTaskStatusColor(task.status)}`}></span>
+                            </div>
+                          </div>
+                        ))}
+                        <button 
+                          onClick={() => setShowNewTaskModal(true)}
+                          className="w-full text-center text-sm text-gray-400 hover:text-gray-300 py-2 border-2 border-dashed border-gray-600 rounded hover:border-gray-500 transition-colors"
+                        >
+                          + Add Task
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -397,6 +736,85 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+
+      {/* Task Modal */}
+      {showTaskModal && selectedTask && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Task Details</h3>
+              <button 
+                onClick={() => setShowTaskModal(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Title</label>
+                <input
+                  type="text"
+                  value={selectedTask.title}
+                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+                  readOnly
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Description</label>
+                <textarea
+                  value={selectedTask.description || ''}
+                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+                  rows={3}
+                  readOnly
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Status</label>
+                <select
+                  value={selectedTask.status}
+                  onChange={(e) => updateTaskStatus(selectedTask.id, e.target.value)}
+                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+                >
+                  <option value="not_started">Not Started</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="in_review">In Review</option>
+                  <option value="done">Done</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Assignee</label>
+                <input
+                  type="text"
+                  value={selectedTask.assignee}
+                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+                  readOnly
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Priority</label>
+                <span className={`text-sm ${getPriorityColor(selectedTask.priority)}`}>
+                  {selectedTask.priority}
+                </span>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setShowTaskModal(false)}
+                className="px-4 py-2 text-gray-400 hover:text-white"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 
