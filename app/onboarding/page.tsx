@@ -108,17 +108,17 @@ export default function OnboardingPage() {
                 ></iframe>
               </div>
               
-              <div className="flex justify-center space-x-4">
+              <div className="flex justify-center space-x-6">
                 <button
                   onClick={() => setActiveStep(1)}
                   disabled={activeStep === 1}
-                  className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center"
+                  className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 flex items-center min-w-[140px] justify-center"
                 >
                   ← Previous
                 </button>
                 <button
                   onClick={() => setActiveStep(2)}
-                  className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center"
+                  className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center min-w-[140px] justify-center"
                 >
                   Continue to Step Two
                   <ArrowRightIcon className="h-4 w-4 ml-2" />
@@ -405,16 +405,16 @@ export default function OnboardingPage() {
                     <StartupOnboardingForm />
                   )}
 
-                  <div className="mt-6 flex justify-center space-x-4">
+                  <div className="mt-6 flex justify-center space-x-6">
                     <button
                       onClick={() => setActiveStep(1)}
-                      className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center"
+                      className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 flex items-center min-w-[140px] justify-center"
                     >
                       ← Previous
                     </button>
                     <button
                       onClick={() => setActiveStep(3)}
-                      className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center"
+                      className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center min-w-[140px] justify-center"
                     >
                       Continue to Step Three
                       <ArrowRightIcon className="h-4 w-4 ml-2" />
@@ -509,16 +509,16 @@ export default function OnboardingPage() {
               </div>
             </div>
 
-            <div className="flex justify-center space-x-4 mt-8">
+            <div className="flex justify-center space-x-6 mt-8">
               <button
                 onClick={() => setActiveStep(2)}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center"
+                className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 flex items-center min-w-[140px] justify-center"
               >
                 ← Previous
               </button>
               <button
                 onClick={() => setActiveStep(4)}
-                className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center"
+                className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center min-w-[140px] justify-center"
               >
                 Continue to Step Four
                 <ArrowRightIcon className="h-4 w-4 ml-2" />
@@ -543,14 +543,14 @@ export default function OnboardingPage() {
                 </p>
               </div>
 
-              <div className="flex justify-center space-x-4">
+              <div className="flex justify-center space-x-6">
                 <button
                   onClick={() => setActiveStep(3)}
-                  className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-4 rounded-lg font-medium transition-all duration-200 flex items-center"
+                  className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 flex items-center min-w-[140px] justify-center"
                 >
                   ← Previous
                 </button>
-                <button className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center text-lg">
+                <button className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-500 hover:to-accent-400 text-white px-8 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center text-lg min-w-[140px] justify-center">
                   <CalendarIcon className="h-5 w-5 mr-2" />
                   Book Your Onboarding Call
                 </button>
