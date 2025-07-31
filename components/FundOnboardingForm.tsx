@@ -93,7 +93,6 @@ export default function FundOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Company Name</h3>
-              <p className="text-gray-400">Type your answer here…</p>
             </div>
             <input
               type="text"
@@ -110,7 +109,6 @@ export default function FundOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Date of Onboarding</h3>
-              <p className="text-gray-400">Month / Day / Year</p>
             </div>
             <input
               type="date"
@@ -126,7 +124,6 @@ export default function FundOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Who is your representative from Avalanche Capital?</h3>
-              <p className="text-gray-400">Type your answer here…</p>
             </div>
             <input
               type="text"
@@ -143,7 +140,6 @@ export default function FundOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Your Information</h3>
-              <p className="text-gray-400">First Name, Last Name, Phone Number, Email</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
@@ -202,14 +198,13 @@ export default function FundOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Data Room Link</h3>
-              <p className="text-gray-400">Type your answer here…</p>
             </div>
             <input
               type="url"
               value={formData.dataRoomLink}
               onChange={(e) => updateFormData('dataRoomLink', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="https://your-data-room-link.com"
             />
           </div>
         )
@@ -219,7 +214,6 @@ export default function FundOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Year Founded</h3>
-              <p className="text-gray-400">Type your answer here…</p>
             </div>
             <input
               type="number"
@@ -238,7 +232,6 @@ export default function FundOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Company HQ</h3>
-              <p className="text-gray-400">Type your answer here…</p>
             </div>
             <input
               type="text"
@@ -262,7 +255,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('fundStructure', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="Describe your fund structure, distribution policy, hold periods, redemption terms, DRIP options, and tax efficiency features..."
             />
           </div>
         )
@@ -279,7 +272,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('highlights', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="Describe your fund highlights, key strategies, and competitive advantages..."
             />
           </div>
         )
@@ -296,7 +289,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('targetIRR', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="Describe your target IRR, MOIC, and hurdle rate if applicable..."
             />
           </div>
         )
@@ -313,7 +306,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('portfolioAllocation', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="Describe your portfolio asset allocation by asset type and geography..."
             />
           </div>
         )
@@ -330,7 +323,7 @@ export default function FundOnboardingForm() {
               value={formData.targetRaiseCloseDate}
               onChange={(e) => updateFormData('targetRaiseCloseDate', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="e.g., $50M target, Q4 2024 close"
             />
           </div>
         )
@@ -347,7 +340,7 @@ export default function FundOnboardingForm() {
               value={formData.investmentTerm}
               onChange={(e) => updateFormData('investmentTerm', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="e.g., 5-7 years"
             />
           </div>
         )
@@ -364,7 +357,7 @@ export default function FundOnboardingForm() {
               value={formData.investmentJurisdiction}
               onChange={(e) => updateFormData('investmentJurisdiction', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="e.g., Delaware, Cayman Islands"
             />
           </div>
         )
@@ -381,7 +374,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('managementTeam', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="Describe your fund management team and their participation percentage in the fund..."
             />
           </div>
         )
@@ -398,7 +391,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('descriptionOfUnits', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="Describe the different series of units available and their features..."
             />
           </div>
         )
@@ -415,7 +408,7 @@ export default function FundOnboardingForm() {
               value={formData.currentAUM}
               onChange={(e) => updateFormData('currentAUM', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="e.g., $100M AUM"
             />
           </div>
         )
@@ -432,7 +425,7 @@ export default function FundOnboardingForm() {
               value={formData.managementFees}
               onChange={(e) => updateFormData('managementFees', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="e.g., 2% management fee"
             />
           </div>
         )
@@ -449,7 +442,7 @@ export default function FundOnboardingForm() {
               value={formData.totalFundRaiseAmount}
               onChange={(e) => updateFormData('totalFundRaiseAmount', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="e.g., $50M fund size"
             />
           </div>
         )
@@ -491,7 +484,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('emailNames', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="Provide first and last names of 3 team members for email addresses..."
             />
           </div>
         )
@@ -508,7 +501,7 @@ export default function FundOnboardingForm() {
               value={formData.forwardingDomain}
               onChange={(e) => updateFormData('forwardingDomain', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="https://your-website.com or deck link"
             />
           </div>
         )
@@ -525,7 +518,7 @@ export default function FundOnboardingForm() {
               value={formData.investorPresentation}
               onChange={(e) => updateFormData('investorPresentation', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="https://your-presentation-link.com"
             />
           </div>
         )
@@ -542,7 +535,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('existingInvestors', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="List all investors/LPs you're currently in discussions with..."
             />
           </div>
         )
@@ -559,7 +552,7 @@ export default function FundOnboardingForm() {
               onChange={(e) => updateFormData('salesAssets', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
               rows={4}
-              placeholder="Type your answer here…"
+              placeholder="Share your investor decks, investment track record, and other sales materials..."
             />
           </div>
         )

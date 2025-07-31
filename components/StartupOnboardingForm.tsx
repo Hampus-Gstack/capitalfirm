@@ -111,7 +111,6 @@ export default function StartupOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Company Name *</h3>
-              <p className="text-gray-400">Type your answer here…</p>
             </div>
             <input
               type="text"
@@ -129,7 +128,6 @@ export default function StartupOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Date of Onboarding *</h3>
-              <p className="text-gray-400">Month / Day / Year</p>
             </div>
             <input
               type="date"
@@ -146,7 +144,6 @@ export default function StartupOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Who is your representative from Avalanche Capital? *</h3>
-              <p className="text-gray-400">Type your answer here…</p>
             </div>
             <input
               type="text"
@@ -164,7 +161,6 @@ export default function StartupOnboardingForm() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-white mb-2">Your Information</h3>
-              <p className="text-gray-400">First name, Last name, Phone number, Email</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
@@ -234,7 +230,7 @@ export default function StartupOnboardingForm() {
               value={formData.dataRoomLink}
               onChange={(e) => updateFormData('dataRoomLink', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="Type your answer here…"
+              placeholder="https://your-data-room-link.com"
               required
             />
           </div>
@@ -308,7 +304,7 @@ export default function StartupOnboardingForm() {
               value={formData.industryVertical}
               onChange={(e) => updateFormData('industryVertical', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="e.g., Fintech - Payments"
+              placeholder="e.g., Fintech - Payments, SaaS - B2B, Healthcare - Digital Health"
               required
             />
           </div>
@@ -487,7 +483,7 @@ export default function StartupOnboardingForm() {
               value={formData.monthlyBurnRate}
               onChange={(e) => updateFormData('monthlyBurnRate', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="e.g., $50,000"
+              placeholder="e.g., $50,000, $100,000, $200,000"
               required
             />
           </div>
@@ -505,7 +501,7 @@ export default function StartupOnboardingForm() {
               value={formData.runway}
               onChange={(e) => updateFormData('runway', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="e.g., 18 months"
+              placeholder="e.g., 12 months, 18 months, 24 months"
               required
             />
           </div>
@@ -566,7 +562,7 @@ export default function StartupOnboardingForm() {
               value={formData.capitalToRaise}
               onChange={(e) => updateFormData('capitalToRaise', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="e.g., $2M"
+              placeholder="e.g., $2M, $5M, $10M"
               required
             />
           </div>
@@ -584,7 +580,7 @@ export default function StartupOnboardingForm() {
               value={formData.preMoneyValuation}
               onChange={(e) => updateFormData('preMoneyValuation', e.target.value)}
               className="w-full px-6 py-4 bg-gray-700 border border-gray-600 rounded-xl text-white text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
-              placeholder="e.g., $10M"
+              placeholder="e.g., $10M, $25M, $50M"
               required
             />
           </div>
