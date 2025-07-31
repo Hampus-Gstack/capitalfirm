@@ -97,12 +97,14 @@ export default function OnboardingPage() {
             </div>
 
             <div className="bg-gray-900 rounded-2xl p-8 border border-gray-700">
-              <div className="aspect-video bg-gray-800 rounded-xl flex items-center justify-center mb-6">
-                <div className="text-center">
-                  <PlayIcon className="h-16 w-16 text-accent-400 mx-auto mb-4" />
-                  <p className="text-gray-400">Orientation Video</p>
-                  <p className="text-sm text-gray-500 mt-2">Learn about our process and what to expect</p>
-                </div>
+              <div className="aspect-video bg-gray-800 rounded-xl overflow-hidden mb-6">
+                <iframe
+                  src="https://www.loom.com/embed/your-loom-video-id"
+                  frameBorder="0"
+                  allowFullScreen
+                  className="w-full h-full"
+                  title="Capital Firm Onboarding Video"
+                ></iframe>
               </div>
               
                           <div className="flex justify-center space-x-4">
