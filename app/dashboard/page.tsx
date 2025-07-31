@@ -242,6 +242,8 @@ export default function Dashboard() {
 
   // Update URL when tab changes
   const handleTabChange = (tab: string) => {
+    if (tab === activeTab) return; // Prevent unnecessary updates
+    
     setActiveTab(tab);
     const params = new URLSearchParams(searchParams);
     params.set('tab', tab);
@@ -254,7 +256,7 @@ export default function Dashboard() {
     if (tabFromUrl && tabFromUrl !== activeTab) {
       setActiveTab(tabFromUrl);
     }
-  }, [searchParams, activeTab]);
+  }, [searchParams]); // Remove activeTab dependency to prevent loops
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -378,7 +380,7 @@ export default function Dashboard() {
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
                   activeTab === tab.id
                     ? 'border-accent-500 text-accent-400'
                     : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
@@ -392,9 +394,9 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-all duration-300 ease-in-out">
         {activeTab === 'overview' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-fadeIn">
             {/* Quick Stats */}
             <div className="bg-gray-800 rounded-xl p-6">
               <h3 className="text-lg font-semibold mb-2">Total Investments</h3>
@@ -420,7 +422,7 @@ export default function Dashboard() {
         )}
 
         {activeTab === 'project-management' && (
-          <div className="space-y-8">
+          <div className="space-y-8 animate-fadeIn">
             {/* Project Overview */}
             <div className="bg-gray-800 rounded-xl p-6">
               <div className="flex justify-between items-center mb-6">
@@ -548,7 +550,7 @@ export default function Dashboard() {
         )}
 
         {activeTab === 'meetings' && (
-          <div className="space-y-6">
+          <div className="space-y-6 animate-fadeIn">
             {/* Meeting Tracking Section */}
             <div className="bg-gray-800 rounded-xl p-6">
               <div className="flex justify-between items-center mb-6">
@@ -690,7 +692,7 @@ export default function Dashboard() {
         )}
 
         {activeTab === 'investments' && (
-          <div className="bg-gray-800 rounded-xl p-6">
+          <div className="bg-gray-800 rounded-xl p-6 animate-fadeIn">
             <h2 className="text-2xl font-bold mb-6">Investment Portfolio</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-gray-700 rounded-lg p-4">
@@ -713,7 +715,7 @@ export default function Dashboard() {
         )}
 
         {activeTab === 'documents' && (
-          <div className="bg-gray-800 rounded-xl p-6">
+          <div className="bg-gray-800 rounded-xl p-6 animate-fadeIn">
             <h2 className="text-2xl font-bold mb-6">Document Management</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-gray-700 rounded-lg p-4">
@@ -736,7 +738,7 @@ export default function Dashboard() {
         )}
 
         {activeTab === 'crm' && (
-          <div className="bg-gray-800 rounded-xl p-6">
+          <div className="bg-gray-800 rounded-xl p-6 animate-fadeIn">
             <h2 className="text-2xl font-bold mb-6">CRM Overview</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="bg-gray-700 rounded-lg p-4">
