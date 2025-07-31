@@ -326,13 +326,40 @@ export default function Dashboard() {
       {/* Header */}
       <div className="bg-gray-800 border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <h1 className="text-3xl font-bold">Capital Firm Dashboard</h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-400">Welcome back,</span>
-              <span className="font-semibold">Client Name</span>
-            </div>
+                  <div className="flex justify-between items-center py-6">
+          <h1 className="text-3xl font-bold">Capital Firm Dashboard</h1>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => {
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                if (isIOS) {
+                  alert(`📱 Install Capital Firm App on iOS:
+
+1. Tap the Share button (square with arrow) at the bottom
+2. Scroll down and tap "Add to Home Screen"
+3. Tap "Add" in the top right
+4. The app will appear on your home screen!
+
+💡 Tip: You can also tap "Add to Favorites" for quick access.`);
+                } else {
+                  alert(`📱 Install Capital Firm App on Android:
+
+1. Tap the menu (three dots) in the top right
+2. Tap "Add to Home screen" or "Install app"
+3. Tap "Add" or "Install"
+4. The app will appear on your home screen!
+
+💡 Tip: You can also add to your app drawer for quick access.`);
+                }
+              }}
+              className="bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+            >
+              📱 Install App
+            </button>
+            <span className="text-gray-400">Welcome back,</span>
+            <span className="font-semibold">Client Name</span>
           </div>
+        </div>
         </div>
       </div>
 

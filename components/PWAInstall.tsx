@@ -15,6 +15,17 @@ export default function PWAInstall() {
 
     window.addEventListener('beforeinstallprompt', handler);
 
+    // Also show manual install option for iOS
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    
+    if (isIOS && !isStandalone) {
+      // Show manual install for iOS after a delay
+      setTimeout(() => {
+        setShowInstallPrompt(true);
+      }, 3000);
+    }
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handler);
     };
@@ -34,17 +45,27 @@ export default function PWAInstall() {
   const handleManualInstall = () => {
     setShowInstallPrompt(false);
     // Show manual install instructions
-    alert(`To install this app on your device:
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
+    if (isIOS) {
+      alert(`📱 Install Capital Firm App on iOS:
 
-iOS (Safari):
-1. Tap the Share button (square with arrow)
-2. Tap "Add to Home Screen"
-3. Tap "Add"
+1. Tap the Share button (square with arrow) at the bottom
+2. Scroll down and tap "Add to Home Screen"
+3. Tap "Add" in the top right
+4. The app will appear on your home screen!
 
-Android (Chrome):
-1. Tap the menu (three dots)
-2. Tap "Add to Home screen"
-3. Tap "Add"`);
+💡 Tip: You can also tap "Add to Favorites" for quick access.`);
+    } else {
+      alert(`📱 Install Capital Firm App on Android:
+
+1. Tap the menu (three dots) in the top right
+2. Tap "Add to Home screen" or "Install app"
+3. Tap "Add" or "Install"
+4. The app will appear on your home screen!
+
+💡 Tip: You can also add to your app drawer for quick access.`);
+    }
   };
 
   if (!showInstallPrompt) return null;
