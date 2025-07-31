@@ -10,6 +10,7 @@ import {
   ArrowRightIcon,
   ChevronRightIcon
 } from '@heroicons/react/24/outline'
+import StartupOnboardingForm from '@/components/StartupOnboardingForm'
 
 export default function OnboardingPage() {
   const [activeStep, setActiveStep] = useState(1)
@@ -494,6 +495,12 @@ export default function OnboardingPage() {
                     </button>
                   </div>
                 </div>
+                
+                {userType === 'startups' && (
+                  <div className="mt-8">
+                    <StartupOnboardingForm />
+                  </div>
+                )}
               )}
             </div>
           </div>
