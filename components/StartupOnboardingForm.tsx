@@ -92,9 +92,38 @@ export default function StartupOnboardingForm() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1)
+    } else {
+      // Submit the form
+      await submitForm()
+    }
+  }
+
+  const submitForm = async () => {
+    try {
+      const response = await fetch('/api/onboarding', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'startup',
+          ...formData
+        }),
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        alert('Onboarding form submitted successfully!')
+        // You could redirect to a success page or dashboard
+      } else {
+        alert('Failed to submit form. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      alert('Failed to submit form. Please try again.')
     }
   }
 
