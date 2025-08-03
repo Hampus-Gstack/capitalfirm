@@ -6,7 +6,6 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const mobileMenuRef = useRef<HTMLDivElement>(null)
 
   // Frontend (Public-facing) items
   const frontendItems = [
@@ -48,28 +47,6 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
-        setMobileMenuOpen(false)
-      }
-    }
-
-    if (mobileMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      // Prevent body scroll when mobile menu is open
-      document.body.style.overflow = 'hidden'
-      document.body.classList.add('mobile-menu-open')
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.body.style.overflow = 'unset'
-      document.body.classList.remove('mobile-menu-open')
-    }
-  }, [mobileMenuOpen])
-
   // Close mobile menu on escape key
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -88,12 +65,10 @@ export default function Header() {
   }, [mobileMenuOpen])
 
   const handleMobileMenuToggle = () => {
-    console.log('Mobile menu toggle clicked, current state:', mobileMenuOpen)
     setMobileMenuOpen(!mobileMenuOpen)
   }
 
   const handleMobileMenuClose = () => {
-    console.log('Mobile menu close clicked')
     setMobileMenuOpen(false)
   }
 
@@ -161,23 +136,13 @@ export default function Header() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white bg-accent-600 hover:bg-accent-500 transition-colors touch-manipulation mobile-menu-button"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white bg-accent-600 hover:bg-accent-500 transition-colors"
             onClick={handleMobileMenuToggle}
             aria-label="Open main menu"
-            style={{ 
-              minHeight: '44px', 
-              minWidth: '44px',
-              zIndex: 1000,
-              position: 'relative'
-            }}
           >
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
-          {/* Debug indicator */}
-          <div className="ml-2 text-xs text-red-400 bg-red-900/20 px-2 py-1 rounded">
-            {mobileMenuOpen ? 'OPEN' : 'CLOSED'}
-          </div>
         </div>
         
         <div className="hidden lg:flex lg:gap-x-6" ref={dropdownRef}>
@@ -204,127 +169,127 @@ export default function Header() {
         </div>
       </nav>
       
-      {/* Mobile menu - Binderr style */}
-      <div className={`lg:hidden fixed inset-0 z-[9999] transition-all duration-300 ${
-        mobileMenuOpen ? 'mobile-menu-open' : 'mobile-menu-closed'
-      }`} ref={mobileMenuRef}>
-        {/* Full screen overlay */}
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-md">
-          <div className="flex h-full flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-700">
-              <a href="/" className="-m-1.5 p-1.5">
-                <span className="text-2xl font-bold gradient-text">Capital Firm</span>
-              </a>
-              <button
-                type="button"
-                className="-m-2.5 rounded-md p-2.5 text-gray-400 hover:text-white transition-colors touch-manipulation"
-                onClick={handleMobileMenuClose}
-                aria-label="Close menu"
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            
-            {/* Menu content */}
-            <div className="flex-1 overflow-y-auto px-6 py-6">
-              <div className="space-y-6">
-                {/* Navigation items */}
-                <div className="space-y-4">
-                  {frontendItems.map(item => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="block text-lg font-medium text-white hover:text-accent-400 transition-colors py-2"
-                      onClick={handleMobileMenuClose}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-                
-                {/* Divider */}
-                <div className="border-t border-gray-700 my-6"></div>
-                
-                {/* Client Portal */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-                    Client Portal
-                  </h3>
-                  <div className="space-y-2">
-                    {backendItems.map(item => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="block text-lg font-medium text-white hover:text-accent-400 transition-colors py-2"
-                        onClick={handleMobileMenuClose}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+      {/* Simple Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={handleMobileMenuClose}
+          />
+          
+          {/* Menu */}
+          <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-gray-900 z-50">
+            <div className="flex h-full flex-col">
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-700">
+                <a href="/" className="text-2xl font-bold gradient-text">
+                  Capital Firm
+                </a>
+                <button
+                  type="button"
+                  className="text-gray-400 hover:text-white"
+                  onClick={handleMobileMenuClose}
+                >
+                  <XMarkIcon className="h-6 w-6" />
+                </button>
+              </div>
+              
+              {/* Menu Items */}
+              <div className="flex-1 overflow-y-auto p-6">
+                <div className="space-y-6">
+                  {/* Main Navigation */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                      Navigation
+                    </h3>
+                    <div className="space-y-2">
+                      {frontendItems.map(item => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block text-lg font-medium text-white hover:text-accent-400 py-2"
+                          onClick={handleMobileMenuClose}
+                        >
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                
-                {/* Admin */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-                    Admin
-                  </h3>
-                  <div className="space-y-2">
-                    {adminItems.map(item => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="block text-lg font-medium text-white hover:text-accent-400 transition-colors py-2"
-                        onClick={handleMobileMenuClose}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                  
+                  {/* Client Portal */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                      Client Portal
+                    </h3>
+                    <div className="space-y-2">
+                      {backendItems.map(item => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block text-lg font-medium text-white hover:text-accent-400 py-2"
+                          onClick={handleMobileMenuClose}
+                        >
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                
-                {/* Account */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-                    Account
-                  </h3>
-                  <div className="space-y-2">
-                    {authItems.map(item => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="block text-lg font-medium text-white hover:text-accent-400 transition-colors py-2"
-                        onClick={handleMobileMenuClose}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                  
+                  {/* Admin */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                      Admin
+                    </h3>
+                    <div className="space-y-2">
+                      {adminItems.map(item => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block text-lg font-medium text-white hover:text-accent-400 py-2"
+                          onClick={handleMobileMenuClose}
+                        >
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Account */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                      Account
+                    </h3>
+                    <div className="space-y-2">
+                      {authItems.map(item => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block text-lg font-medium text-white hover:text-accent-400 py-2"
+                          onClick={handleMobileMenuClose}
+                        >
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            
-            {/* Footer with action buttons */}
-            <div className="p-6 border-t border-gray-700 space-y-4">
-              <a
-                href="/login"
-                className="block w-full text-center px-6 py-3 border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors"
-              >
-                Log in
-              </a>
-              <a
-                href="#contact"
-                className="block w-full text-center px-6 py-3 bg-accent-600 text-white rounded-lg font-medium hover:bg-accent-700 transition-colors"
-                onClick={handleMobileMenuClose}
-              >
-                Get Started →
-              </a>
+              
+              {/* Footer */}
+              <div className="p-6 border-t border-gray-700">
+                <a
+                  href="#contact"
+                  className="block w-full text-center bg-accent-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent-700 transition-colors"
+                  onClick={handleMobileMenuClose}
+                >
+                  Get Started →
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </header>
   )
 } 

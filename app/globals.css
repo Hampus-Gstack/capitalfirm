@@ -163,349 +163,45 @@ html {
   background-clip: text;
 }
 
-/* Mobile menu button visibility */
-@media (max-width: 1024px) {
-  .mobile-menu-button {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-  
-  /* Ensure mobile menu container is visible */
-  .lg\:hidden {
-    display: flex !important;
-  }
+/* Mobile menu specific styles */
+.mobile-menu-item {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-/* Mobile-specific styles */
-@media (max-width: 768px) {
-  body {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-  
-  /* Ensure proper viewport handling on mobile */
-  .mobile-safe-area {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-  }
-  
-  /* Prevent zoom on input focus */
-  input, textarea, select {
-    font-size: 16px !important;
-  }
-  
-  /* Better touch targets for mobile */
-  button, a {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  /* Ensure mobile menu works properly */
-  .mobile-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-  }
-  
-  .mobile-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 85vw;
-    max-width: 320px;
-    background: rgba(17, 24, 39, 0.95);
-    backdrop-filter: blur(8px);
-    border-right: 1px solid rgba(75, 85, 99, 0.5);
-    z-index: 10000;
-    transform: translateX(0);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .mobile-sidebar.hidden {
-    transform: translateX(-100%);
-  }
-  
-  /* Improve touch targets for mobile */
-  button, a {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  /* Prevent body scroll when mobile menu is open */
-  body.mobile-menu-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-  }
-  
-  /* Better touch handling for mobile menu */
-  .touch-manipulation {
-    touch-action: manipulation;
-  }
-  
-  /* Ensure mobile menu buttons are properly sized */
-  .mobile-menu-button {
-    min-height: 44px !important;
-    min-width: 44px !important;
-    padding: 8px !important;
-  }
-  
-  /* Prevent text selection on mobile menu items */
-  .mobile-menu-item {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  /* Mobile menu specific styles */
-  .mobile-menu-item {
-    display: block;
-    width: 100%;
-    padding: 16px 20px;
-    border-radius: 12px;
-    transition: all 0.2s ease;
-    font-size: 18px;
-    font-weight: 600;
-  }
-  
-  .mobile-menu-item:hover {
-    background-color: rgba(55, 65, 81, 0.5);
-    transform: translateX(4px);
-  }
-  
-  /* Full screen mobile menu - Binderr style */
-  .mobile-menu-fullscreen {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    z-index: 99999 !important;
-    background: rgba(0, 0, 0, 0.95) !important;
-    backdrop-filter: blur(10px);
-    animation: slideInFromLeft 0.3s ease-out;
-  }
+.mobile-menu-item:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+  transform: translateX(4px);
+}
 
-  @keyframes slideInFromLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
+/* Highlight items */
+.mobile-menu-item.highlight {
+  color: #0ea5e9;
+}
 
-  /* Mobile menu content container */
-  .mobile-menu-content {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 24px 0;
-  }
+.mobile-menu-item.highlight:hover {
+  color: #38bdf8;
+}
 
-  /* Mobile menu container */
-  .mobile-menu-container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+/* Prevent body scroll when mobile menu is open */
+body.mobile-menu-open {
+  overflow: hidden;
+}
 
-  /* Mobile menu header and footer */
-  .mobile-menu-header,
-  .mobile-menu-footer {
-    flex-shrink: 0;
-  }
+/* Better touch handling for mobile menu */
+.touch-manipulation {
+  touch-action: manipulation;
+}
 
-  /* Mobile menu content area */
-  .mobile-menu-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 24px 0;
-  }
-
-  /* Better mobile menu sections */
-  .mobile-menu-section {
-    margin-bottom: 32px;
-  }
-
-  .mobile-menu-section-title {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #9ca3af;
-    margin-bottom: 16px;
-    padding: 0 20px;
-  }
-
-  .mobile-menu-items {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  /* Mobile menu item styling */
-  .mobile-menu-item {
-    display: block;
-    width: 100%;
-    padding: 16px 20px;
-    border-radius: 12px;
-    transition: all 0.2s ease;
-    font-size: 18px;
-    font-weight: 600;
-    color: #f3f4f6;
-    text-decoration: none;
-  }
-
-  .mobile-menu-item:hover {
-    background-color: rgba(55, 65, 81, 0.5);
-    transform: translateX(4px);
-    color: #ffffff;
-  }
-
-  .mobile-menu-item:active {
-    transform: scale(0.98);
-  }
-
-  /* Highlight items */
-  .mobile-menu-item.highlight {
-    color: #0ea5e9;
-  }
-
-  .mobile-menu-item.highlight:hover {
-    color: #38bdf8;
-  }
-
-  /* Binderr-style mobile menu improvements */
-  .mobile-menu-overlay {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    z-index: 99999 !important;
-    background: rgba(0, 0, 0, 0.95) !important;
-    backdrop-filter: blur(8px);
-    animation: fadeIn 0.3s ease-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Mobile menu navigation items */
-  .mobile-nav-item {
-    display: block;
-    padding: 12px 0;
-    font-size: 18px;
-    font-weight: 500;
-    color: #ffffff;
-    text-decoration: none;
-    transition: color 0.2s ease;
-    border-bottom: 1px solid rgba(75, 85, 99, 0.3);
-  }
-
-  .mobile-nav-item:hover {
-    color: #0ea5e9;
-  }
-
-  .mobile-nav-item:last-child {
-    border-bottom: none;
-  }
-
-  /* Mobile menu action buttons */
-  .mobile-action-button {
-    display: block;
-    width: 100%;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    margin-bottom: 12px;
-  }
-
-  .mobile-action-button.primary {
-    background: #0ea5e9;
-    color: #ffffff;
-  }
-
-  .mobile-action-button.primary:hover {
-    background: #0284c7;
-  }
-
-  .mobile-action-button.secondary {
-    background: transparent;
-    color: #ffffff;
-    border: 1px solid rgba(75, 85, 99, 0.5);
-  }
-
-  .mobile-action-button.secondary:hover {
-    background: rgba(75, 85, 99, 0.2);
-  }
-
-  /* Prevent body scroll when mobile menu is open */
-  body.mobile-menu-open {
-    overflow: hidden !important;
-    position: fixed !important;
-    width: 100% !important;
-  }
-
-  /* Better touch handling for mobile menu */
-  .touch-manipulation {
-    touch-action: manipulation;
-  }
-
-  /* Ensure mobile menu buttons are properly sized */
-  .mobile-menu-button {
-    min-height: 44px !important;
-    min-width: 44px !important;
-    padding: 8px !important;
-  }
-
-  /* Prevent text selection on mobile menu items */
-  .mobile-menu-item {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-
-  /* Force mobile menu to be visible */
-  .mobile-menu-visible {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-
-  /* Mobile menu state management */
-  .mobile-menu-open {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-
-  .mobile-menu-closed {
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
+/* Prevent text selection on mobile menu items */
+.mobile-menu-item {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 } 
