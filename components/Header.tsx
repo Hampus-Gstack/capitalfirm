@@ -143,6 +143,10 @@ export default function Header() {
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
+          {/* Debug indicator */}
+          <div className="ml-2 text-xs text-red-400 bg-red-900/20 px-2 py-1 rounded">
+            {mobileMenuOpen ? 'OPEN' : 'CLOSED'}
+          </div>
         </div>
         
         <div className="hidden lg:flex lg:gap-x-6" ref={dropdownRef}>
@@ -174,12 +178,12 @@ export default function Header() {
         <div className="lg:hidden">
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-black bg-opacity-50 z-[70]"
             onClick={handleMobileMenuClose}
           />
           
           {/* Menu */}
-          <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-gray-900 z-50">
+          <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-gray-900 z-[80]">
             <div className="flex h-full flex-col">
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-700">
