@@ -183,11 +183,11 @@ export default function Header() {
       <div className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ${
         mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}>
-        {/* Full Page Background */}
-        <div className="absolute inset-0 bg-gray-900">
-          <div className="flex h-full flex-col">
+        {/* Full Page Background - Always covers entire screen */}
+        <div className="absolute inset-0 bg-gray-900 min-h-screen">
+          <div className="flex flex-col h-screen">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-700">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700 flex-shrink-0">
               <a href="/" className="text-xl font-bold text-white">
                 Capital Firm
               </a>
@@ -200,7 +200,7 @@ export default function Header() {
               </button>
             </div>
             
-            {/* Menu Items - Full page layout */}
+            {/* Menu Items - Takes remaining space */}
             <div className="flex-1 overflow-y-auto">
               <div className="py-4">
                 {/* Main Navigation */}
@@ -253,8 +253,8 @@ export default function Header() {
               </div>
             </div>
             
-            {/* Action Buttons - Full width at bottom */}
-            <div className="p-6 space-y-3 border-t border-gray-700">
+            {/* Action Buttons - Fixed at bottom */}
+            <div className="p-6 space-y-3 border-t border-gray-700 flex-shrink-0">
               <a
                 href="/login"
                 className="block w-full text-center border border-gray-600 text-white px-6 py-4 rounded-lg font-medium hover:bg-gray-800 transition-colors text-lg"
