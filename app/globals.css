@@ -273,39 +273,120 @@ html {
   .mobile-menu-item {
     display: block;
     width: 100%;
-    padding: 12px 16px;
-    border-radius: 8px;
+    padding: 16px 20px;
+    border-radius: 12px;
     transition: all 0.2s ease;
+    font-size: 18px;
+    font-weight: 600;
   }
   
   .mobile-menu-item:hover {
     background-color: rgba(55, 65, 81, 0.5);
+    transform: translateX(4px);
   }
   
-  /* Ensure mobile menu content is scrollable */
+  /* Full screen mobile menu */
+  .mobile-menu-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    animation: slideInFromTop 0.3s ease-out;
+  }
+
+  @keyframes slideInFromTop {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Mobile menu content container */
   .mobile-menu-content {
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    padding: 24px 0;
   }
-  
+
   /* Mobile menu container */
   .mobile-menu-container {
     height: 100vh;
     display: flex;
     flex-direction: column;
   }
-  
+
   /* Mobile menu header and footer */
   .mobile-menu-header,
   .mobile-menu-footer {
     flex-shrink: 0;
   }
-  
+
   /* Mobile menu content area */
   .mobile-menu-content {
     flex: 1;
     overflow-y: auto;
     padding: 24px 0;
+  }
+
+  /* Better mobile menu sections */
+  .mobile-menu-section {
+    margin-bottom: 32px;
+  }
+
+  .mobile-menu-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9ca3af;
+    margin-bottom: 16px;
+    padding: 0 20px;
+  }
+
+  .mobile-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Mobile menu item styling */
+  .mobile-menu-item {
+    display: block;
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    font-size: 18px;
+    font-weight: 600;
+    color: #f3f4f6;
+    text-decoration: none;
+  }
+
+  .mobile-menu-item:hover {
+    background-color: rgba(55, 65, 81, 0.5);
+    transform: translateX(4px);
+    color: #ffffff;
+  }
+
+  .mobile-menu-item:active {
+    transform: scale(0.98);
+  }
+
+  /* Highlight items */
+  .mobile-menu-item.highlight {
+    color: #0ea5e9;
+  }
+
+  .mobile-menu-item.highlight:hover {
+    color: #38bdf8;
   }
 } 

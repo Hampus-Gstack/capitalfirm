@@ -101,11 +101,11 @@ export default function Header() {
       href={item.href}
       className={`${
         isMobile 
-          ? 'block rounded-lg px-3 py-3 text-base font-semibold leading-7 mobile-menu-item'
+          ? 'mobile-menu-item'
           : 'text-sm font-semibold leading-6'
       } ${
         item.isHighlight
-          ? 'text-accent-400 hover:text-accent-300'
+          ? 'highlight'
           : 'text-gray-300 hover:text-white'
       } transition-colors ${
         isMobile ? 'hover:bg-gray-800' : ''
@@ -207,9 +207,9 @@ export default function Header() {
             onClick={handleMobileMenuClose}
           />
           
-          {/* Menu panel */}
-          <div className="fixed inset-y-0 right-0 z-[80] w-full max-w-sm bg-black/95 backdrop-blur-md shadow-xl">
-            <div className="flex h-full flex-col overflow-y-auto mobile-menu-container">
+          {/* Menu panel - full screen */}
+          <div className="fixed inset-0 z-[80] bg-black/95 backdrop-blur-md mobile-menu-fullscreen">
+            <div className="flex h-full flex-col mobile-menu-container">
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-800 mobile-menu-header">
                 <a href="/" className="-m-1.5 p-1.5">
@@ -226,45 +226,45 @@ export default function Header() {
                 </button>
               </div>
               
-              {/* Menu content */}
-              <div className="flex-1 px-6 py-6 mobile-menu-content">
-                <div className="space-y-8">
+              {/* Menu content - full height scrollable */}
+              <div className="flex-1 overflow-y-auto px-6 py-6 mobile-menu-content">
+                <div className="space-y-8 max-w-md mx-auto">
                   {/* Frontend Section */}
-                  <div>
-                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  <div className="mobile-menu-section">
+                    <div className="mobile-menu-section-title">
                       Public Pages
                     </div>
-                    <div className="mt-2 space-y-1">
+                    <div className="mobile-menu-items">
                       {frontendItems.map(item => renderNavItem(item, true))}
                     </div>
                   </div>
                   
                   {/* Backend Section */}
-                  <div>
-                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  <div className="mobile-menu-section">
+                    <div className="mobile-menu-section-title">
                       Client Portal
                     </div>
-                    <div className="mt-2 space-y-1">
+                    <div className="mobile-menu-items">
                       {backendItems.map(item => renderNavItem(item, true))}
                     </div>
                   </div>
                   
                   {/* Admin Section */}
-                  <div>
-                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  <div className="mobile-menu-section">
+                    <div className="mobile-menu-section-title">
                       Admin
                     </div>
-                    <div className="mt-2 space-y-1">
+                    <div className="mobile-menu-items">
                       {adminItems.map(item => renderNavItem(item, true))}
                     </div>
                   </div>
                   
                   {/* Account Section */}
-                  <div>
-                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  <div className="mobile-menu-section">
+                    <div className="mobile-menu-section-title">
                       Account
                     </div>
-                    <div className="mt-2 space-y-1">
+                    <div className="mobile-menu-items">
                       {authItems.map(item => renderNavItem(item, true))}
                     </div>
                   </div>
@@ -273,13 +273,15 @@ export default function Header() {
               
               {/* Footer */}
               <div className="p-6 border-t border-gray-800 mobile-menu-footer">
-                <a
-                  href="#contact"
-                  className="bg-gradient-to-r from-accent-600 to-accent-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-accent-700 hover:to-accent-600 transition-all duration-200 block text-center"
-                  onClick={handleMobileMenuClose}
-                >
-                  Get Started →
-                </a>
+                <div className="max-w-md mx-auto">
+                  <a
+                    href="#contact"
+                    className="bg-gradient-to-r from-accent-600 to-accent-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-accent-700 hover:to-accent-600 transition-all duration-200 block text-center"
+                    onClick={handleMobileMenuClose}
+                  >
+                    Get Started →
+                  </a>
+                </div>
               </div>
             </div>
           </div>
