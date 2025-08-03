@@ -47,7 +47,7 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Close mobile menu on escape key
+  // Close mobile menu on escape key and prevent body scroll
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -55,20 +55,34 @@ export default function Header() {
       }
     }
 
+    console.log('Mobile menu state changed:', mobileMenuOpen)
+
     if (mobileMenuOpen) {
       document.addEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'hidden'
+      console.log('Body scroll disabled')
+    } else {
+      document.body.style.overflow = 'unset'
+      console.log('Body scroll enabled')
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'unset'
     }
   }, [mobileMenuOpen])
 
   const handleMobileMenuToggle = () => {
+    console.log('Mobile menu toggle clicked, current state:', mobileMenuOpen)
     setMobileMenuOpen(!mobileMenuOpen)
+    // Close any open dropdowns when mobile menu opens
+    if (!mobileMenuOpen) {
+      setDropdownOpen(null)
+    }
   }
 
   const handleMobileMenuClose = () => {
+    console.log('Mobile menu close clicked')
     setMobileMenuOpen(false)
   }
 
@@ -143,7 +157,10 @@ export default function Header() {
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
-          {/* Debug indicator - removed for production */}
+          {/* Debug indicator */}
+          <div className="ml-2 text-xs text-red-400 bg-red-900/20 px-2 py-1 rounded">
+            {mobileMenuOpen ? 'OPEN' : 'CLOSED'}
+          </div>
         </div>
         
         <div className="hidden lg:flex lg:gap-x-6" ref={dropdownRef}>
@@ -180,7 +197,7 @@ export default function Header() {
           />
           
           {/* Menu */}
-          <div className="absolute inset-y-0 right-0 w-80 bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-0">
+          <div className="absolute inset-y-0 right-0 w-80 bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out">
             <div className="flex h-full flex-col">
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-700">
