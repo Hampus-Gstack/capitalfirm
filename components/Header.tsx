@@ -179,14 +179,12 @@ export default function Header() {
         </div>
       </nav>
       
-      {/* Mobile Menu - Binderr Style */}
+      {/* Mobile Menu - Full Page Overlay */}
       <div className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ${
         mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}>
-        {/* Menu Panel - No backdrop, just the panel */}
-        <div className={`absolute inset-y-0 left-0 w-72 bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}>
+        {/* Full Page Background */}
+        <div className="absolute inset-0 bg-gray-900">
           <div className="flex h-full flex-col">
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-700">
@@ -202,15 +200,15 @@ export default function Header() {
               </button>
             </div>
             
-            {/* Menu Items - Clean, simple list */}
+            {/* Menu Items - Full page layout */}
             <div className="flex-1 overflow-y-auto">
               <div className="py-4">
-                {/* Main Navigation - No sections, just clean links */}
+                {/* Main Navigation */}
                 {frontendItems.map(item => (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block px-6 py-3 text-white hover:bg-gray-800 transition-colors border-b border-gray-700"
+                    className="block px-6 py-4 text-white hover:bg-gray-800 transition-colors border-b border-gray-700 text-lg"
                     onClick={handleMobileMenuClose}
                   >
                     {item.name}
@@ -222,7 +220,7 @@ export default function Header() {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block px-6 py-3 text-white hover:bg-gray-800 transition-colors border-b border-gray-700"
+                    className="block px-6 py-4 text-white hover:bg-gray-800 transition-colors border-b border-gray-700 text-lg"
                     onClick={handleMobileMenuClose}
                   >
                     {item.name}
@@ -234,7 +232,7 @@ export default function Header() {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block px-6 py-3 text-white hover:bg-gray-800 transition-colors border-b border-gray-700"
+                    className="block px-6 py-4 text-white hover:bg-gray-800 transition-colors border-b border-gray-700 text-lg"
                     onClick={handleMobileMenuClose}
                   >
                     {item.name}
@@ -246,7 +244,7 @@ export default function Header() {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block px-6 py-3 text-white hover:bg-gray-800 transition-colors border-b border-gray-700"
+                    className="block px-6 py-4 text-white hover:bg-gray-800 transition-colors border-b border-gray-700 text-lg"
                     onClick={handleMobileMenuClose}
                   >
                     {item.name}
@@ -255,18 +253,18 @@ export default function Header() {
               </div>
             </div>
             
-            {/* Action Buttons - Binderr style */}
-            <div className="p-6 space-y-3">
+            {/* Action Buttons - Full width at bottom */}
+            <div className="p-6 space-y-3 border-t border-gray-700">
               <a
                 href="/login"
-                className="block w-full text-center border border-gray-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                className="block w-full text-center border border-gray-600 text-white px-6 py-4 rounded-lg font-medium hover:bg-gray-800 transition-colors text-lg"
                 onClick={handleMobileMenuClose}
               >
                 Log in
               </a>
               <a
                 href="#contact"
-                className="block w-full text-center bg-accent-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent-700 transition-colors"
+                className="block w-full text-center bg-accent-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-accent-700 transition-colors text-lg"
                 onClick={handleMobileMenuClose}
               >
                 Get Started
