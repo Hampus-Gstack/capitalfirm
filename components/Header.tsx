@@ -6,6 +6,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
 
   // Frontend (Public-facing) items
   const frontendItems = [
@@ -47,13 +48,60 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    if (mobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      // Prevent body scroll when mobile menu is open
+      document.body.style.overflow = 'hidden'
+      document.body.classList.add('mobile-menu-open')
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.body.style.overflow = 'unset'
+      document.body.classList.remove('mobile-menu-open')
+    }
+  }, [mobileMenuOpen])
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    if (mobileMenuOpen) {
+      document.addEventListener('keydown', handleEscape)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+    }
+  }, [mobileMenuOpen])
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
+  }
+
+  const handleMobileMenuClose = () => {
+    setMobileMenuOpen(false)
+  }
+
   const renderNavItem = (item: any, isMobile = false) => (
     <a
       key={item.name}
       href={item.href}
       className={`${
         isMobile 
-          ? '-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7'
+          ? 'block rounded-lg px-3 py-3 text-base font-semibold leading-7 mobile-menu-item'
           : 'text-sm font-semibold leading-6'
       } ${
         item.isHighlight
@@ -62,7 +110,9 @@ export default function Header() {
       } transition-colors ${
         isMobile ? 'hover:bg-gray-800' : ''
       }`}
-      onClick={() => setMobileMenuOpen(false)}
+      onClick={() => {
+        handleMobileMenuClose()
+      }}
     >
       {item.name}
     </a>
@@ -109,8 +159,15 @@ export default function Header() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"
-            onClick={() => setMobileMenuOpen(true)}
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white bg-accent-600 hover:bg-accent-500 transition-colors touch-manipulation mobile-menu-button"
+            onClick={handleMobileMenuToggle}
+            aria-label="Open main menu"
+            style={{ 
+              minHeight: '44px', 
+              minWidth: '44px',
+              zIndex: 1000,
+              position: 'relative'
+            }}
           >
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
@@ -118,8 +175,8 @@ export default function Header() {
         </div>
         
         <div className="hidden lg:flex lg:gap-x-6" ref={dropdownRef}>
-          {/* Frontend Links */}
-          {frontendItems.map(item => renderNavItem(item))}
+          {/* Frontend Links - temporarily reduced */}
+          {frontendItems.slice(0, 3).map(item => renderNavItem(item))}
           
           {/* Backend Dropdown */}
           {renderDropdown('Client Portal', backendItems, 'backend')}
@@ -143,67 +200,86 @@ export default function Header() {
       
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden">
-          <div className="fixed inset-0 z-[70]" />
-          <div className="fixed inset-y-0 right-0 z-[80] w-full overflow-y-auto bg-black/95 backdrop-blur-md px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900">
-            <div className="flex items-center justify-between">
-              <a href="/" className="-m-1.5 p-1.5">
-                <span className="text-2xl font-bold gradient-text">Capital Firm</span>
-              </a>
-              <button
-                type="button"
-                className="-m-2.5 rounded-md p-2.5 text-gray-400"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            
-            <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-gray-800">
-                {/* Frontend Section */}
-                <div className="space-y-1 py-6">
-                  <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    Public Pages
+        <div className="lg:hidden" ref={mobileMenuRef}>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 z-[70] bg-black/50 backdrop-blur-sm"
+            onClick={handleMobileMenuClose}
+          />
+          
+          {/* Menu panel */}
+          <div className="fixed inset-y-0 right-0 z-[80] w-full max-w-sm bg-black/95 backdrop-blur-md shadow-xl">
+            <div className="flex h-full flex-col overflow-y-auto mobile-menu-container">
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-800 mobile-menu-header">
+                <a href="/" className="-m-1.5 p-1.5">
+                  <span className="text-2xl font-bold gradient-text">Capital Firm</span>
+                </a>
+                <button
+                  type="button"
+                  className="-m-2.5 rounded-md p-2.5 text-gray-400 hover:text-white transition-colors touch-manipulation"
+                  onClick={handleMobileMenuClose}
+                  aria-label="Close menu"
+                >
+                  <span className="sr-only">Close menu</span>
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
+              
+              {/* Menu content */}
+              <div className="flex-1 px-6 py-6 mobile-menu-content">
+                <div className="space-y-8">
+                  {/* Frontend Section */}
+                  <div>
+                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Public Pages
+                    </div>
+                    <div className="mt-2 space-y-1">
+                      {frontendItems.map(item => renderNavItem(item, true))}
+                    </div>
                   </div>
-                  {frontendItems.map(item => renderNavItem(item, true))}
-                </div>
-                
-                {/* Backend Section */}
-                <div className="space-y-1 py-6">
-                  <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    Client Portal
+                  
+                  {/* Backend Section */}
+                  <div>
+                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Client Portal
+                    </div>
+                    <div className="mt-2 space-y-1">
+                      {backendItems.map(item => renderNavItem(item, true))}
+                    </div>
                   </div>
-                  {backendItems.map(item => renderNavItem(item, true))}
-                </div>
-                
-                {/* Admin Section */}
-                <div className="space-y-1 py-6">
-                  <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    Admin
+                  
+                  {/* Admin Section */}
+                  <div>
+                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Admin
+                    </div>
+                    <div className="mt-2 space-y-1">
+                      {adminItems.map(item => renderNavItem(item, true))}
+                    </div>
                   </div>
-                  {adminItems.map(item => renderNavItem(item, true))}
-                </div>
-                
-                {/* Account Section */}
-                <div className="space-y-1 py-6">
-                  <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    Account
+                  
+                  {/* Account Section */}
+                  <div>
+                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Account
+                    </div>
+                    <div className="mt-2 space-y-1">
+                      {authItems.map(item => renderNavItem(item, true))}
+                    </div>
                   </div>
-                  {authItems.map(item => renderNavItem(item, true))}
                 </div>
-                
-                {/* Actions */}
-                <div className="py-6 space-y-3">
-                  <a
-                    href="#contact"
-                    className="bg-gradient-to-r from-accent-600 to-accent-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-accent-700 hover:to-accent-600 transition-all duration-200 block text-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Get Started →
-                  </a>
-                </div>
+              </div>
+              
+              {/* Footer */}
+              <div className="p-6 border-t border-gray-800 mobile-menu-footer">
+                <a
+                  href="#contact"
+                  className="bg-gradient-to-r from-accent-600 to-accent-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-accent-700 hover:to-accent-600 transition-all duration-200 block text-center"
+                  onClick={handleMobileMenuClose}
+                >
+                  Get Started →
+                </a>
               </div>
             </div>
           </div>
