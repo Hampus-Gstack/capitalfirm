@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
-import PWAInstall from '../components/PWAInstall'
 import SWRegister from './sw-register'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -48,7 +47,6 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
-        <PWAInstall />
         <SWRegister />
       </body>
     </html>
