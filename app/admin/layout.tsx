@@ -10,7 +10,8 @@ import {
   CogIcon,
   HomeIcon,
   BuildingOfficeIcon,
-  DocumentTextIcon
+  DocumentTextIcon,
+  UserGroupIcon
 } from '@heroicons/react/24/outline'
 
 export default function AdminLayout({
@@ -24,6 +25,7 @@ export default function AdminLayout({
   const navigation = [
     { name: 'Overview', href: '/admin', icon: HomeIcon },
     { name: 'Clients', href: '/admin/clients', icon: UsersIcon },
+    { name: 'Investors', href: '/admin/investors', icon: UserGroupIcon },
     { name: 'Onboarding', href: '/admin/onboarding', icon: DocumentTextIcon },
     { name: 'Invitations', href: '/admin/invitations', icon: EnvelopeIcon },
     { name: 'Analytics', href: '/admin/analytics', icon: ChartBarIcon },
