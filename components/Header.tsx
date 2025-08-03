@@ -198,20 +198,14 @@ export default function Header() {
         </div>
       </nav>
       
-      {/* Mobile menu */}
+      {/* Mobile menu - Binderr style */}
       {mobileMenuOpen && (
         <div className="lg:hidden" ref={mobileMenuRef}>
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 z-[70] bg-black/50 backdrop-blur-sm"
-            onClick={handleMobileMenuClose}
-          />
-          
-          {/* Menu panel - full screen */}
-          <div className="fixed inset-0 z-[80] bg-black/95 backdrop-blur-md mobile-menu-fullscreen">
-            <div className="flex h-full flex-col mobile-menu-container">
+          {/* Full screen overlay */}
+          <div className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm">
+            <div className="flex h-full flex-col">
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-800 mobile-menu-header">
+              <div className="flex items-center justify-between p-6 border-b border-gray-700">
                 <a href="/" className="-m-1.5 p-1.5">
                   <span className="text-2xl font-bold gradient-text">Capital Firm</span>
                 </a>
@@ -226,62 +220,100 @@ export default function Header() {
                 </button>
               </div>
               
-              {/* Menu content - full height scrollable */}
-              <div className="flex-1 overflow-y-auto px-6 py-6 mobile-menu-content">
-                <div className="space-y-8 max-w-md mx-auto">
-                  {/* Frontend Section */}
-                  <div className="mobile-menu-section">
-                    <div className="mobile-menu-section-title">
-                      Public Pages
-                    </div>
-                    <div className="mobile-menu-items">
-                      {frontendItems.map(item => renderNavItem(item, true))}
-                    </div>
+              {/* Menu content */}
+              <div className="flex-1 overflow-y-auto px-6 py-6">
+                <div className="space-y-6">
+                  {/* Navigation items */}
+                  <div className="space-y-4">
+                    {frontendItems.map(item => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className="block text-lg font-medium text-white hover:text-accent-400 transition-colors py-2"
+                        onClick={handleMobileMenuClose}
+                      >
+                        {item.name}
+                      </a>
+                    ))}
                   </div>
                   
-                  {/* Backend Section */}
-                  <div className="mobile-menu-section">
-                    <div className="mobile-menu-section-title">
+                  {/* Divider */}
+                  <div className="border-t border-gray-700 my-6"></div>
+                  
+                  {/* Client Portal */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
                       Client Portal
-                    </div>
-                    <div className="mobile-menu-items">
-                      {backendItems.map(item => renderNavItem(item, true))}
+                    </h3>
+                    <div className="space-y-2">
+                      {backendItems.map(item => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block text-lg font-medium text-white hover:text-accent-400 transition-colors py-2"
+                          onClick={handleMobileMenuClose}
+                        >
+                          {item.name}
+                        </a>
+                      ))}
                     </div>
                   </div>
                   
-                  {/* Admin Section */}
-                  <div className="mobile-menu-section">
-                    <div className="mobile-menu-section-title">
+                  {/* Admin */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
                       Admin
-                    </div>
-                    <div className="mobile-menu-items">
-                      {adminItems.map(item => renderNavItem(item, true))}
+                    </h3>
+                    <div className="space-y-2">
+                      {adminItems.map(item => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block text-lg font-medium text-white hover:text-accent-400 transition-colors py-2"
+                          onClick={handleMobileMenuClose}
+                        >
+                          {item.name}
+                        </a>
+                      ))}
                     </div>
                   </div>
                   
-                  {/* Account Section */}
-                  <div className="mobile-menu-section">
-                    <div className="mobile-menu-section-title">
+                  {/* Account */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
                       Account
-                    </div>
-                    <div className="mobile-menu-items">
-                      {authItems.map(item => renderNavItem(item, true))}
+                    </h3>
+                    <div className="space-y-2">
+                      {authItems.map(item => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block text-lg font-medium text-white hover:text-accent-400 transition-colors py-2"
+                          onClick={handleMobileMenuClose}
+                        >
+                          {item.name}
+                        </a>
+                      ))}
                     </div>
                   </div>
                 </div>
               </div>
               
-              {/* Footer */}
-              <div className="p-6 border-t border-gray-800 mobile-menu-footer">
-                <div className="max-w-md mx-auto">
-                  <a
-                    href="#contact"
-                    className="bg-gradient-to-r from-accent-600 to-accent-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-accent-700 hover:to-accent-600 transition-all duration-200 block text-center"
-                    onClick={handleMobileMenuClose}
-                  >
-                    Get Started →
-                  </a>
-                </div>
+              {/* Footer with action buttons */}
+              <div className="p-6 border-t border-gray-700 space-y-4">
+                <a
+                  href="/login"
+                  className="block w-full text-center px-6 py-3 border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors"
+                >
+                  Log in
+                </a>
+                <a
+                  href="#contact"
+                  className="block w-full text-center px-6 py-3 bg-accent-600 text-white rounded-lg font-medium hover:bg-accent-700 transition-colors"
+                  onClick={handleMobileMenuClose}
+                >
+                  Get Started →
+                </a>
               </div>
             </div>
           </div>
