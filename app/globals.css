@@ -497,4 +497,15 @@ html {
     visibility: visible !important;
     opacity: 1 !important;
   }
+
+  /* Mobile menu state management */
+  .mobile-menu-open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .mobile-menu-closed {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 } 

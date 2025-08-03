@@ -88,10 +88,12 @@ export default function Header() {
   }, [mobileMenuOpen])
 
   const handleMobileMenuToggle = () => {
+    console.log('Mobile menu toggle clicked, current state:', mobileMenuOpen)
     setMobileMenuOpen(!mobileMenuOpen)
   }
 
   const handleMobileMenuClose = () => {
+    console.log('Mobile menu close clicked')
     setMobileMenuOpen(false)
   }
 
@@ -172,6 +174,10 @@ export default function Header() {
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
+          {/* Debug indicator */}
+          <div className="ml-2 text-xs text-red-400 bg-red-900/20 px-2 py-1 rounded">
+            {mobileMenuOpen ? 'OPEN' : 'CLOSED'}
+          </div>
         </div>
         
         <div className="hidden lg:flex lg:gap-x-6" ref={dropdownRef}>
@@ -200,7 +206,7 @@ export default function Header() {
       
       {/* Mobile menu - Binderr style */}
       <div className={`lg:hidden fixed inset-0 z-[9999] transition-all duration-300 ${
-        mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        mobileMenuOpen ? 'mobile-menu-open' : 'mobile-menu-closed'
       }`} ref={mobileMenuRef}>
         {/* Full screen overlay */}
         <div className="fixed inset-0 bg-black/95 backdrop-blur-md">
