@@ -14,7 +14,6 @@ export const metadata: Metadata = {
   authors: [{ name: 'Capital Firm' }],
   robots: 'index, follow',
   manifest: '/manifest.json',
-  themeColor: '#0f172a',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -34,6 +33,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
   userScalable: true,
   viewportFit: 'cover',
+  themeColor: '#0f172a',
 }
 
 export default function RootLayout({
