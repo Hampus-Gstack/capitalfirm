@@ -287,13 +287,13 @@ html {
   
   /* Full screen mobile menu - Binderr style */
   .mobile-menu-fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.95);
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 99999 !important;
+    background: rgba(0, 0, 0, 0.95) !important;
     backdrop-filter: blur(10px);
     animation: slideInFromLeft 0.3s ease-out;
   }
@@ -392,13 +392,13 @@ html {
 
   /* Binderr-style mobile menu improvements */
   .mobile-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.9);
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 99999 !important;
+    background: rgba(0, 0, 0, 0.95) !important;
     backdrop-filter: blur(8px);
     animation: fadeIn 0.3s ease-out;
   }
@@ -462,5 +462,39 @@ html {
 
   .mobile-action-button.secondary:hover {
     background: rgba(75, 85, 99, 0.2);
+  }
+
+  /* Prevent body scroll when mobile menu is open */
+  body.mobile-menu-open {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+  }
+
+  /* Better touch handling for mobile menu */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* Ensure mobile menu buttons are properly sized */
+  .mobile-menu-button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: 8px !important;
+  }
+
+  /* Prevent text selection on mobile menu items */
+  .mobile-menu-item {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Force mobile menu to be visible */
+  .mobile-menu-visible {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 } 
