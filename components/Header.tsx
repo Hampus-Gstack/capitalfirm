@@ -125,7 +125,7 @@ export default function Header() {
   )
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[60] bg-black/80 backdrop-blur-md border-b border-gray-800">
+    <header className="fixed top-0 left-0 right-0 z-30 bg-black/80 backdrop-blur-md border-b border-gray-800">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
@@ -143,10 +143,7 @@ export default function Header() {
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
-          {/* Debug indicator */}
-          <div className="ml-2 text-xs text-red-400 bg-red-900/20 px-2 py-1 rounded">
-            {mobileMenuOpen ? 'OPEN' : 'CLOSED'}
-          </div>
+          {/* Debug indicator - removed for production */}
         </div>
         
         <div className="hidden lg:flex lg:gap-x-6" ref={dropdownRef}>
@@ -175,15 +172,15 @@ export default function Header() {
       
       {/* Simple Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden">
+        <div className="lg:hidden fixed inset-0 z-40">
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-[70]"
+            className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
             onClick={handleMobileMenuClose}
           />
           
           {/* Menu */}
-          <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-gray-900 z-[80]">
+          <div className="absolute inset-y-0 right-0 w-80 bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-0">
             <div className="flex h-full flex-col">
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-700">

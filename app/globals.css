@@ -204,4 +204,18 @@ body.mobile-menu-open {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+/* Mobile menu backdrop and positioning fixes */
+.mobile-menu-backdrop {
+  backdrop-filter: blur(4px);
+}
+
+/* Ensure mobile menu doesn't interfere with main content */
+.mobile-menu-container {
+  pointer-events: none;
+}
+
+.mobile-menu-container > * {
+  pointer-events: auto;
 } 
