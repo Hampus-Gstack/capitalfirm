@@ -11,6 +11,8 @@ interface Meeting {
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
+  utm_content?: string;
+  meeting_url?: string;
 }
 
 // Mock database - replace with actual database
@@ -55,7 +57,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title, date, time, attendee, source, utm_source, utm_medium, utm_campaign } = body;
+    const { title, date, time, attendee, source, utm_source, utm_medium, utm_campaign, utm_content, meeting_url } = body;
 
     const newMeeting: Meeting = {
       id: Date.now().toString(),
@@ -67,7 +69,9 @@ export async function POST(request: NextRequest) {
       source,
       utm_source,
       utm_medium,
-      utm_campaign
+      utm_campaign,
+      utm_content,
+      meeting_url
     };
 
     meetings.push(newMeeting);

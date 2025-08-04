@@ -15,6 +15,9 @@ interface CalendarWebhook {
     utm_source?: string;
     utm_medium?: string;
     utm_campaign?: string;
+    utm_content?: string;
+    booking_url?: string; // Zcal specific
+    meeting_url?: string; // Zcal specific
   };
 }
 
@@ -34,6 +37,24 @@ export async function POST(request: NextRequest) {
     const startDate = new Date(meeting.start_time);
     const endDate = new Date(meeting.end_time);
     
+    // Extract UTM parameters from booking URL if available (Zcal specific)
+    let utm_source = meeting.utm_source;
+    let utm_medium = meeting.utm_medium;
+    let utm_campaign = meeting.utm_campaign;
+    let utm_content = meeting.utm_content;
+    
+    if (meeting.booking_url && meeting.source === 'zcal') {
+      try {
+        const url = new URL(meeting.booking_url);
+        utm_source = utm_source || url.searchParams.get('utm_source') || undefined;
+        utm_medium = utm_medium || url.searchParams.get('utm_medium') || undefined;
+        utm_campaign = utm_campaign || url.searchParams.get('utm_campaign') || undefined;
+        utm_content = utm_content || url.searchParams.get('utm_content') || undefined;
+      } catch (error) {
+        console.log('Could not parse UTM parameters from booking URL');
+      }
+    }
+    
     const meetingData = {
       id: meeting.id,
       title: meeting.title,
@@ -46,27 +67,44 @@ export async function POST(request: NextRequest) {
       attendee: meeting.attendees.map(a => a.name).join(', '),
       status: event_type === 'meeting.cancelled' ? 'cancelled' : 'scheduled',
       source: meeting.source,
-      utm_source: meeting.utm_source,
-      utm_medium: meeting.utm_medium,
-      utm_campaign: meeting.utm_campaign
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      meeting_url: meeting.meeting_url || meeting.booking_url
     };
 
     // Store meeting data (replace with your database)
     console.log('Calendar webhook received:', {
       event_type,
-      meeting: meetingData
+      meeting: meetingData,
+      utm_data: {
+        source: utm_source,
+        medium: utm_medium,
+        campaign: utm_campaign,
+        content: utm_content
+      }
     });
 
-    // You can also forward this to your meetings API
-    // await fetch('/api/meetings', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(meetingData)
-    // });
+    // Forward to meetings API
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/meetings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(meetingData)
+      });
+      
+      if (!response.ok) {
+        console.error('Failed to forward meeting to API:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error forwarding meeting to API:', error);
+    }
 
     return NextResponse.json({ 
       success: true, 
-      message: `Meeting ${event_type} processed` 
+      message: `Meeting ${event_type} processed`,
+      utm_tracked: !!(utm_source || utm_medium || utm_campaign)
     });
 
   } catch (error) {

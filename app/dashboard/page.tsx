@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import AddMeetingModal from '@/components/AddMeetingModal';
 
 interface Meeting {
   id: string;
@@ -14,6 +15,8 @@ interface Meeting {
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
+  utm_content?: string;
+  meeting_url?: string;
 }
 
 interface Task {
@@ -46,6 +49,17 @@ export default function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
+  // Generate UTM-tracked calendar links
+  const generateUTMLink = (baseUrl: string, source: string) => {
+    const utmParams = new URLSearchParams({
+      utm_source: 'capitalfirm',
+      utm_medium: 'dashboard',
+      utm_campaign: 'client_meeting',
+      utm_content: source
+    });
+    return `${baseUrl}?${utmParams.toString()}`;
+  };
+  
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [activeTab, setActiveTab] = useState(() => {
     return searchParams.get('tab') || 'overview';
@@ -54,7 +68,7 @@ export default function Dashboard() {
     calendly: 'https://calendly.com/your-calendar',
     hubspot: 'https://meetings.hubspot.com/your-calendar',
     google: 'https://calendar.google.com/your-calendar',
-    zcal: 'https://zcal.co/your-calendar'
+    zcal: generateUTMLink('https://zcal.co/hampusg/discovery-call', 'zcal')
   });
 
   const [showCalendarSetup, setShowCalendarSetup] = useState(false);
@@ -278,17 +292,7 @@ export default function Dashboard() {
   });
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-
-  // Generate UTM-tracked calendar links
-  const generateUTMLink = (baseUrl: string, source: string) => {
-    const utmParams = new URLSearchParams({
-      utm_source: 'capitalfirm',
-      utm_medium: 'dashboard',
-      utm_campaign: 'client_meeting',
-      utm_content: source
-    });
-    return `${baseUrl}?${utmParams.toString()}`;
-  };
+  const [showAddMeetingModal, setShowAddMeetingModal] = useState(false);
 
   // Mock data - replace with actual API calls
   useEffect(() => {
@@ -877,7 +881,10 @@ export default function Dashboard() {
             <div className="bg-gray-800 rounded-xl p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Meeting Tracking</h2>
-                <button className="bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                <button 
+                  onClick={() => setShowAddMeetingModal(true)}
+                  className="bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                >
                   Add Meeting
                 </button>
               </div>
@@ -995,6 +1002,32 @@ export default function Dashboard() {
                           <p className="text-sm text-gray-400">
                             {meeting.date} at {meeting.time} • {meeting.attendee}
                           </p>
+                          {/* UTM Information */}
+                          {(meeting.utm_source || meeting.utm_medium || meeting.utm_campaign) && (
+                            <div className="flex items-center space-x-2 mt-1">
+                              <span className="text-xs text-gray-500">UTM:</span>
+                              {meeting.utm_source && (
+                                <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">
+                                  {meeting.utm_source}
+                                </span>
+                              )}
+                              {meeting.utm_medium && (
+                                <span className="text-xs bg-green-500/20 text-green-300 px-1.5 py-0.5 rounded">
+                                  {meeting.utm_medium}
+                                </span>
+                              )}
+                              {meeting.utm_campaign && (
+                                <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">
+                                  {meeting.utm_campaign}
+                                </span>
+                              )}
+                              {meeting.utm_content && (
+                                <span className="text-xs bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">
+                                  {meeting.utm_content}
+                                </span>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
@@ -1465,6 +1498,15 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* Add Meeting Modal */}
+      <AddMeetingModal
+        isOpen={showAddMeetingModal}
+        onClose={() => setShowAddMeetingModal(false)}
+        onAddMeeting={(meeting) => {
+          setMeetings([...meetings, meeting]);
+        }}
+      />
     </div>
   );
 } 
