@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import AddMeetingModal from '@/components/AddMeetingModal';
 
 interface Meeting {
@@ -454,6 +455,35 @@ export default function Dashboard() {
         )
       }))
     );
+  };
+
+  const handleDragEnd = (result: DropResult) => {
+    const { destination, source, draggableId } = result;
+
+    // If dropped outside a valid droppable area
+    if (!destination) {
+      return;
+    }
+
+    // If dropped in the same position
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    // Find the task being moved
+    const allTasks = stages.flatMap(stage => stage.tasks);
+    const movedTask = allTasks.find(task => task.id === draggableId);
+    
+    if (!movedTask) {
+      return;
+    }
+
+    // Update the task status based on the destination
+    const newStatus = destination.droppableId;
+    updateTaskStatus(draggableId, newStatus);
   };
 
   const updateTaskHours = (taskId: string, hours: number) => {
@@ -930,92 +960,111 @@ export default function Dashboard() {
               {/* Kanban Board */}
               <div>
                 <h3 className="text-lg font-semibold mb-4">Task Board</h3>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  {[
-                    { status: 'not_started', title: 'Not Started', count: getTasksByStatus('not_started').length, color: 'from-gray-500 to-gray-600' },
-                    { status: 'in_progress', title: 'In Progress', count: getTasksByStatus('in_progress').length, color: 'from-blue-500 to-blue-600' },
-                    { status: 'in_review', title: 'In Review', count: getTasksByStatus('in_review').length, color: 'from-orange-500 to-orange-600' },
-                    { status: 'done', title: 'Done', count: getTasksByStatus('done').length, color: 'from-green-500 to-green-600' }
-                  ].map((column) => (
-                    <div key={column.status} className="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="font-medium">{column.title}</h4>
-                        <span className="text-sm text-gray-400 bg-gray-600/50 px-2 py-1 rounded-full">{column.count}</span>
-                      </div>
-                      <div className="space-y-3">
-                        {filteredTasks.filter(task => task.status === column.status).map((task) => (
-                          <div 
-                            key={task.id} 
-                            className={`bg-gray-600/50 rounded-lg p-3 cursor-pointer hover:bg-gray-500/50 transition-all duration-200 border ${getPriorityBgColor(task.priority)}`}
-                            onClick={() => {
-                              setSelectedTask(task);
-                              setShowTaskModal(true);
-                            }}
-                          >
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-sm font-medium truncate">{task.title}</span>
-                              <div className="flex items-center space-x-2">
-                                <span className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(task.priority)} bg-gray-700/50`}>
-                                  {task.priority}
-                                </span>
-                                {task.status !== 'done' && (
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      updateTaskStatus(task.id, 'done');
-                                    }}
-                                    className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full hover:bg-green-500/30 transition-colors"
-                                    title="Mark as done"
-                                  >
-                                    ✓
-                                  </button>
-                                )}
-                              </div>
+                <DragDropContext onDragEnd={handleDragEnd}>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    {[
+                      { status: 'not_started', title: 'Not Started', count: getTasksByStatus('not_started').length, color: 'from-gray-500 to-gray-600' },
+                      { status: 'in_progress', title: 'In Progress', count: getTasksByStatus('in_progress').length, color: 'from-blue-500 to-blue-600' },
+                      { status: 'in_review', title: 'In Review', count: getTasksByStatus('in_review').length, color: 'from-orange-500 to-orange-600' },
+                      { status: 'done', title: 'Done', count: getTasksByStatus('done').length, color: 'from-green-500 to-green-600' }
+                    ].map((column) => (
+                      <div key={column.status} className="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-medium">{column.title}</h4>
+                          <span className="text-sm text-gray-400 bg-gray-600/50 px-2 py-1 rounded-full">{column.count}</span>
+                        </div>
+                        <Droppable droppableId={column.status}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                              className={`space-y-3 min-h-[200px] ${snapshot.isDraggingOver ? 'bg-gray-600/30 rounded-lg' : ''}`}
+                            >
+                              {filteredTasks.filter(task => task.status === column.status).map((task, index) => (
+                                <Draggable key={task.id} draggableId={task.id} index={index}>
+                                  {(provided, snapshot) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      className={`bg-gray-600/50 rounded-lg p-3 cursor-pointer hover:bg-gray-500/50 transition-all duration-200 border ${getPriorityBgColor(task.priority)} ${
+                                        snapshot.isDragging ? 'shadow-lg transform rotate-2' : ''
+                                      }`}
+                                      onClick={() => {
+                                        setSelectedTask(task);
+                                        setShowTaskModal(true);
+                                      }}
+                                    >
+                                      <div className="flex items-center justify-between mb-2">
+                                        <span className="text-sm font-medium truncate">{task.title}</span>
+                                        <div className="flex items-center space-x-2">
+                                          <span className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(task.priority)} bg-gray-700/50`}>
+                                            {task.priority}
+                                          </span>
+                                          {task.status !== 'done' && (
+                                            <button
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                updateTaskStatus(task.id, 'done');
+                                              }}
+                                              className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full hover:bg-green-500/30 transition-colors"
+                                              title="Mark as done"
+                                            >
+                                              ✓
+                                            </button>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center justify-between mb-2">
+                                        <span className="text-xs text-gray-400">{task.assignee}</span>
+                                        <span className={`w-2 h-2 rounded-full ${getTaskStatusColor(task.status)}`}></span>
+                                      </div>
+                                      {task.tags && task.tags.length > 0 && (
+                                        <div className="flex flex-wrap gap-1">
+                                          {task.tags.slice(0, 2).map((tag, index) => (
+                                            <span key={index} className="text-xs bg-gray-700/50 px-2 py-1 rounded-full text-gray-300">
+                                              {tag}
+                                            </span>
+                                          ))}
+                                          {task.tags.length > 2 && (
+                                            <span className="text-xs text-gray-400">+{task.tags.length - 2}</span>
+                                          )}
+                                        </div>
+                                      )}
+                                      {task.estimatedHours && task.estimatedHours > 0 && (
+                                        <div className="mt-2">
+                                          <div className="flex justify-between text-xs text-gray-400 mb-1">
+                                            <span>Est: {task.estimatedHours}h</span>
+                                            <span>Act: {task.actualHours || 0}h</span>
+                                          </div>
+                                          <div className="w-full bg-gray-600/50 rounded-full h-1">
+                                            <div 
+                                              className="bg-accent-500 h-1 rounded-full progress-animate"
+                                              style={{ 
+                                                width: `${task.actualHours && task.estimatedHours ? Math.min((task.actualHours / task.estimatedHours) * 100, 100) : 0}%` 
+                                              }}
+                                            ></div>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </Draggable>
+                              ))}
+                              {provided.placeholder}
+                              <button 
+                                onClick={() => setShowNewTaskModal(true)}
+                                className="w-full text-center text-sm text-gray-400 hover:text-gray-300 py-3 border-2 border-dashed border-gray-600/50 rounded-lg hover:border-gray-500/50 transition-all duration-200 hover:bg-gray-600/20"
+                              >
+                                + Add Task
+                              </button>
                             </div>
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-xs text-gray-400">{task.assignee}</span>
-                              <span className={`w-2 h-2 rounded-full ${getTaskStatusColor(task.status)}`}></span>
-                            </div>
-                            {task.tags && task.tags.length > 0 && (
-                              <div className="flex flex-wrap gap-1">
-                                {task.tags.slice(0, 2).map((tag, index) => (
-                                  <span key={index} className="text-xs bg-gray-700/50 px-2 py-1 rounded-full text-gray-300">
-                                    {tag}
-                                  </span>
-                                ))}
-                                {task.tags.length > 2 && (
-                                  <span className="text-xs text-gray-400">+{task.tags.length - 2}</span>
-                                )}
-                              </div>
-                            )}
-                            {task.estimatedHours && task.estimatedHours > 0 && (
-                              <div className="mt-2">
-                                <div className="flex justify-between text-xs text-gray-400 mb-1">
-                                  <span>Est: {task.estimatedHours}h</span>
-                                  <span>Act: {task.actualHours || 0}h</span>
-                                </div>
-                                <div className="w-full bg-gray-600/50 rounded-full h-1">
-                                  <div 
-                                    className="bg-accent-500 h-1 rounded-full progress-animate"
-                                    style={{ 
-                                      width: `${task.actualHours && task.estimatedHours ? Math.min((task.actualHours / task.estimatedHours) * 100, 100) : 0}%` 
-                                    }}
-                                  ></div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                        <button 
-                          onClick={() => setShowNewTaskModal(true)}
-                          className="w-full text-center text-sm text-gray-400 hover:text-gray-300 py-3 border-2 border-dashed border-gray-600/50 rounded-lg hover:border-gray-500/50 transition-all duration-200 hover:bg-gray-600/20"
-                        >
-                          + Add Task
-                        </button>
+                          )}
+                        </Droppable>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </DragDropContext>
               </div>
             </div>
           </div>
