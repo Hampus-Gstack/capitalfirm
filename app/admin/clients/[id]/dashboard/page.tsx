@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
+import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd'
+import { StrictModeDroppable as Droppable } from '@/components/StrictModeDroppable'
 
 // Import types from the main dashboard
 interface Meeting {
@@ -418,14 +419,9 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     className={`bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-gray-600/50 transition-colors ${
-                                      snapshot.isDragging ? 'shadow-lg opacity-80' : ''
+                                      snapshot.isDragging ? 'shadow-lg opacity-90' : ''
                                     }`}
-                                    style={{
-                                      ...provided.draggableProps.style,
-                                      userSelect: 'none',
-                                      position: snapshot.isDragging ? 'relative' : 'static',
-                                      transform: snapshot.isDragging ? 'none' : undefined
-                                    }}
+                                    style={provided.draggableProps.style}
                                   >
                                     <h5 className="font-medium text-white">{task.title}</h5>
                                     {task.description && (
@@ -487,14 +483,9 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     className={`bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-gray-600/50 transition-colors ${
-                                      snapshot.isDragging ? 'shadow-lg opacity-80' : ''
+                                      snapshot.isDragging ? 'shadow-lg opacity-90' : ''
                                     }`}
-                                    style={{
-                                      ...provided.draggableProps.style,
-                                      userSelect: 'none',
-                                      position: snapshot.isDragging ? 'relative' : 'static',
-                                      transform: snapshot.isDragging ? 'none' : undefined
-                                    }}
+                                    style={provided.draggableProps.style}
                                   >
                                     <h5 className="font-medium text-white text-sm">{deal.title}</h5>
                                     <p className="text-xs text-gray-400">{deal.company}</p>

@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd';
+import { StrictModeDroppable as Droppable } from '@/components/StrictModeDroppable';
 import AddMeetingModal from '@/components/AddMeetingModal';
 
 interface Meeting {
@@ -1232,7 +1233,7 @@ export default function Dashboard() {
                 <h3 className="text-lg font-semibold mb-4">Stage Progress</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {stages.slice(0, 3).map((stage) => (
-                    <div key={stage.id} className="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
+                    <div key={stage.id} className="bg-gray-700/50 rounded-lg p-4 border border-gray-600/30">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium">{stage.name}</span>
                         <span className="text-xs text-gray-400">{getStageProgress(stage)}%</span>
@@ -1281,7 +1282,7 @@ export default function Dashboard() {
                 <h3 className="text-lg font-semibold mb-4">Project Stages</h3>
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                   {stages.map((stage) => (
-                    <div key={stage.id} className="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30 hover:border-gray-500/50 transition-all duration-200">
+                    <div key={stage.id} className="bg-gray-700/50 rounded-lg p-4 border border-gray-600/30 hover:border-gray-500/50 transition-all duration-200">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-2">
                           <span className="text-2xl">{stage.icon}</span>
@@ -1319,7 +1320,7 @@ export default function Dashboard() {
                       { status: 'in_review', title: 'In Review', count: getTasksByStatus('in_review').length, color: 'from-orange-500 to-orange-600' },
                       { status: 'done', title: 'Done', count: getTasksByStatus('done').length, color: 'from-green-500 to-green-600' }
                     ].map((column) => (
-                      <div key={column.status} className="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
+                      <div key={column.status} className="bg-gray-700/50 rounded-lg p-4 border border-gray-600/30">
                         <div className="flex items-center justify-between mb-4">
                           <h4 className="font-medium">{column.title}</h4>
                           <span className="text-sm text-gray-400 bg-gray-600/50 px-2 py-1 rounded-full">{column.count}</span>
@@ -1339,17 +1340,10 @@ export default function Dashboard() {
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
-                                      className={`bg-gray-600/50 rounded-lg p-3 cursor-pointer hover:bg-gray-500/50 transition-all duration-200 border ${getPriorityBgColor(task.priority)} ${
-                                        snapshot.isDragging ? 'shadow-lg z-50 opacity-80' : ''
+                                      className={`bg-gray-600/50 rounded-lg p-3 cursor-pointer hover:bg-gray-500/50 transition-colors border ${getPriorityBgColor(task.priority)} ${
+                                        snapshot.isDragging ? 'shadow-lg opacity-90' : ''
                                       }`}
-                                      style={{
-                                        ...provided.draggableProps.style,
-                                        userSelect: 'none',
-                                        // Ensure proper positioning during drag
-                                        position: snapshot.isDragging ? 'relative' : 'static',
-                                        // Remove transform when dragging to prevent positioning issues
-                                        transform: snapshot.isDragging ? 'none' : undefined
-                                      }}
+                                      style={provided.draggableProps.style}
                                       onClick={() => {
                                         setSelectedTask(task);
                                         setShowTaskModal(true);
@@ -1811,18 +1805,10 @@ export default function Dashboard() {
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    className={`bg-gray-700/50 rounded-lg p-4 cursor-pointer hover:bg-gray-600/50 transition-all duration-200 border border-gray-600/30 ${
-                                      snapshot.isDragging ? 'shadow-2xl ring-2 ring-accent-500 bg-gray-600/80 opacity-90' : ''
+                                    className={`bg-gray-700/50 rounded-lg p-4 cursor-pointer hover:bg-gray-600/50 transition-colors border border-gray-600/30 ${
+                                      snapshot.isDragging ? 'shadow-xl opacity-90' : ''
                                     }`}
-                                    style={{
-                                      ...provided.draggableProps.style,
-                                      userSelect: 'none',
-                                      // Ensure proper positioning during drag
-                                      position: snapshot.isDragging ? 'relative' : 'static',
-                                      // Remove problematic effects during drag
-                                      backdropFilter: snapshot.isDragging ? 'none' : undefined,
-                                      transform: snapshot.isDragging ? 'none' : undefined
-                                    }}
+                                    style={provided.draggableProps.style}
                                     onClick={() => {
                                       setSelectedDeal(deal);
                                       setShowDealModal(true);

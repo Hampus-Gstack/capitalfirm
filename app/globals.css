@@ -220,69 +220,38 @@ body.mobile-menu-open {
   pointer-events: auto;
 }
 
-/* Fix for react-beautiful-dnd drag positioning */
-.react-beautiful-dnd-drag-handle {
-  -webkit-transform: none !important;
-  transform: none !important;
-}
-
-/* Ensure dragged items stay close to cursor */
+/* React Beautiful DND Fixes */
 [data-rbd-drag-handle-draggable-id] {
-  cursor: grab !important;
+  cursor: grab;
 }
 
 [data-rbd-drag-handle-draggable-id]:active {
+  cursor: grabbing;
+}
+
+/* Ensure dragged elements follow cursor properly */
+body[style*="cursor: grabbing"] {
   cursor: grabbing !important;
 }
 
-/* Fix for dragged items appearing too far from cursor */
-[data-rbd-draggable-context-id] {
-  position: relative !important;
+/* Fix for portal positioning */
+.ReactPortal {
+  position: relative;
+  z-index: 9999;
 }
 
-/* Ensure proper z-index stacking for dragged items */
-[data-rbd-draggable-context-id][style*="position: fixed"] {
-  z-index: 9999 !important;
-}
-
-/* More comprehensive drag fixes */
-[data-rbd-draggable-context-id] {
-  position: static !important;
-}
-
-[data-rbd-drag-handle-context-id] {
-  position: static !important;
-}
-
-/* Reset transforms on draggable items */
-[data-rbd-draggable-id] {
-  position: static !important;
-}
-
-/* Fix for dragged item positioning */
-[data-rbd-draggable-id][style*="transform"] {
-  position: relative !important;
-}
-
-/* Ensure the dragged clone stays with cursor */
+/* Disable problematic CSS properties during drag */
 [data-rbd-draggable-id][style*="position: fixed"] {
-  z-index: 10000 !important;
-  pointer-events: none !important;
+  pointer-events: none;
+  z-index: 9999;
 }
 
-/* Remove backdrop blur and other effects during drag to prevent positioning issues */
-[data-rbd-draggable-id][style*="position: fixed"] .backdrop-blur-sm {
-  backdrop-filter: none !important;
+/* Fix for transform interference */
+[data-rbd-draggable-id] {
+  box-sizing: border-box;
 }
 
-/* Prevent layout shifts during drag */
-[data-rbd-droppable-id] {
-  position: relative !important;
-}
-
-/* Fix for scrollable containers */
-.react-beautiful-dnd-droppable {
-  position: relative !important;
-  height: auto !important;
-  min-height: inherit !important;
+/* Ensure smooth dragging */
+[data-rbd-drag-handle-context-id] {
+  touch-action: manipulation;
 } 
