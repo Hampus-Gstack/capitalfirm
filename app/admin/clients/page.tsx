@@ -434,6 +434,13 @@ export default function AdminClientsPage() {
                           <EyeIcon className="h-4 w-4" />
                         </button>
                         <button
+                          onClick={() => window.open(`/admin/clients/${client.id}/dashboard`, '_blank')}
+                          className="text-green-400 hover:text-green-300 transition-colors"
+                          title="Manage Client Dashboard"
+                        >
+                          <ChartBarIcon className="h-4 w-4" />
+                        </button>
+                        <button
                           className="text-blue-400 hover:text-blue-300 transition-colors"
                           title="Edit Client"
                         >
