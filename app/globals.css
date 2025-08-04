@@ -243,4 +243,46 @@ body.mobile-menu-open {
 /* Ensure proper z-index stacking for dragged items */
 [data-rbd-draggable-context-id][style*="position: fixed"] {
   z-index: 9999 !important;
+}
+
+/* More comprehensive drag fixes */
+[data-rbd-draggable-context-id] {
+  position: static !important;
+}
+
+[data-rbd-drag-handle-context-id] {
+  position: static !important;
+}
+
+/* Reset transforms on draggable items */
+[data-rbd-draggable-id] {
+  position: static !important;
+}
+
+/* Fix for dragged item positioning */
+[data-rbd-draggable-id][style*="transform"] {
+  position: relative !important;
+}
+
+/* Ensure the dragged clone stays with cursor */
+[data-rbd-draggable-id][style*="position: fixed"] {
+  z-index: 10000 !important;
+  pointer-events: none !important;
+}
+
+/* Remove backdrop blur and other effects during drag to prevent positioning issues */
+[data-rbd-draggable-id][style*="position: fixed"] .backdrop-blur-sm {
+  backdrop-filter: none !important;
+}
+
+/* Prevent layout shifts during drag */
+[data-rbd-droppable-id] {
+  position: relative !important;
+}
+
+/* Fix for scrollable containers */
+.react-beautiful-dnd-droppable {
+  position: relative !important;
+  height: auto !important;
+  min-height: inherit !important;
 } 

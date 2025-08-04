@@ -299,7 +299,7 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
               { id: 'meetings', name: 'Meetings' },
               { id: 'project-management', name: 'Project Management' },
               { id: 'crm', name: 'CRM Pipeline' },
-              { id: 'documents', name: 'Documents' }
+              { id: 'documents', name: 'Asset Library' }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -412,12 +412,20 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                           >
                             {stage.tasks.map((task, index) => (
                               <Draggable key={task.id} draggableId={task.id} index={index}>
-                                {(provided) => (
+                                {(provided, snapshot) => (
                                   <div
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    className="bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-gray-600/50 transition-colors"
+                                    className={`bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-gray-600/50 transition-colors ${
+                                      snapshot.isDragging ? 'shadow-lg opacity-80' : ''
+                                    }`}
+                                    style={{
+                                      ...provided.draggableProps.style,
+                                      userSelect: 'none',
+                                      position: snapshot.isDragging ? 'relative' : 'static',
+                                      transform: snapshot.isDragging ? 'none' : undefined
+                                    }}
                                   >
                                     <h5 className="font-medium text-white">{task.title}</h5>
                                     {task.description && (
@@ -473,12 +481,20 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                           >
                             {stage.deals.map((deal, index) => (
                               <Draggable key={deal.id} draggableId={deal.id} index={index}>
-                                {(provided) => (
+                                {(provided, snapshot) => (
                                   <div
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    className="bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-gray-600/50 transition-colors"
+                                    className={`bg-gray-700/50 rounded-lg p-3 cursor-pointer hover:bg-gray-600/50 transition-colors ${
+                                      snapshot.isDragging ? 'shadow-lg opacity-80' : ''
+                                    }`}
+                                    style={{
+                                      ...provided.draggableProps.style,
+                                      userSelect: 'none',
+                                      position: snapshot.isDragging ? 'relative' : 'static',
+                                      transform: snapshot.isDragging ? 'none' : undefined
+                                    }}
                                   >
                                     <h5 className="font-medium text-white text-sm">{deal.title}</h5>
                                     <p className="text-xs text-gray-400">{deal.company}</p>
@@ -505,7 +521,7 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
         {activeTab === 'documents' && (
           <div className="space-y-6">
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
-              <h3 className="text-lg font-semibold mb-4">Client Documents</h3>
+              <h3 className="text-lg font-semibold mb-4">Client Asset Library</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-gray-700/50 rounded-lg p-4">
                   <h4 className="font-semibold mb-2">Contracts</h4>

@@ -1057,7 +1057,7 @@ export default function Dashboard() {
             {[
               { id: 'overview', name: 'Overview' },
               { id: 'meetings', name: 'Meetings' },
-              { id: 'documents', name: 'Documents' },
+              { id: 'documents', name: 'Asset Library' },
               { id: 'crm', name: 'CRM' },
               { id: 'project-management', name: 'Project Management' }
             ].map((tab) => (
@@ -1340,11 +1340,15 @@ export default function Dashboard() {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                       className={`bg-gray-600/50 rounded-lg p-3 cursor-pointer hover:bg-gray-500/50 transition-all duration-200 border ${getPriorityBgColor(task.priority)} ${
-                                        snapshot.isDragging ? 'shadow-lg transform rotate-2 z-50' : ''
+                                        snapshot.isDragging ? 'shadow-lg z-50 opacity-80' : ''
                                       }`}
                                       style={{
                                         ...provided.draggableProps.style,
-                                        userSelect: 'none'
+                                        userSelect: 'none',
+                                        // Ensure proper positioning during drag
+                                        position: snapshot.isDragging ? 'relative' : 'static',
+                                        // Remove transform when dragging to prevent positioning issues
+                                        transform: snapshot.isDragging ? 'none' : undefined
                                       }}
                                       onClick={() => {
                                         setSelectedTask(task);
@@ -1690,7 +1694,7 @@ export default function Dashboard() {
 
         {activeTab === 'documents' && (
           <div className="bg-gray-800 rounded-xl p-6 animate-fadeIn">
-            <h2 className="text-2xl font-bold mb-6">Document Management</h2>
+            <h2 className="text-2xl font-bold mb-6">Asset Library</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-gray-700 rounded-lg p-4">
                 <h3 className="text-lg font-semibold mb-2">Due Diligence</h3>
@@ -1808,11 +1812,16 @@ export default function Dashboard() {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     className={`bg-gray-700/50 rounded-lg p-4 cursor-pointer hover:bg-gray-600/50 transition-all duration-200 border border-gray-600/30 ${
-                                      snapshot.isDragging ? 'shadow-2xl ring-2 ring-accent-500 bg-gray-600/80 backdrop-blur-sm' : ''
+                                      snapshot.isDragging ? 'shadow-2xl ring-2 ring-accent-500 bg-gray-600/80 opacity-90' : ''
                                     }`}
                                     style={{
                                       ...provided.draggableProps.style,
-                                      userSelect: 'none'
+                                      userSelect: 'none',
+                                      // Ensure proper positioning during drag
+                                      position: snapshot.isDragging ? 'relative' : 'static',
+                                      // Remove problematic effects during drag
+                                      backdropFilter: snapshot.isDragging ? 'none' : undefined,
+                                      transform: snapshot.isDragging ? 'none' : undefined
                                     }}
                                     onClick={() => {
                                       setSelectedDeal(deal);
