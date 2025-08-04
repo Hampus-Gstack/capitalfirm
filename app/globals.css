@@ -218,4 +218,29 @@ body.mobile-menu-open {
 
 .mobile-menu-container > * {
   pointer-events: auto;
+}
+
+/* Fix for react-beautiful-dnd drag positioning */
+.react-beautiful-dnd-drag-handle {
+  -webkit-transform: none !important;
+  transform: none !important;
+}
+
+/* Ensure dragged items stay close to cursor */
+[data-rbd-drag-handle-draggable-id] {
+  cursor: grab !important;
+}
+
+[data-rbd-drag-handle-draggable-id]:active {
+  cursor: grabbing !important;
+}
+
+/* Fix for dragged items appearing too far from cursor */
+[data-rbd-draggable-context-id] {
+  position: relative !important;
+}
+
+/* Ensure proper z-index stacking for dragged items */
+[data-rbd-draggable-context-id][style*="position: fixed"] {
+  z-index: 9999 !important;
 } 

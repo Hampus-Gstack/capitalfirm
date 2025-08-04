@@ -1844,7 +1844,7 @@ export default function Dashboard() {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     className={`bg-gray-700/50 rounded-lg p-4 cursor-pointer hover:bg-gray-600/50 transition-all duration-200 border border-gray-600/30 ${
-                                      snapshot.isDragging ? 'shadow-lg transform rotate-1 z-50 ring-2 ring-accent-500' : ''
+                                      snapshot.isDragging ? 'shadow-2xl ring-2 ring-accent-500 bg-gray-600/80 backdrop-blur-sm' : ''
                                     }`}
                                     style={{
                                       ...provided.draggableProps.style,
