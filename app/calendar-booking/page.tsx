@@ -47,6 +47,7 @@ export default function CalendarBookingPage() {
     // Redirect to actual calendar after a brief delay
     const timer = setTimeout(() => {
       setIsRedirecting(true);
+      // Redirect to Zcal - the UTM parameters will be passed through
       const zcalUrl = 'https://zcal.co/hampusg/discovery-call';
       window.location.href = zcalUrl;
     }, 2000);

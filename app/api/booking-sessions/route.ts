@@ -99,7 +99,7 @@ export async function PUT(request: NextRequest) {
       meeting_time: meeting_data.time
     };
 
-    // Also create a meeting in the meetings API
+    // Automatically create a meeting in the meetings API
     try {
       const meetingResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/meetings`, {
         method: 'POST',
@@ -120,13 +120,20 @@ export async function PUT(request: NextRequest) {
       });
 
       if (meetingResponse.ok) {
-        console.log('Meeting created automatically');
+        console.log('Meeting created automatically from booking session');
+        const meetingData = await meetingResponse.json();
+        return NextResponse.json({ 
+          bookingSession: bookingSessions[sessionIndex],
+          meeting: meetingData.meeting
+        });
+      } else {
+        console.error('Failed to create meeting automatically');
+        return NextResponse.json({ bookingSession: bookingSessions[sessionIndex] });
       }
     } catch (error) {
-      console.error('Error creating meeting:', error);
+      console.error('Error creating meeting automatically:', error);
+      return NextResponse.json({ bookingSession: bookingSessions[sessionIndex] });
     }
-
-    return NextResponse.json({ bookingSession: bookingSessions[sessionIndex] });
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to update booking session' },

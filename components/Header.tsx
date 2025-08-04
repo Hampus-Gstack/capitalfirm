@@ -22,6 +22,7 @@ export default function Header() {
   // Backend (Client/Admin) items
   const backendItems = [
     { name: 'Client Portal', href: '/dashboard', isHighlight: true },
+    { name: 'UTM Tools', href: '/test-utm' },
     { name: 'Onboarding', href: '/onboarding' },
   ]
 

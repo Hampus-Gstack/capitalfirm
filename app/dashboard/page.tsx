@@ -337,6 +337,26 @@ export default function Dashboard() {
     };
 
     loadMeetings();
+
+    // Set up real-time automation check
+    const automationCheck = async () => {
+      try {
+        await fetch('/api/automation/check-bookings');
+        console.log('Automation check completed');
+      } catch (error) {
+        console.error('Automation check failed:', error);
+      }
+    };
+
+    // Run automation check every 30 seconds when dashboard is open
+    const automationInterval = setInterval(automationCheck, 30000);
+    
+    // Initial check
+    automationCheck();
+
+    return () => {
+      clearInterval(automationInterval);
+    };
   }, []);
 
   // Update URL when tab changes
@@ -549,6 +569,12 @@ export default function Dashboard() {
                 📱 Install App
               </button>
               <button
+                onClick={() => router.push('/test-utm')}
+                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
+              >
+                🔗 UTM Tools
+              </button>
+              <button
                 onClick={() => router.push('/admin')}
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
               >
@@ -592,7 +618,38 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-all duration-300 ease-in-out">
         {activeTab === 'overview' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <>
+            {/* Quick Actions */}
+            <div className="mb-8">
+              <div className="bg-gradient-to-br from-gray-800/50 to-gray-700/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
+                <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <button
+                    onClick={() => router.push('/test-utm')}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white px-6 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2"
+                  >
+                    <span className="text-xl">🔗</span>
+                    <span>Generate UTM Links</span>
+                  </button>
+                  <button
+                    onClick={() => setShowAddMeetingModal(true)}
+                    className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white px-6 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2"
+                  >
+                    <span className="text-xl">📅</span>
+                    <span>Add Meeting</span>
+                  </button>
+                  <button
+                    onClick={() => router.push('/admin')}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2"
+                  >
+                    <span className="text-xl">👑</span>
+                    <span>Admin Panel</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {/* Quick Stats */}
             <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-sm rounded-xl p-6 border border-blue-500/30 card-hover hover-glow animate-slideIn">
               <div className="flex items-center justify-between mb-4">
@@ -639,6 +696,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+        </>
         )}
 
         {activeTab === 'project-management' && (

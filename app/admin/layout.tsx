@@ -11,7 +11,9 @@ import {
   HomeIcon,
   BuildingOfficeIcon,
   DocumentTextIcon,
-  UserGroupIcon
+  UserGroupIcon,
+  LinkIcon,
+  CalendarIcon
 } from '@heroicons/react/24/outline'
 
 export default function AdminLayout({
@@ -29,6 +31,8 @@ export default function AdminLayout({
     { name: 'Onboarding', href: '/admin/onboarding', icon: DocumentTextIcon },
     { name: 'Invitations', href: '/admin/invitations', icon: EnvelopeIcon },
     { name: 'Analytics', href: '/admin/analytics', icon: ChartBarIcon },
+    { name: 'UTM Tools', href: '/test-utm', icon: LinkIcon },
+    { name: 'Meetings', href: '/dashboard', icon: CalendarIcon },
     { name: 'Settings', href: '/admin/settings', icon: CogIcon },
   ]
 
