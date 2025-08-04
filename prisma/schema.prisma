@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Investor {
+  id                    String   @id @default(cuid())
+  name                  String
+  email                 String   @unique
+  phone                 String?
+  company               String
+  title                 String
+  investmentSizeMin     Int
+  investmentSizeMax     Int
+  preferredSectors      String[] // Array of sectors
+  preferredStages       String[] // Array of stages
+  preferredGeographies  String[] // Array of geographies
+  notes                 String?
+  status                String   @default("prospect") // active, inactive, prospect
+  lastContact           DateTime?
+  tags                  String[] // Array of tags
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  meetings              Meeting[]
+
+  @@map("investors")
+}
+
+model Client {
+  id              String   @id @default(cuid())
+  name            String
+  company         String
+  sector          String
+  stage           String
+  geography       String
+  fundingNeeded   Int
+  description     String
+  status          String   @default("raising") // raising, funded, closed
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  meetings        Meeting[]
+  onboarding      Onboarding[]
+
+  @@map("clients")
+}
+
+model Meeting {
+  id          String   @id @default(cuid())
+  title       String
+  date        DateTime
+  time        String
+  attendee    String
+  status      String   @default("scheduled") // scheduled, completed, cancelled
+  source      String   // calendly, hubspot, google, zcal
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  investorId  String?
+  clientId    String?
+  investor    Investor? @relation(fields: [investorId], references: [id])
+  client      Client?   @relation(fields: [clientId], references: [id])
+
+  @@map("meetings")
+}
+
+model Onboarding {
+  id                    String   @id @default(cuid())
+  type                  String   // startup, fund, investor
+  companyName           String?
+  companyStage          String?
+  dealType              String?
+  industryVertical      String?
+  capitalToRaise        String?
+  description           String?
+  submittedAt           DateTime @default(now())
+  lastUpdated           DateTime @default(now())
+  status                String   @default("completed")
+  completionPercentage  Int      @default(100)
+  tags                  String[] // Array of tags
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  clientId              String?
+  client                Client?  @relation(fields: [clientId], references: [id])
+
+  @@map("onboarding")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("user") // admin, user
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}

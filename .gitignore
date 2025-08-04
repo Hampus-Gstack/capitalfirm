@@ -34,3 +34,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts ROIALS CAPITAL PRESENTATION 2025-Q2.pdf
+
+/lib/generated/prisma
