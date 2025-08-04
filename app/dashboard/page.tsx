@@ -1062,7 +1062,6 @@ export default function Dashboard() {
             {[
               { id: 'overview', name: 'Overview' },
               { id: 'meetings', name: 'Meetings' },
-              { id: 'investments', name: 'Investments' },
               { id: 'documents', name: 'Documents' },
               { id: 'crm', name: 'CRM' },
               { id: 'project-management', name: 'Project Management' }
@@ -1121,7 +1120,7 @@ export default function Dashboard() {
             {/* Quick Stats */}
             <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-sm rounded-xl p-6 border border-blue-500/30 card-hover hover-glow animate-slideIn">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">Total Investments</h3>
+                <h3 className="text-lg font-semibold">Total Revenue</h3>
                 <span className="text-2xl">💰</span>
               </div>
               <p className="text-3xl font-bold text-blue-400 mb-2">$2.5M</p>
@@ -1696,29 +1695,6 @@ export default function Dashboard() {
                     </p>
                   </div>
                 )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'investments' && (
-          <div className="bg-gray-800 rounded-xl p-6 animate-fadeIn">
-            <h2 className="text-2xl font-bold mb-6">Investment Portfolio</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Active Investments</h3>
-                <p className="text-2xl font-bold text-green-400">$1.8M</p>
-                <p className="text-sm text-gray-400">8 companies</p>
-              </div>
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Total Return</h3>
-                <p className="text-2xl font-bold text-accent-400">+24.5%</p>
-                <p className="text-sm text-gray-400">YTD performance</p>
-              </div>
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Average IRR</h3>
-                <p className="text-2xl font-bold text-blue-400">18.2%</p>
-                <p className="text-sm text-gray-400">Portfolio average</p>
               </div>
             </div>
           </div>
