@@ -13,27 +13,31 @@ export default function BookingCompletePage() {
       try {
         // Get booking session from sessionStorage
         const bookingSession = sessionStorage.getItem('booking_session');
+        const bookingId = sessionStorage.getItem('current_booking_id');
         
         if (bookingSession) {
           const sessionData = JSON.parse(bookingSession);
           
-          // Extract meeting data from URL parameters (Zcal sends these)
-          const meetingTitle = searchParams.get('title') || 'Discovery Call';
-          const meetingDate = searchParams.get('date') || new Date().toISOString().split('T')[0];
-          const meetingTime = searchParams.get('time') || new Date().toLocaleTimeString('en-US', { 
+          // Try to get meeting data from URL parameters (if Zcal sends them)
+          let meetingTitle = searchParams.get('title') || 'Discovery Call';
+          let meetingDate = searchParams.get('date') || new Date().toISOString().split('T')[0];
+          let meetingTime = searchParams.get('time') || new Date().toLocaleTimeString('en-US', { 
             hour: 'numeric', 
             minute: '2-digit',
             hour12: true 
           });
-          const attendeeName = searchParams.get('name') || sessionData.prospect_name || 'Client';
-          const attendeeEmail = searchParams.get('email') || sessionData.prospect_email;
+          let attendeeName = searchParams.get('name') || sessionData.prospect_name || 'Client';
+          let attendeeEmail = searchParams.get('email') || sessionData.prospect_email;
 
+          // If no meeting data from URL, create a placeholder meeting
+          // This will be updated when the user actually books
           const meetingData = {
             title: meetingTitle,
             date: meetingDate,
             time: meetingTime,
             attendee: `${attendeeName}${attendeeEmail ? ` (${attendeeEmail})` : ''}`,
-            id: Date.now().toString()
+            id: Date.now().toString(),
+            status: 'pending_booking' // Special status to indicate booking in progress
           };
 
           setMeetingData(meetingData);
@@ -46,15 +50,18 @@ export default function BookingCompletePage() {
             },
             body: JSON.stringify({
               session_id: sessionData.session_id,
-              meeting_data: meetingData
+              booking_id: bookingId,
+              meeting_data: meetingData,
+              completion_method: 'redirect' // Indicates this was completed via redirect, not webhook
             })
           });
 
           if (response.ok) {
-            console.log('Booking completed successfully');
+            console.log('Booking session completed successfully');
             
             // Clear session data
             sessionStorage.removeItem('booking_session');
+            sessionStorage.removeItem('current_booking_id');
             
             // Show success message
             setIsProcessing(false);
@@ -93,26 +100,25 @@ export default function BookingCompletePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold mb-2">Booking Confirmed!</h1>
+            <h1 className="text-2xl font-bold mb-2">Booking Session Created!</h1>
             <p className="text-gray-400 mb-6">
-              Your meeting has been successfully scheduled and added to our system.
+              Your booking session has been created and tracked in our system.
             </p>
             
             {meetingData && (
               <div className="bg-gray-800 rounded-lg p-4 mb-6">
-                <h3 className="font-semibold mb-2">Meeting Details</h3>
+                <h3 className="font-semibold mb-2">Session Details</h3>
                 <div className="text-sm text-gray-300 space-y-1">
                   <p><strong>Title:</strong> {meetingData.title}</p>
-                  <p><strong>Date:</strong> {meetingData.date}</p>
-                  <p><strong>Time:</strong> {meetingData.time}</p>
                   <p><strong>Attendee:</strong> {meetingData.attendee}</p>
+                  <p><strong>Status:</strong> <span className="text-yellow-400">Pending Booking</span></p>
                 </div>
               </div>
             )}
             
             <div className="text-sm text-gray-500">
-              <p>You'll receive a calendar invitation shortly.</p>
-              <p>Your meeting will appear in our dashboard automatically.</p>
+              <p>Your meeting will be tracked when you complete the booking in Zcal.</p>
+              <p>You can manually add meeting details in your dashboard.</p>
             </div>
           </>
         )}

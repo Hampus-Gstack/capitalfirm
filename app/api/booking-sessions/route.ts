@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 interface BookingSession {
   id: string;
   session_id: string;
+  booking_id?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -11,12 +12,13 @@ interface BookingSession {
   prospect_name?: string;
   timestamp: string;
   referrer: string;
-  status: 'pending' | 'completed' | 'expired';
+  status: 'pending' | 'completed' | 'expired' | 'pending_booking';
   calendar_url: string;
   meeting_id?: string;
   meeting_title?: string;
   meeting_date?: string;
   meeting_time?: string;
+  completion_method?: 'webhook' | 'redirect' | 'manual';
 }
 
 // Mock database - replace with actual database
@@ -46,6 +48,7 @@ export async function POST(request: NextRequest) {
       timestamp,
       referrer,
       session_id,
+      booking_id,
       status,
       calendar_url
     } = body;
@@ -53,6 +56,7 @@ export async function POST(request: NextRequest) {
     const newBookingSession: BookingSession = {
       id: Date.now().toString(),
       session_id,
+      booking_id,
       utm_source,
       utm_medium,
       utm_campaign,
@@ -79,9 +83,12 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { session_id, meeting_data } = body;
+    const { session_id, booking_id, meeting_data, completion_method } = body;
 
-    const sessionIndex = bookingSessions.findIndex(s => s.session_id === session_id);
+    const sessionIndex = bookingSessions.findIndex(s => 
+      s.session_id === session_id || s.booking_id === booking_id
+    );
+    
     if (sessionIndex === -1) {
       return NextResponse.json(
         { error: 'Booking session not found' },
@@ -92,47 +99,56 @@ export async function PUT(request: NextRequest) {
     // Update session with meeting data
     bookingSessions[sessionIndex] = {
       ...bookingSessions[sessionIndex],
-      status: 'completed',
-      meeting_id: meeting_data.id,
-      meeting_title: meeting_data.title,
-      meeting_date: meeting_data.date,
-      meeting_time: meeting_data.time
+      status: meeting_data?.status === 'pending_booking' ? 'pending_booking' : 'completed',
+      meeting_id: meeting_data?.id,
+      meeting_title: meeting_data?.title,
+      meeting_date: meeting_data?.date,
+      meeting_time: meeting_data?.time,
+      completion_method: completion_method || 'redirect'
     };
 
-    // Automatically create a meeting in the meetings API
-    try {
-      const meetingResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/meetings`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: meeting_data.title,
-          date: meeting_data.date,
-          time: meeting_data.time,
-          attendee: meeting_data.attendee || bookingSessions[sessionIndex].prospect_name,
-          source: 'zcal',
-          utm_source: bookingSessions[sessionIndex].utm_source,
-          utm_medium: bookingSessions[sessionIndex].utm_medium,
-          utm_campaign: bookingSessions[sessionIndex].utm_campaign,
-          utm_content: bookingSessions[sessionIndex].utm_content,
-          // TODO: Add user_id when authentication is implemented
-          user_id: 'default' // This will be replaced with actual user ID
-        })
-      });
-
-      if (meetingResponse.ok) {
-        console.log('Meeting created automatically from booking session');
-        const meetingData = await meetingResponse.json();
-        return NextResponse.json({ 
-          bookingSession: bookingSessions[sessionIndex],
-          meeting: meetingData.meeting
+    // Only create a meeting if we have actual meeting data (not pending_booking)
+    if (meeting_data && meeting_data.status !== 'pending_booking') {
+      try {
+        const meetingResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/meetings`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: meeting_data.title,
+            date: meeting_data.date,
+            time: meeting_data.time,
+            attendee: meeting_data.attendee || bookingSessions[sessionIndex].prospect_name,
+            source: 'zcal',
+            utm_source: bookingSessions[sessionIndex].utm_source,
+            utm_medium: bookingSessions[sessionIndex].utm_medium,
+            utm_campaign: bookingSessions[sessionIndex].utm_campaign,
+            utm_content: bookingSessions[sessionIndex].utm_content,
+            // TODO: Add user_id when authentication is implemented
+            user_id: 'default' // This will be replaced with actual user ID
+          })
         });
-      } else {
-        console.error('Failed to create meeting automatically');
+
+        if (meetingResponse.ok) {
+          console.log('Meeting created automatically from booking session');
+          const meetingData = await meetingResponse.json();
+          return NextResponse.json({ 
+            bookingSession: bookingSessions[sessionIndex],
+            meeting: meetingData.meeting
+          });
+        } else {
+          console.error('Failed to create meeting automatically');
+          return NextResponse.json({ bookingSession: bookingSessions[sessionIndex] });
+        }
+      } catch (error) {
+        console.error('Error creating meeting automatically:', error);
         return NextResponse.json({ bookingSession: bookingSessions[sessionIndex] });
       }
-    } catch (error) {
-      console.error('Error creating meeting automatically:', error);
-      return NextResponse.json({ bookingSession: bookingSessions[sessionIndex] });
+    } else {
+      // For pending_booking status, just return the updated session
+      return NextResponse.json({ 
+        bookingSession: bookingSessions[sessionIndex],
+        message: 'Booking session created, waiting for actual booking'
+      });
     }
   } catch (error) {
     return NextResponse.json(

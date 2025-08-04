@@ -293,6 +293,8 @@ export default function Dashboard() {
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddMeetingModal, setShowAddMeetingModal] = useState(false);
+  const [bookingSessions, setBookingSessions] = useState<any[]>([]);
+  const [showBookingSessions, setShowBookingSessions] = useState(false);
 
   // Load meetings from API - replace with actual API calls
   useEffect(() => {
@@ -357,6 +359,23 @@ export default function Dashboard() {
     return () => {
       clearInterval(automationInterval);
     };
+  }, []);
+
+  useEffect(() => {
+    const loadData = async () => {
+      // Load booking sessions
+      try {
+        const sessionsResponse = await fetch('/api/booking-sessions');
+        if (sessionsResponse.ok) {
+          const sessionsData = await sessionsResponse.json();
+          setBookingSessions(sessionsData.bookingSessions || []);
+        }
+      } catch (error) {
+        console.error('Error loading booking sessions:', error);
+      }
+    };
+
+    loadData();
   }, []);
 
   // Update URL when tab changes
@@ -530,6 +549,61 @@ export default function Dashboard() {
                          task.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesStatus && matchesSearch;
   });
+
+  const createMeetingFromSession = async (session: any) => {
+    try {
+      const meetingData = {
+        title: session.meeting_title || 'Discovery Call',
+        date: session.meeting_date || new Date().toISOString().split('T')[0],
+        time: session.meeting_time || new Date().toLocaleTimeString('en-US', { 
+          hour: 'numeric', 
+          minute: '2-digit',
+          hour12: true 
+        }),
+        attendee: session.prospect_name || 'Client',
+        source: 'zcal',
+        utm_source: session.utm_source,
+        utm_medium: session.utm_medium,
+        utm_campaign: session.utm_campaign,
+        utm_content: session.utm_content
+      };
+
+      const response = await fetch('/api/meetings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(meetingData)
+      });
+
+      if (response.ok) {
+        const newMeeting = await response.json();
+        setMeetings([newMeeting.meeting, ...meetings]);
+        
+        // Update the booking session status
+        await fetch('/api/booking-sessions', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            session_id: session.session_id,
+            meeting_data: {
+              ...meetingData,
+              id: newMeeting.meeting.id,
+              status: 'completed'
+            },
+            completion_method: 'manual'
+          })
+        });
+
+        // Remove from booking sessions list
+        setBookingSessions(bookingSessions.filter(s => s.session_id !== session.session_id));
+      }
+    } catch (error) {
+      console.error('Error creating meeting from session:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white mobile-safe-area">
@@ -1579,6 +1653,60 @@ export default function Dashboard() {
           setMeetings([...meetings, meeting]);
         }}
       />
+
+      {/* Booking Sessions Section */}
+      {bookingSessions.length > 0 && (
+        <div className="bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-700 flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-white">Pending Booking Sessions</h3>
+            <button
+              onClick={() => setShowBookingSessions(!showBookingSessions)}
+              className="text-accent-400 hover:text-accent-300 text-sm"
+            >
+              {showBookingSessions ? 'Hide' : 'Show'} ({bookingSessions.length})
+            </button>
+          </div>
+          
+          {showBookingSessions && (
+            <div className="p-6">
+              <div className="space-y-4">
+                {bookingSessions.map((session) => (
+                  <div key={session.id} className="bg-gray-800 rounded-lg p-4 border border-gray-600">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-white font-medium">
+                          {session.prospect_name || 'Unknown Client'}
+                        </h4>
+                        <p className="text-gray-400 text-sm">
+                          {session.prospect_email} • {session.utm_campaign || 'No Campaign'}
+                        </p>
+                        <div className="flex gap-2 mt-2">
+                          {session.utm_source && (
+                            <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
+                              {session.utm_source}
+                            </span>
+                          )}
+                          {session.utm_medium && (
+                            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">
+                              {session.utm_medium}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => createMeetingFromSession(session)}
+                        className="bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+                      >
+                        Create Meeting
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 } 

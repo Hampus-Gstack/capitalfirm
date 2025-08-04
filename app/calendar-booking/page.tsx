@@ -29,7 +29,7 @@ export default function CalendarBookingPage() {
         prospect_name,
         timestamp: new Date().toISOString(),
         referrer: document.referrer,
-        session_id: Date.now().toString()
+        session_id: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       };
       
       // Store in localStorage for tracking
@@ -38,24 +38,29 @@ export default function CalendarBookingPage() {
       // Store in sessionStorage for this booking session
       sessionStorage.setItem('booking_session', JSON.stringify(utmData));
       
+      // Store a unique identifier for this booking attempt
+      const bookingId = `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      sessionStorage.setItem('current_booking_id', bookingId);
+      
       console.log('UTM data captured:', utmData);
       
       // Create a booking session in your system
-      createBookingSession(utmData);
+      createBookingSession(utmData, bookingId);
     }
 
     // Redirect to actual calendar after a brief delay
     const timer = setTimeout(() => {
       setIsRedirecting(true);
-      // Redirect to Zcal - the UTM parameters will be passed through
-      const zcalUrl = 'https://zcal.co/hampusg/discovery-call';
+      // Redirect to Zcal with a custom parameter to track the booking
+      const bookingId = sessionStorage.getItem('current_booking_id');
+      const zcalUrl = `https://zcal.co/hampusg/discovery-call?booking_id=${bookingId}`;
       window.location.href = zcalUrl;
     }, 2000);
 
     return () => clearTimeout(timer);
   }, [searchParams]);
 
-  const createBookingSession = async (utmData: any) => {
+  const createBookingSession = async (utmData: any, bookingId: string) => {
     try {
       // Create a booking session that will be completed when they book
       const response = await fetch('/api/booking-sessions', {
@@ -65,13 +70,14 @@ export default function CalendarBookingPage() {
         },
         body: JSON.stringify({
           ...utmData,
+          booking_id: bookingId,
           status: 'pending',
           calendar_url: 'https://zcal.co/hampusg/discovery-call'
         })
       });
 
       if (response.ok) {
-        console.log('Booking session created');
+        console.log('Booking session created with ID:', bookingId);
       }
     } catch (error) {
       console.error('Error creating booking session:', error);
