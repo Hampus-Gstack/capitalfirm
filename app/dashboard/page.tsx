@@ -1033,12 +1033,7 @@ export default function Dashboard() {
               >
                 🔗 UTM Tools
               </button>
-              <button
-                onClick={() => router.push('/admin')}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
-              >
-                👑 Admin Panel
-              </button>
+
               <span className="text-gray-400">Welcome back,</span>
               <span className="font-semibold">Client Name</span>
               <button
@@ -1090,7 +1085,7 @@ export default function Dashboard() {
             <div className="mb-8">
               <div className="bg-gradient-to-br from-gray-800/50 to-gray-700/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
                 <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <button
                     onClick={() => router.push('/test-utm')}
                     className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white px-6 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2"
@@ -1104,13 +1099,6 @@ export default function Dashboard() {
                   >
                     <span className="text-xl">📅</span>
                     <span>Add Meeting</span>
-                  </button>
-                  <button
-                    onClick={() => router.push('/admin')}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2"
-                  >
-                    <span className="text-xl">👑</span>
-                    <span>Admin Panel</span>
                   </button>
                 </div>
               </div>
