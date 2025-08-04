@@ -141,6 +141,60 @@ export default function AdminClientsPage() {
   const [filterPriority, setFilterPriority] = useState('all')
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
   const [showClientModal, setShowClientModal] = useState(false)
+  const [newClient, setNewClient] = useState<Partial<Client>>({
+    name: '',
+    company: '',
+    email: '',
+    phone: '',
+    role: '',
+    status: 'pending',
+    stage: 'onboarding',
+    progress: 0,
+    totalInvestment: 0,
+    activeDeals: 0,
+    scheduledMeetings: 0,
+    priority: 'medium',
+    tags: [],
+    notes: ''
+  })
+
+  const handleSaveClient = () => {
+    if (selectedClient) {
+      // Update existing client (not implemented in this demo)
+      console.log('Update client:', selectedClient)
+    } else {
+      // Add new client
+      const clientToAdd: Client = {
+        ...newClient,
+        id: Date.now().toString(),
+        lastActivity: new Date().toISOString(),
+        joinedAt: new Date().toISOString(),
+      } as Client
+      
+      setClients(prev => [...prev, clientToAdd])
+      
+      // Reset form
+      setNewClient({
+        name: '',
+        company: '',
+        email: '',
+        phone: '',
+        role: '',
+        status: 'pending',
+        stage: 'onboarding',
+        progress: 0,
+        totalInvestment: 0,
+        activeDeals: 0,
+        scheduledMeetings: 0,
+        priority: 'medium',
+        tags: [],
+        notes: ''
+      })
+    }
+    
+    setShowClientModal(false)
+    setSelectedClient(null)
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -214,7 +268,13 @@ export default function AdminClientsPage() {
               </h1>
               <p className="text-gray-400 mt-1">Manage all your clients and their progress</p>
             </div>
-            <button className="bg-gradient-to-r from-accent-600 to-purple-600 hover:from-accent-500 hover:to-purple-500 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center">
+            <button 
+              onClick={() => {
+                setSelectedClient(null)
+                setShowClientModal(true)
+              }}
+              className="bg-gradient-to-r from-accent-600 to-purple-600 hover:from-accent-500 hover:to-purple-500 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center"
+            >
               <PlusIcon className="h-5 w-5 mr-2" />
               Add Client
             </button>
@@ -404,13 +464,13 @@ export default function AdminClientsPage() {
         )}
       </div>
 
-      {/* Client Details Modal */}
-      {showClientModal && selectedClient && (
+      {/* Client Details/Add Modal */}
+      {showClientModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 backdrop-blur-sm rounded-xl p-6 w-full max-w-2xl mx-4 border border-gray-600/30">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-semibold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">
-                Client Details
+                {selectedClient ? 'Client Details' : 'Add New Client'}
               </h3>
               <button 
                 onClick={() => setShowClientModal(false)}
@@ -426,9 +486,11 @@ export default function AdminClientsPage() {
                   <label className="block text-sm font-medium mb-2 text-gray-300">Name</label>
                   <input
                     type="text"
-                    value={selectedClient.name}
+                    value={selectedClient ? selectedClient.name : newClient.name}
+                    onChange={(e) => selectedClient ? null : setNewClient(prev => ({ ...prev, name: e.target.value }))}
                     className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    readOnly
+                    readOnly={!!selectedClient}
+                    placeholder={selectedClient ? '' : 'Enter client name'}
                   />
                 </div>
                 
@@ -436,9 +498,11 @@ export default function AdminClientsPage() {
                   <label className="block text-sm font-medium mb-2 text-gray-300">Company</label>
                   <input
                     type="text"
-                    value={selectedClient.company}
+                    value={selectedClient ? selectedClient.company : newClient.company}
+                    onChange={(e) => selectedClient ? null : setNewClient(prev => ({ ...prev, company: e.target.value }))}
                     className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    readOnly
+                    readOnly={!!selectedClient}
+                    placeholder={selectedClient ? '' : 'Enter company name'}
                   />
                 </div>
                 
@@ -446,9 +510,11 @@ export default function AdminClientsPage() {
                   <label className="block text-sm font-medium mb-2 text-gray-300">Email</label>
                   <input
                     type="email"
-                    value={selectedClient.email}
+                    value={selectedClient ? selectedClient.email : newClient.email}
+                    onChange={(e) => selectedClient ? null : setNewClient(prev => ({ ...prev, email: e.target.value }))}
                     className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    readOnly
+                    readOnly={!!selectedClient}
+                    placeholder={selectedClient ? '' : 'Enter email address'}
                   />
                 </div>
                 
@@ -456,9 +522,11 @@ export default function AdminClientsPage() {
                   <label className="block text-sm font-medium mb-2 text-gray-300">Phone</label>
                   <input
                     type="tel"
-                    value={selectedClient.phone}
+                    value={selectedClient ? selectedClient.phone : newClient.phone}
+                    onChange={(e) => selectedClient ? null : setNewClient(prev => ({ ...prev, phone: e.target.value }))}
                     className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    readOnly
+                    readOnly={!!selectedClient}
+                    placeholder={selectedClient ? '' : 'Enter phone number'}
                   />
                 </div>
               </div>
@@ -468,36 +536,73 @@ export default function AdminClientsPage() {
                   <label className="block text-sm font-medium mb-2 text-gray-300">Role</label>
                   <input
                     type="text"
-                    value={selectedClient.role}
+                    value={selectedClient ? selectedClient.role : newClient.role}
+                    onChange={(e) => selectedClient ? null : setNewClient(prev => ({ ...prev, role: e.target.value }))}
                     className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                    readOnly
+                    readOnly={!!selectedClient}
+                    placeholder={selectedClient ? '' : 'Enter role (e.g., CEO, CTO)'}
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-300">Status</label>
-                  <div className={`px-4 py-3 rounded-lg border ${getStatusColor(selectedClient.status)}`}>
-                    <span className="text-sm font-medium capitalize">{selectedClient.status}</span>
-                  </div>
+                  {selectedClient ? (
+                    <div className={`px-4 py-3 rounded-lg border ${getStatusColor(selectedClient.status)}`}>
+                      <span className="text-sm font-medium capitalize">{selectedClient.status}</span>
+                    </div>
+                  ) : (
+                    <select
+                      value={newClient.status}
+                      onChange={(e) => setNewClient(prev => ({ ...prev, status: e.target.value as any }))}
+                      className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="active">Active</option>
+                      <option value="onboarding">Onboarding</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  )}
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-300">Stage</label>
-                  <div className="flex items-center space-x-2 px-4 py-3 bg-gray-700/50 rounded-lg border border-gray-600/50">
-                    <span className="text-lg">{getStageIcon(selectedClient.stage)}</span>
-                    <span className="text-sm font-medium capitalize">{selectedClient.stage}</span>
-                  </div>
+                  {selectedClient ? (
+                    <div className="flex items-center space-x-2 px-4 py-3 bg-gray-700/50 rounded-lg border border-gray-600/50">
+                      <span className="text-lg">{getStageIcon(selectedClient.stage)}</span>
+                      <span className="text-sm font-medium capitalize">{selectedClient.stage}</span>
+                    </div>
+                  ) : (
+                    <select
+                      value={newClient.stage}
+                      onChange={(e) => setNewClient(prev => ({ ...prev, stage: e.target.value as any }))}
+                      className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    >
+                      <option value="onboarding">Onboarding</option>
+                      <option value="setup">Setup</option>
+                      <option value="campaigns">Campaigns</option>
+                      <option value="placement">Placement</option>
+                      <option value="reporting">Reporting</option>
+                    </select>
+                  )}
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-300">Progress</label>
-                  <div className="w-full bg-gray-600 rounded-full h-2">
-                    <div 
-                      className={`bg-gradient-to-r ${getStageColor(selectedClient.stage)} h-2 rounded-full progress-animate`}
-                      style={{ width: `${selectedClient.progress}%` }}
-                    ></div>
-                  </div>
-                  <div className="text-xs text-gray-400 mt-1">{selectedClient.progress}% complete</div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Priority</label>
+                  {selectedClient ? (
+                    <div className={`px-4 py-3 rounded-lg border ${getPriorityColor(selectedClient.priority)}`}>
+                      <span className="text-sm font-medium capitalize">{selectedClient.priority}</span>
+                    </div>
+                  ) : (
+                    <select
+                      value={newClient.priority}
+                      onChange={(e) => setNewClient(prev => ({ ...prev, priority: e.target.value as any }))}
+                      className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  )}
                 </div>
               </div>
             </div>
@@ -506,35 +611,52 @@ export default function AdminClientsPage() {
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-300">Notes</label>
                 <textarea
-                  value={selectedClient.notes}
+                  value={selectedClient ? selectedClient.notes : newClient.notes}
+                  onChange={(e) => selectedClient ? null : setNewClient(prev => ({ ...prev, notes: e.target.value }))}
                   rows={3}
                   className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-                  readOnly
+                  readOnly={!!selectedClient}
+                  placeholder={selectedClient ? '' : 'Enter any notes about this client'}
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">Tags</label>
-                <div className="flex flex-wrap gap-2">
-                  {selectedClient.tags.map((tag, index) => (
-                    <span key={index} className="bg-gray-700/50 px-3 py-1 rounded-full text-sm text-gray-300 border border-gray-600/50">
-                      {tag}
-                    </span>
-                  ))}
+              {selectedClient && (
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Tags</label>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedClient.tags.map((tag, index) => (
+                      <span key={index} className="bg-gray-700/50 px-3 py-1 rounded-full text-sm text-gray-300 border border-gray-600/50">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             
             <div className="flex justify-end space-x-3 mt-8">
               <button
-                onClick={() => setShowClientModal(false)}
+                onClick={() => {
+                  setShowClientModal(false)
+                  setSelectedClient(null)
+                }}
                 className="px-6 py-3 text-gray-400 hover:text-white transition-colors"
               >
-                Close
+                {selectedClient ? 'Close' : 'Cancel'}
               </button>
-              <button className="px-6 py-3 bg-gradient-to-r from-accent-600 to-purple-600 hover:from-accent-500 hover:to-purple-500 text-white rounded-lg font-medium transition-all duration-200">
-                Edit Client
-              </button>
+              {selectedClient ? (
+                <button className="px-6 py-3 bg-gradient-to-r from-accent-600 to-purple-600 hover:from-accent-500 hover:to-purple-500 text-white rounded-lg font-medium transition-all duration-200">
+                  Edit Client
+                </button>
+              ) : (
+                <button 
+                  onClick={handleSaveClient}
+                  disabled={!newClient.name || !newClient.company || !newClient.email}
+                  className="px-6 py-3 bg-gradient-to-r from-accent-600 to-purple-600 hover:from-accent-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all duration-200"
+                >
+                  Add Client
+                </button>
+              )}
             </div>
           </div>
         </div>
