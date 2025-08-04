@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function TestUTMPage() {
   const [utmSource, setUtmSource] = useState('capitalfirm');
@@ -9,20 +9,26 @@ export default function TestUTMPage() {
   const [utmContent, setUtmContent] = useState('zcal');
   const [prospectEmail, setProspectEmail] = useState('prospect@company.com');
   const [prospectName, setProspectName] = useState('John Doe');
+  const [trackedLink, setTrackedLink] = useState('');
 
-  const generateUTMLink = () => {
-    const utmParams = new URLSearchParams({
-      utm_source: utmSource,
-      utm_medium: utmMedium,
-      utm_campaign: utmCampaign,
-      utm_content: utmContent,
-      email: prospectEmail,
-      name: prospectName
-    });
-    return `${window.location.origin}/calendar-booking?${utmParams.toString()}`;
-  };
-
-  const trackedLink = generateUTMLink();
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window !== 'undefined') {
+      const generateUTMLink = () => {
+        const utmParams = new URLSearchParams({
+          utm_source: utmSource,
+          utm_medium: utmMedium,
+          utm_campaign: utmCampaign,
+          utm_content: utmContent,
+          email: prospectEmail,
+          name: prospectName
+        });
+        return `${window.location.origin}/calendar-booking?${utmParams.toString()}`;
+      };
+      
+      setTrackedLink(generateUTMLink());
+    }
+  }, [utmSource, utmMedium, utmCampaign, utmContent, prospectEmail, prospectName]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
@@ -105,12 +111,13 @@ export default function TestUTMPage() {
               <div>
                 <label className="block text-sm font-medium mb-2">Tracked Link for Email</label>
                 <div className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm break-all">
-                  {trackedLink}
+                  {trackedLink || 'Loading...'}
                 </div>
               </div>
               <button
                 onClick={() => navigator.clipboard.writeText(trackedLink)}
                 className="w-full bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded font-medium transition-colors"
+                disabled={!trackedLink}
               >
                 Copy Email Link
               </button>
@@ -128,7 +135,7 @@ export default function TestUTMPage() {
                 <p>Hi {prospectName},</p>
                 <p className="mt-2">I'd love to schedule a discovery call to discuss your investment needs.</p>
                 <p className="mt-2">Please click the link below to book a time that works for you:</p>
-                <p className="mt-4 font-mono text-accent-400 break-all">{trackedLink}</p>
+                <p className="mt-4 font-mono text-accent-400 break-all">{trackedLink || 'Loading...'}</p>
                 <p className="mt-4">Looking forward to our conversation!</p>
                 <p className="mt-2">Best regards,<br/>Your Name</p>
               </div>

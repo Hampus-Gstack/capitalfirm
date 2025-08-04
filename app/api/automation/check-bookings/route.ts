@@ -7,8 +7,13 @@ export async function GET(request: NextRequest) {
     
     console.log('Automation: Checking for new bookings...');
     
+    // Get the base URL from environment or construct it
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
+                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                   'http://localhost:3000';
+    
     // Check booking sessions for pending bookings
-    const bookingSessionsResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/booking-sessions`);
+    const bookingSessionsResponse = await fetch(`${baseUrl}/api/booking-sessions`);
     if (bookingSessionsResponse.ok) {
       const { bookingSessions } = await bookingSessionsResponse.json();
       
@@ -22,7 +27,7 @@ export async function GET(request: NextRequest) {
       for (const booking of pendingBookings) {
         try {
           // Create meeting automatically
-          const meetingResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/meetings`, {
+          const meetingResponse = await fetch(`${baseUrl}/api/meetings`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
