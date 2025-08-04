@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function TestUTMPage() {
   const [utmParams, setUtmParams] = useState({
@@ -11,8 +11,15 @@ export default function TestUTMPage() {
     email: 'test@example.com',
     name: 'Test User'
   });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const generateUTMLink = () => {
+    if (!mounted) return '';
+    
     const baseUrl = window.location.origin;
     const params = new URLSearchParams();
     
@@ -33,9 +40,22 @@ export default function TestUTMPage() {
   };
 
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    alert('Link copied to clipboard!');
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      alert('Link copied to clipboard!');
+    }
   };
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
