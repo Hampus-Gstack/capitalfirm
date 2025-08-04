@@ -4,6 +4,18 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd'
 import { StrictModeDroppable as Droppable } from '@/components/StrictModeDroppable'
+import { 
+  PlusIcon, 
+  PencilIcon, 
+  TrashIcon, 
+  CheckIcon, 
+  XMarkIcon,
+  EyeIcon,
+  CalendarIcon,
+  CurrencyDollarIcon,
+  UserIcon,
+  DocumentTextIcon
+} from '@heroicons/react/24/outline'
 
 // Import types from the main dashboard
 interface Meeting {
@@ -82,6 +94,29 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
   const [meetings, setMeetings] = useState<Meeting[]>([])
   const [stages, setStages] = useState<Stage[]>([])
   const [pipelineStages, setPipelineStages] = useState<PipelineStage[]>([])
+  
+  // Admin editing states
+  const [isEditing, setIsEditing] = useState(false)
+  const [showAddTaskModal, setShowAddTaskModal] = useState(false)
+  const [showAddDealModal, setShowAddDealModal] = useState(false)
+  const [showAddMeetingModal, setShowAddMeetingModal] = useState(false)
+  const [editingTask, setEditingTask] = useState<Task | null>(null)
+  const [editingDeal, setEditingDeal] = useState<Deal | null>(null)
+  const [editingMeeting, setEditingMeeting] = useState<Meeting | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  // Check admin authentication
+  useEffect(() => {
+    // In a real app, this would check actual authentication
+    // For demo purposes, we'll assume admin access from the URL path
+    const isAdminUser = window.location.pathname.includes('/admin/')
+    setIsAdmin(isAdminUser)
+    
+    if (!isAdminUser) {
+      // Redirect non-admin users
+      router.push('/login?redirect=' + encodeURIComponent(window.location.pathname))
+    }
+  }, [router])
 
   // Initialize client data based on ID
   useEffect(() => {
@@ -217,7 +252,7 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
       },
       {
         id: 'closed',
-        name: 'Closed Won',
+        name: 'Closed',
         color: 'from-green-500 to-emerald-500',
         order: 5,
         deals: []
@@ -230,19 +265,111 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
   }
 
   const handleDragEnd = (result: DropResult) => {
-    // Handle task drag and drop
     if (!result.destination) return
-    
-    // Implementation would update task status/stage
-    console.log('Task moved:', result)
+
+    const { source, destination } = result
+    const newStages = [...stages]
+    const sourceStage = newStages.find(s => s.id === source.droppableId)
+    const destStage = newStages.find(s => s.id === destination.droppableId)
+
+    if (sourceStage && destStage) {
+      const [movedTask] = sourceStage.tasks.splice(source.index, 1)
+      destStage.tasks.splice(destination.index, 0, movedTask)
+      setStages(newStages)
+    }
   }
 
   const handlePipelineDragEnd = (result: DropResult) => {
-    // Handle deal drag and drop
     if (!result.destination) return
-    
-    // Implementation would update deal stage
-    console.log('Deal moved:', result)
+
+    const { source, destination } = result
+    const newPipelineStages = [...pipelineStages]
+    const sourceStage = newPipelineStages.find(s => s.id === source.droppableId)
+    const destStage = newPipelineStages.find(s => s.id === destination.droppableId)
+
+    if (sourceStage && destStage) {
+      const [movedDeal] = sourceStage.deals.splice(source.index, 1)
+      movedDeal.stage = destStage.id
+      destStage.deals.splice(destination.index, 0, movedDeal)
+      setPipelineStages(newPipelineStages)
+    }
+  }
+
+  // Admin editing functions
+  const addTask = (task: Task) => {
+    const newStages = stages.map(stage => {
+      if (stage.id === task.stage) {
+        return { ...stage, tasks: [...stage.tasks, task] }
+      }
+      return stage
+    })
+    setStages(newStages)
+    setShowAddTaskModal(false)
+  }
+
+  const updateTask = (taskId: string, updates: Partial<Task>) => {
+    const newStages = stages.map(stage => ({
+      ...stage,
+      tasks: stage.tasks.map(task => 
+        task.id === taskId ? { ...task, ...updates } : task
+      )
+    }))
+    setStages(newStages)
+    setEditingTask(null)
+  }
+
+  const deleteTask = (taskId: string) => {
+    const newStages = stages.map(stage => ({
+      ...stage,
+      tasks: stage.tasks.filter(task => task.id !== taskId)
+    }))
+    setStages(newStages)
+  }
+
+  const addDeal = (deal: Deal) => {
+    const newPipelineStages = pipelineStages.map(stage => {
+      if (stage.id === deal.stage) {
+        return { ...stage, deals: [...stage.deals, deal] }
+      }
+      return stage
+    })
+    setPipelineStages(newPipelineStages)
+    setShowAddDealModal(false)
+  }
+
+  const updateDeal = (dealId: string, updates: Partial<Deal>) => {
+    const newPipelineStages = pipelineStages.map(stage => ({
+      ...stage,
+      deals: stage.deals.map(deal => 
+        deal.id === dealId ? { ...deal, ...updates } : deal
+      )
+    }))
+    setPipelineStages(newPipelineStages)
+    setEditingDeal(null)
+  }
+
+  const deleteDeal = (dealId: string) => {
+    const newPipelineStages = pipelineStages.map(stage => ({
+      ...stage,
+      deals: stage.deals.filter(deal => deal.id !== dealId)
+    }))
+    setPipelineStages(newPipelineStages)
+  }
+
+  const addMeeting = (meeting: Meeting) => {
+    setMeetings([...meetings, meeting])
+    setShowAddMeetingModal(false)
+  }
+
+  const updateMeeting = (meetingId: string, updates: Partial<Meeting>) => {
+    setMeetings(meetings.map(meeting => 
+      meeting.id === meetingId ? { ...meeting, ...updates } : meeting
+    ))
+    setEditingMeeting(null)
+  }
+
+  const deleteMeeting = (meetingId: string) => {
+    setMeetings(meetings.filter(meeting => meeting.id !== meetingId))
   }
 
   const formatCurrency = (amount: number) => {
@@ -260,6 +387,18 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
       month: 'short',
       day: 'numeric'
     })
+  }
+
+  // Show loading while checking admin access
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-400 mx-auto mb-4"></div>
+          <p className="text-gray-300">Checking admin access...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -284,8 +423,26 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
               <p className="text-gray-400 mt-1">Manage all aspects of this client's project</p>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-green-400 font-medium">Admin View</span>
+              <div className="bg-green-500/20 border border-green-500/30 rounded-lg px-3 py-1">
+                <span className="text-green-400 font-medium text-sm">ADMIN ACCESS</span>
+              </div>
               <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              <button
+                onClick={() => setIsEditing(!isEditing)}
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  isEditing 
+                    ? 'bg-red-500 hover:bg-red-600 text-white' 
+                    : 'bg-green-500 hover:bg-green-600 text-white'
+                }`}
+              >
+                {isEditing ? 'Exit Edit Mode' : 'Enter Edit Mode'}
+              </button>
+              <button
+                onClick={() => router.push('/admin/clients')}
+                className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-sm font-medium"
+              >
+                Back to Clients
+              </button>
             </div>
           </div>
         </div>
@@ -346,29 +503,134 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                 <p className="text-sm text-gray-400">Total opportunities</p>
               </div>
             </div>
+
+            {/* Admin Quick Actions */}
+            {isEditing && (
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
+                <h3 className="text-lg font-semibold mb-4">Admin Quick Actions</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <button
+                    onClick={() => setShowAddTaskModal(true)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg text-left transition-all duration-200"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <PlusIcon className="h-6 w-6" />
+                      <div>
+                        <h4 className="font-semibold">Add Task</h4>
+                        <p className="text-sm opacity-90">Create new project task</p>
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => setShowAddDealModal(true)}
+                    className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg text-left transition-all duration-200"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <CurrencyDollarIcon className="h-6 w-6" />
+                      <div>
+                        <h4 className="font-semibold">Add Deal</h4>
+                        <p className="text-sm opacity-90">Create new sales opportunity</p>
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => setShowAddMeetingModal(true)}
+                    className="bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-lg text-left transition-all duration-200"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <CalendarIcon className="h-6 w-6" />
+                      <div>
+                        <h4 className="font-semibold">Schedule Meeting</h4>
+                        <p className="text-sm opacity-90">Book client meeting</p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Recent Activity */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
+              <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
+              <div className="space-y-3">
+                {meetings.slice(0, 3).map((meeting) => (
+                  <div key={meeting.id} className="flex items-center space-x-3 p-3 bg-gray-700/50 rounded-lg">
+                    <CalendarIcon className="h-5 w-5 text-blue-400" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">{meeting.title}</p>
+                      <p className="text-xs text-gray-400">{meeting.date} at {meeting.time}</p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      meeting.status === 'scheduled' ? 'bg-blue-500/20 text-blue-300' :
+                      meeting.status === 'completed' ? 'bg-green-500/20 text-green-300' :
+                      'bg-red-500/20 text-red-300'
+                    }`}>
+                      {meeting.status}
+                    </span>
+                  </div>
+                ))}
+                {meetings.length === 0 && (
+                  <p className="text-gray-400 text-sm">No recent meetings</p>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
         {activeTab === 'meetings' && (
           <div className="space-y-6">
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
-              <h3 className="text-lg font-semibold mb-4">Client Meetings</h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Client Meetings</h3>
+                {isEditing && (
+                  <button
+                    onClick={() => setShowAddMeetingModal(true)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center space-x-1"
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                    <span>Add Meeting</span>
+                  </button>
+                )}
+              </div>
               <div className="space-y-3">
                 {meetings.map((meeting) => (
                   <div key={meeting.id} className="bg-gray-700/50 rounded-lg p-4">
                     <div className="flex justify-between items-start">
-                      <div>
+                      <div className="flex-1">
                         <h4 className="font-semibold">{meeting.title}</h4>
                         <p className="text-sm text-gray-400">{meeting.date} at {meeting.time}</p>
                         <p className="text-sm text-gray-400">Attendee: {meeting.attendee}</p>
+                        {meeting.source && (
+                          <p className="text-sm text-gray-400">Source: {meeting.source}</p>
+                        )}
                       </div>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        meeting.status === 'scheduled' ? 'bg-blue-500/20 text-blue-300' :
-                        meeting.status === 'completed' ? 'bg-green-500/20 text-green-300' :
-                        'bg-red-500/20 text-red-300'
-                      }`}>
-                        {meeting.status}
-                      </span>
+                      <div className="flex items-center space-x-2">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          meeting.status === 'scheduled' ? 'bg-blue-500/20 text-blue-300' :
+                          meeting.status === 'completed' ? 'bg-green-500/20 text-green-300' :
+                          'bg-red-500/20 text-red-300'
+                        }`}>
+                          {meeting.status}
+                        </span>
+                        {isEditing && (
+                          <div className="flex space-x-1">
+                            <button
+                              onClick={() => setEditingMeeting(meeting)}
+                              className="text-blue-400 hover:text-blue-300 transition-colors"
+                              title="Edit Meeting"
+                            >
+                              <PencilIcon className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => deleteMeeting(meeting.id)}
+                              className="text-red-400 hover:text-red-300 transition-colors"
+                              title="Delete Meeting"
+                            >
+                              <TrashIcon className="h-4 w-4" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -385,7 +647,18 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
         {activeTab === 'project-management' && (
           <div className="space-y-6">
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
-              <h3 className="text-lg font-semibold mb-4">Project Stages</h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Project Stages</h3>
+                {isEditing && (
+                  <button
+                    onClick={() => setShowAddTaskModal(true)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center space-x-1"
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                    <span>Add Task</span>
+                  </button>
+                )}
+              </div>
               <DragDropContext onDragEnd={handleDragEnd}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {stages.map((stage) => (
@@ -423,19 +696,41 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                                     }`}
                                     style={provided.draggableProps.style}
                                   >
-                                    <h5 className="font-medium text-white">{task.title}</h5>
-                                    {task.description && (
-                                      <p className="text-sm text-gray-400 mt-1">{task.description}</p>
-                                    )}
-                                    <div className="flex justify-between items-center mt-2">
-                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                        task.priority === 'high' ? 'bg-red-500/20 text-red-300' :
-                                        task.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-300' :
-                                        'bg-green-500/20 text-green-300'
-                                      }`}>
-                                        {task.priority}
-                                      </span>
-                                      <span className="text-xs text-gray-400">{task.assignee}</span>
+                                    <div className="flex justify-between items-start">
+                                      <div className="flex-1">
+                                        <h5 className="font-medium text-white">{task.title}</h5>
+                                        {task.description && (
+                                          <p className="text-sm text-gray-400 mt-1">{task.description}</p>
+                                        )}
+                                        <div className="flex justify-between items-center mt-2">
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                            task.priority === 'high' ? 'bg-red-500/20 text-red-300' :
+                                            task.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-300' :
+                                            'bg-green-500/20 text-green-300'
+                                          }`}>
+                                            {task.priority}
+                                          </span>
+                                          <span className="text-xs text-gray-400">{task.assignee}</span>
+                                        </div>
+                                      </div>
+                                      {isEditing && (
+                                        <div className="flex space-x-1 ml-2">
+                                          <button
+                                            onClick={() => setEditingTask(task)}
+                                            className="text-blue-400 hover:text-blue-300 transition-colors"
+                                            title="Edit Task"
+                                          >
+                                            <PencilIcon className="h-4 w-4" />
+                                          </button>
+                                          <button
+                                            onClick={() => deleteTask(task.id)}
+                                            className="text-red-400 hover:text-red-300 transition-colors"
+                                            title="Delete Task"
+                                          >
+                                            <TrashIcon className="h-4 w-4" />
+                                          </button>
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 )}
@@ -456,7 +751,18 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
         {activeTab === 'crm' && (
           <div className="space-y-6">
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
-              <h3 className="text-lg font-semibold mb-4">Sales Pipeline</h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Sales Pipeline</h3>
+                {isEditing && (
+                  <button
+                    onClick={() => setShowAddDealModal(true)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center space-x-1"
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                    <span>Add Deal</span>
+                  </button>
+                )}
+              </div>
               <DragDropContext onDragEnd={handlePipelineDragEnd}>
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                   {pipelineStages.map((stage) => (
@@ -487,11 +793,33 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                                     }`}
                                     style={provided.draggableProps.style}
                                   >
-                                    <h5 className="font-medium text-white text-sm">{deal.title}</h5>
-                                    <p className="text-xs text-gray-400">{deal.company}</p>
-                                    <div className="flex justify-between items-center mt-2">
-                                      <span className="text-sm font-bold text-green-400">{formatCurrency(deal.value)}</span>
-                                      <span className="text-xs text-blue-400">{deal.probability}%</span>
+                                    <div className="flex justify-between items-start">
+                                      <div className="flex-1">
+                                        <h5 className="font-medium text-white text-sm">{deal.title}</h5>
+                                        <p className="text-xs text-gray-400">{deal.company}</p>
+                                        <div className="flex justify-between items-center mt-2">
+                                          <span className="text-sm font-bold text-green-400">{formatCurrency(deal.value)}</span>
+                                          <span className="text-xs text-blue-400">{deal.probability}%</span>
+                                        </div>
+                                      </div>
+                                      {isEditing && (
+                                        <div className="flex space-x-1 ml-2">
+                                          <button
+                                            onClick={() => setEditingDeal(deal)}
+                                            className="text-blue-400 hover:text-blue-300 transition-colors"
+                                            title="Edit Deal"
+                                          >
+                                            <PencilIcon className="h-4 w-4" />
+                                          </button>
+                                          <button
+                                            onClick={() => deleteDeal(deal.id)}
+                                            className="text-red-400 hover:text-red-300 transition-colors"
+                                            title="Delete Deal"
+                                          >
+                                            <TrashIcon className="h-4 w-4" />
+                                          </button>
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 )}
@@ -534,6 +862,347 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
           </div>
         )}
       </div>
+
+      {/* Add Task Modal */}
+      {showAddTaskModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Add New Task</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              const formData = new FormData(e.currentTarget)
+              const newTask: Task = {
+                id: Date.now().toString(),
+                title: formData.get('title') as string,
+                description: formData.get('description') as string,
+                status: 'not_started',
+                stage: formData.get('stage') as string,
+                assignee: formData.get('assignee') as string,
+                priority: formData.get('priority') as 'low' | 'medium' | 'high',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+              addTask(newTask)
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Title</label>
+                  <input
+                    name="title"
+                    type="text"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Description</label>
+                  <textarea
+                    name="description"
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                    rows={3}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Stage</label>
+                  <select
+                    name="stage"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  >
+                    {stages.map(stage => (
+                      <option key={stage.id} value={stage.id}>{stage.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Assignee</label>
+                  <input
+                    name="assignee"
+                    type="text"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Priority</label>
+                  <select
+                    name="priority"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                  >
+                    Add Task
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddTaskModal(false)}
+                    className="flex-1 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Deal Modal */}
+      {showAddDealModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Add New Deal</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              const formData = new FormData(e.currentTarget)
+              const newDeal: Deal = {
+                id: Date.now().toString(),
+                title: formData.get('title') as string,
+                company: formData.get('company') as string,
+                contact: formData.get('contact') as string,
+                email: formData.get('email') as string,
+                value: Number(formData.get('value')),
+                stage: formData.get('stage') as string,
+                probability: Number(formData.get('probability')),
+                closeDate: formData.get('closeDate') as string,
+                source: formData.get('source') as string,
+                lastActivity: new Date().toISOString(),
+                createdAt: new Date().toISOString(),
+                tags: [],
+                priority: formData.get('priority') as 'low' | 'medium' | 'high'
+              }
+              addDeal(newDeal)
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Title</label>
+                  <input
+                    name="title"
+                    type="text"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Company</label>
+                  <input
+                    name="company"
+                    type="text"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Contact</label>
+                  <input
+                    name="contact"
+                    type="text"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Value</label>
+                  <input
+                    name="value"
+                    type="number"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Stage</label>
+                  <select
+                    name="stage"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  >
+                    {pipelineStages.map(stage => (
+                      <option key={stage.id} value={stage.id}>{stage.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Probability (%)</label>
+                  <input
+                    name="probability"
+                    type="number"
+                    min="0"
+                    max="100"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Close Date</label>
+                  <input
+                    name="closeDate"
+                    type="date"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Source</label>
+                  <input
+                    name="source"
+                    type="text"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Priority</label>
+                  <select
+                    name="priority"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                  >
+                    Add Deal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddDealModal(false)}
+                    className="flex-1 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Meeting Modal */}
+      {showAddMeetingModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Add New Meeting</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              const formData = new FormData(e.currentTarget)
+              const newMeeting: Meeting = {
+                id: Date.now().toString(),
+                title: formData.get('title') as string,
+                date: formData.get('date') as string,
+                time: formData.get('time') as string,
+                attendee: formData.get('attendee') as string,
+                status: formData.get('status') as 'scheduled' | 'completed' | 'cancelled',
+                source: formData.get('source') as 'calendly' | 'hubspot' | 'google' | 'zcal'
+              }
+              addMeeting(newMeeting)
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Title</label>
+                  <input
+                    name="title"
+                    type="text"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Date</label>
+                  <input
+                    name="date"
+                    type="date"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Time</label>
+                  <input
+                    name="time"
+                    type="time"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Attendee</label>
+                  <input
+                    name="attendee"
+                    type="text"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Status</label>
+                  <select
+                    name="status"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  >
+                    <option value="scheduled">Scheduled</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Source</label>
+                  <select
+                    name="source"
+                    required
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                  >
+                    <option value="calendly">Calendly</option>
+                    <option value="hubspot">HubSpot</option>
+                    <option value="google">Google Calendar</option>
+                    <option value="zcal">Zcal</option>
+                  </select>
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                  >
+                    Add Meeting
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddMeetingModal(false)}
+                    className="flex-1 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
