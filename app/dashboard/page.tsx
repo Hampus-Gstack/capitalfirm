@@ -1440,171 +1440,262 @@ export default function Dashboard() {
         )}
 
         {activeTab === 'meetings' && (
-          <div className="space-y-6 animate-fadeIn">
-            {/* Meeting Tracking Section */}
-            <div className="bg-gray-800 rounded-xl p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Meeting Tracking</h2>
-                <button 
-                  onClick={() => setShowAddMeetingModal(true)}
-                  className="bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-                >
-                  Add Meeting
-                </button>
-              </div>
-
-              {/* Calendar Integration Setup */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-gray-700 rounded-lg p-4">
-                  <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-lg font-semibold">UTM Tracking Links</h3>
-                    <button
-                      onClick={() => setShowCalendarSetup(!showCalendarSetup)}
-                      className="text-accent-400 hover:text-accent-300 text-sm"
-                    >
-                      {showCalendarSetup ? 'Hide Setup' : 'Setup URLs'}
-                    </button>
-                  </div>
-                  <p className="text-gray-400 text-sm mb-4">
-                    Use these links to track meetings from your calendar systems:
-                  </p>
-                  
-                  {showCalendarSetup && (
-                    <div className="mb-4 p-4 bg-gray-600 rounded-lg">
-                      <h4 className="text-sm font-semibold mb-3">Update Your Calendar URLs:</h4>
-                      {Object.entries(calendarLinks).map(([platform, baseUrl]) => (
-                        <div key={platform} className="mb-3">
-                          <label className="text-xs text-gray-400 capitalize">{platform}:</label>
-                          <input
-                            type="text"
-                            value={baseUrl}
-                            onChange={(e) => setCalendarLinks(prev => ({
-                              ...prev,
-                              [platform]: e.target.value
-                            }))}
-                            placeholder={`Enter your ${platform} calendar URL`}
-                            className="w-full bg-gray-500 border border-gray-400 rounded px-3 py-2 text-sm mt-1"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  
-                  <div className="space-y-3">
-                    {Object.entries(calendarLinks).map(([platform, baseUrl]) => (
-                      <div key={platform} className="flex items-center space-x-3">
-                        <span className="text-sm font-medium capitalize">{platform}:</span>
-                        <input
-                          type="text"
-                          value={generateUTMLink(baseUrl, platform)}
-                          readOnly
-                          className="flex-1 bg-gray-600 border border-gray-500 rounded px-3 py-2 text-sm"
-                        />
-                        <button
-                          onClick={() => navigator.clipboard.writeText(generateUTMLink(baseUrl, platform))}
-                          className="text-accent-400 hover:text-accent-300 text-sm"
-                        >
-                          Copy
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+          <div className="animate-fadeIn">
+            {/* Header */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30 mb-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">
+                    Meetings
+                  </h2>
+                  <p className="text-gray-400 mt-1">Track and manage all your client meetings</p>
                 </div>
-
-                <div className="bg-gray-700 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-3">API Integration</h3>
-                  <p className="text-gray-400 text-sm mb-4">
-                    Connect your calendar systems for automatic meeting tracking:
-                  </p>
-                  <div className="space-y-3">
-                    <button 
-                      onClick={() => {
-                        alert('Calendly Integration:\n\n1. Go to Calendly.com > Integrations\n2. Create API key\n3. Add webhook: https://capitalfirm-vert.vercel.app/api/webhooks/calendar\n4. Add CALENDLY_API_KEY to your environment variables');
-                      }}
-                      className="w-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded font-medium transition-colors"
-                    >
-                      Connect Calendly
-                    </button>
-                    <button 
-                      onClick={() => {
-                        alert('HubSpot Integration:\n\n1. Go to HubSpot Settings > Calendar\n2. Enable calendar integration\n3. Add webhook: https://capitalfirm-vert.vercel.app/api/webhooks/calendar\n4. Add HUBSPOT_API_KEY to your environment variables');
-                      }}
-                      className="w-full bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded font-medium transition-colors"
-                    >
-                      Connect HubSpot
-                    </button>
-                    <button 
-                      onClick={() => {
-                        alert('Google Calendar Integration:\n\n1. Go to Google Cloud Console\n2. Enable Google Calendar API\n3. Create OAuth credentials\n4. Add GOOGLE_CLIENT_ID to your environment variables');
-                      }}
-                      className="w-full bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded font-medium transition-colors"
-                    >
-                      Connect Google Calendar
-                    </button>
-                    <button 
-                      onClick={() => {
-                        alert('Zcal Integration:\n\n1. Contact Zcal support for API access\n2. Get API key and webhook URL\n3. Add ZCAL_API_KEY to your environment variables');
-                      }}
-                      className="w-full bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded font-medium transition-colors"
-                    >
-                      Connect Zcal
-                    </button>
-                  </div>
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => router.push('/test-utm')}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center space-x-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.102m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    <span>UTM Tools</span>
+                  </button>
+                  <button 
+                    onClick={() => setShowAddMeetingModal(true)}
+                    className="bg-gradient-to-r from-accent-600 to-purple-600 hover:from-accent-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center space-x-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    <span>Add Meeting</span>
+                  </button>
                 </div>
               </div>
+            </div>
 
-              {/* Meetings List */}
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-4">Recent Meetings</h3>
-                <div className="space-y-3">
-                  {meetings.map((meeting) => (
-                    <div key={meeting.id} className="flex items-center justify-between p-4 bg-gray-600 rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <span className="text-2xl">{getSourceIcon(meeting.source)}</span>
-                        <div>
-                          <h4 className="font-semibold">{meeting.title}</h4>
-                          <p className="text-sm text-gray-400">
-                            {meeting.date} at {meeting.time} • {meeting.attendee}
-                          </p>
-                          {/* UTM Information */}
-                          {(meeting.utm_source || meeting.utm_medium || meeting.utm_campaign) && (
-                            <div className="flex items-center space-x-2 mt-1">
+            {/* Meeting Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-sm rounded-xl p-6 border border-blue-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Total Meetings</h3>
+                  <span className="text-2xl">📅</span>
+                </div>
+                <p className="text-3xl font-bold text-blue-400">{meetings.length}</p>
+                <p className="text-sm text-gray-400">All time</p>
+              </div>
+              <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur-sm rounded-xl p-6 border border-green-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Scheduled</h3>
+                  <span className="text-2xl">⏰</span>
+                </div>
+                <p className="text-3xl font-bold text-green-400">{meetings.filter(m => m.status === 'scheduled').length}</p>
+                <p className="text-sm text-gray-400">Upcoming meetings</p>
+              </div>
+              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm rounded-xl p-6 border border-purple-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Completed</h3>
+                  <span className="text-2xl">✅</span>
+                </div>
+                <p className="text-3xl font-bold text-purple-400">{meetings.filter(m => m.status === 'completed').length}</p>
+                <p className="text-sm text-gray-400">Past meetings</p>
+              </div>
+              <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm rounded-xl p-6 border border-orange-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">This Week</h3>
+                  <span className="text-2xl">🗓️</span>
+                </div>
+                <p className="text-3xl font-bold text-orange-400">
+                  {meetings.filter(m => {
+                    const meetingDate = new Date(m.date);
+                    const now = new Date();
+                    const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
+                    const weekEnd = new Date(weekStart);
+                    weekEnd.setDate(weekStart.getDate() + 6);
+                    return meetingDate >= weekStart && meetingDate <= weekEnd;
+                  }).length}
+                </p>
+                <p className="text-sm text-gray-400">This week</p>
+              </div>
+            </div>
+
+            {/* Pending Booking Sessions */}
+            {bookingSessions.length > 0 && (
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30 mb-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-yellow-400">
+                    📋 Pending Booking Sessions ({bookingSessions.length})
+                  </h3>
+                  <button
+                    onClick={() => setShowBookingSessions(!showBookingSessions)}
+                    className="text-yellow-400 hover:text-yellow-300 text-sm"
+                  >
+                    {showBookingSessions ? 'Hide' : 'Show'} Sessions
+                  </button>
+                </div>
+                
+                {showBookingSessions && (
+                  <div className="space-y-3">
+                    {bookingSessions.map((session) => (
+                      <div key={session.session_id} className="bg-gray-700/50 rounded-lg p-4 border border-yellow-500/30">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-3 mb-2">
+                              <h4 className="font-semibold text-white">
+                                {session.prospect_name || 'Unknown Prospect'}
+                              </h4>
+                              <span className="text-sm text-gray-400">
+                                {session.prospect_email}
+                              </span>
+                            </div>
+                            
+                            <div className="flex items-center space-x-2 mb-3">
                               <span className="text-xs text-gray-500">UTM:</span>
-                              {meeting.utm_source && (
-                                <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">
-                                  {meeting.utm_source}
+                              {session.utm_source && (
+                                <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded">
+                                  {session.utm_source}
                                 </span>
                               )}
-                              {meeting.utm_medium && (
-                                <span className="text-xs bg-green-500/20 text-green-300 px-1.5 py-0.5 rounded">
-                                  {meeting.utm_medium}
+                              {session.utm_medium && (
+                                <span className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded">
+                                  {session.utm_medium}
                                 </span>
                               )}
-                              {meeting.utm_campaign && (
-                                <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">
-                                  {meeting.utm_campaign}
-                                </span>
-                              )}
-                              {meeting.utm_content && (
-                                <span className="text-xs bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">
-                                  {meeting.utm_content}
+                              {session.utm_campaign && (
+                                <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded">
+                                  {session.utm_campaign}
                                 </span>
                               )}
                             </div>
-                          )}
+                            
+                            <p className="text-sm text-gray-400">
+                              Created: {formatDate(session.timestamp)}
+                            </p>
+                          </div>
+                          
+                          <button
+                            onClick={() => createMeetingFromSession(session)}
+                            className="bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+                          >
+                            Create Meeting
+                          </button>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(meeting.status)}`}>
-                          {meeting.status}
-                        </span>
-                        <button className="text-accent-400 hover:text-accent-300 text-sm">
-                          View Details
-                        </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Meetings List */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold">All Meetings</h3>
+                <div className="flex items-center space-x-3">
+                  <select
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                    className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  >
+                    <option value="all">All Status</option>
+                    <option value="scheduled">Scheduled</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                  <input
+                    type="text"
+                    placeholder="Search meetings..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                {meetings
+                  .filter(meeting => {
+                    const matchesStatus = filterStatus === 'all' || meeting.status === filterStatus;
+                    const matchesSearch = searchTerm === '' || 
+                      meeting.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      meeting.attendee.toLowerCase().includes(searchTerm.toLowerCase());
+                    return matchesStatus && matchesSearch;
+                  })
+                  .map((meeting) => (
+                    <div key={meeting.id} className="bg-gray-700/50 rounded-lg p-4 border border-gray-600/30 hover:bg-gray-600/50 transition-colors">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className="text-2xl">{getSourceIcon(meeting.source)}</div>
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-3 mb-1">
+                              <h4 className="font-semibold text-white">{meeting.title}</h4>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(meeting.status)}`}>
+                                {meeting.status}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-400 mb-2">
+                              📅 {meeting.date} at {meeting.time} • 👤 {meeting.attendee}
+                            </p>
+                            
+                            {/* UTM Tags */}
+                            {(meeting.utm_source || meeting.utm_medium || meeting.utm_campaign || meeting.utm_content) && (
+                              <div className="flex items-center space-x-2">
+                                <span className="text-xs text-gray-500">Source:</span>
+                                {meeting.utm_source && (
+                                  <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded">
+                                    {meeting.utm_source}
+                                  </span>
+                                )}
+                                {meeting.utm_medium && (
+                                  <span className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded">
+                                    {meeting.utm_medium}
+                                  </span>
+                                )}
+                                {meeting.utm_campaign && (
+                                  <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded">
+                                    {meeting.utm_campaign}
+                                  </span>
+                                )}
+                                {meeting.utm_content && (
+                                  <span className="text-xs bg-orange-500/20 text-orange-300 px-2 py-1 rounded">
+                                    {meeting.utm_content}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <button className="text-gray-400 hover:text-white transition-colors p-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                          </button>
+                          <button className="text-gray-400 hover:text-red-400 transition-colors p-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
-                </div>
+                
+                {meetings.filter(meeting => {
+                  const matchesStatus = filterStatus === 'all' || meeting.status === filterStatus;
+                  const matchesSearch = searchTerm === '' || 
+                    meeting.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    meeting.attendee.toLowerCase().includes(searchTerm.toLowerCase());
+                  return matchesStatus && matchesSearch;
+                }).length === 0 && (
+                  <div className="text-center py-12">
+                    <div className="text-6xl mb-4">📅</div>
+                    <h3 className="text-lg font-medium text-gray-400 mb-2">No meetings found</h3>
+                    <p className="text-gray-500">
+                      {searchTerm ? 'Try adjusting your search criteria' : 'Add your first meeting to get started'}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
