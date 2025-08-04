@@ -1,38 +1,47 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
+    company: '',
     password: '',
-    userType: 'client' // 'client' or 'admin'
+    confirmPassword: '',
+    userType: 'client'
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // Simulate authentication
+      // Simulate signup process
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // For demo purposes, redirect based on user type
+      // Redirect based on user type
       if (formData.userType === 'admin') {
         router.push('/admin');
       } else {
-        router.push(redirect);
+        router.push('/dashboard');
       }
     } catch (error) {
-      setError('Login failed. Please try again.');
+      setError('Signup failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -57,11 +66,11 @@ export default function LoginPage() {
             </div>
             <span className="text-white font-bold text-2xl">Capital Firm</span>
           </Link>
-          <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-400">Sign in to your account</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
+          <p className="text-gray-400">Join Capital Firm today</p>
         </div>
 
-        {/* Login Form */}
+        {/* Signup Form */}
         <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
@@ -73,7 +82,7 @@ export default function LoginPage() {
             {/* User Type Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                I am a...
+                I want to join as a...
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <label className="flex items-center p-3 border border-gray-600 rounded-lg cursor-pointer hover:border-accent-500 transition-colors">
@@ -111,6 +120,40 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-300 mb-2">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                  placeholder="John"
+                />
+              </div>
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-300 mb-2">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                  placeholder="Doe"
+                />
+              </div>
+            </div>
+
             {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
@@ -124,7 +167,24 @@ export default function LoginPage() {
                 onChange={handleInputChange}
                 required
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                placeholder="Enter your email"
+                placeholder="john@company.com"
+              />
+            </div>
+
+            {/* Company */}
+            <div>
+              <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-2">
+                Company
+              </label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                value={formData.company}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                placeholder="Your Company"
               />
             </div>
 
@@ -140,8 +200,27 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleInputChange}
                 required
+                minLength={8}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                placeholder="Enter your password"
+                placeholder="Create a password"
+              />
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                required
+                minLength={8}
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
+                placeholder="Confirm your password"
               />
             </div>
 
@@ -154,10 +233,10 @@ export default function LoginPage() {
               {isLoading ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Signing in...
+                  Creating account...
                 </div>
               ) : (
-                'Sign In'
+                'Create Account'
               )}
             </button>
           </form>
@@ -165,23 +244,26 @@ export default function LoginPage() {
           {/* Links */}
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm">
-              Don't have an account?{' '}
-              <Link href="/signup" className="text-accent-400 hover:text-accent-300 transition-colors">
-                Sign up
+              Already have an account?{' '}
+              <Link href="/login" className="text-accent-400 hover:text-accent-300 transition-colors">
+                Sign in
               </Link>
             </p>
           </div>
         </div>
 
-        {/* Demo Credentials */}
+        {/* Terms */}
         <div className="mt-6 text-center">
-          <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4">
-            <p className="text-gray-400 text-sm mb-2">Demo Credentials:</p>
-            <div className="text-xs text-gray-500 space-y-1">
-              <p><strong>Client:</strong> client@capitalfirm.com / password123</p>
-              <p><strong>Admin:</strong> admin@capitalfirm.com / password123</p>
-            </div>
-          </div>
+          <p className="text-xs text-gray-500">
+            By creating an account, you agree to our{' '}
+            <Link href="/terms" className="text-accent-400 hover:text-accent-300">
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link href="/privacy" className="text-accent-400 hover:text-accent-300">
+              Privacy Policy
+            </Link>
+          </p>
         </div>
       </div>
     </div>

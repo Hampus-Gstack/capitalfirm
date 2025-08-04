@@ -1,279 +1,245 @@
-'use client'
-import { useState, useEffect, useRef } from 'react'
-import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<'client' | 'admin' | null>(null);
+  const pathname = usePathname();
 
-  // Frontend (Public-facing) items
-  const frontendItems = [
-    { name: 'Home', href: '/', isHome: true },
-    { name: 'About', href: '#process' },
-    { name: 'Services', href: '#verticals' },
-    { name: 'Team', href: '#team' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Resources', href: '#resources' },
-    { name: 'Testimonials', href: '#testimonials' },
-    { name: 'Presentation', href: '/presentation' },
-  ]
-
-  // Backend (Client/Admin) items
-  const backendItems = [
-    { name: 'Client Portal', href: '/dashboard', isHighlight: true },
-    { name: 'UTM Tools', href: '/test-utm' },
-    { name: 'Onboarding', href: '/onboarding' },
-  ]
-
-  const adminItems = [
-    { name: 'Admin Panel', href: '/admin/invitations' },
-    { name: 'Manage Invitations', href: '/admin/invitations' },
-  ]
-
-  const authItems = [
-    { name: 'Login', href: '/login' },
-    { name: 'Sign Up', href: '/signup' },
-  ]
-
-  // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(null)
+    // Check if user is logged in (this would be replaced with actual auth logic)
+    const checkAuth = () => {
+      // For now, we'll simulate auth based on URL patterns
+      if (pathname.startsWith('/dashboard')) {
+        setIsLoggedIn(true);
+        setUserRole('client');
+      } else if (pathname.startsWith('/admin')) {
+        setIsLoggedIn(true);
+        setUserRole('admin');
+      } else {
+        setIsLoggedIn(false);
+        setUserRole(null);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  // Close mobile menu on escape key and prevent body scroll
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setMobileMenuOpen(false)
-      }
-    }
-
-    if (mobileMenuOpen) {
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [mobileMenuOpen])
+    checkAuth();
+  }, [pathname]);
 
   const handleMobileMenuToggle = () => {
-    const newState = !mobileMenuOpen
-    setMobileMenuOpen(newState)
-    // Close any open dropdowns when mobile menu opens
-    if (!mobileMenuOpen) {
-      setDropdownOpen(null)
-    }
-  }
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const handleMobileMenuClose = () => {
-    setMobileMenuOpen(false)
-  }
+    setIsMobileMenuOpen(false);
+  };
 
-  const renderNavItem = (item: any, isMobile = false) => (
-    <a
-      key={item.name}
-      href={item.href}
-      className={`${
-        isMobile 
-          ? 'mobile-menu-item'
-          : 'text-sm font-semibold leading-6'
-      } ${
-        item.isHighlight
-          ? 'highlight'
-          : 'text-gray-300 hover:text-white'
-      } transition-colors ${
-        isMobile ? 'hover:bg-gray-800' : ''
-      }`}
-      onClick={() => {
-        handleMobileMenuClose()
-      }}
-    >
-      {item.name}
-    </a>
-  )
+  // Public navigation for non-logged-in users
+  const publicNavItems = [
+    { name: 'Home', href: '/' },
+    { name: 'Services', href: '/#services' },
+    { name: 'About', href: '/#about' },
+    { name: 'Contact', href: '/#contact' },
+    { name: 'Blog', href: '/blog' },
+  ];
 
-  const renderDropdown = (title: string, items: any[], dropdownKey: string) => (
-    <div className="relative" key={dropdownKey}>
-      <button
-        onClick={() => setDropdownOpen(dropdownOpen === dropdownKey ? null : dropdownKey)}
-        className="flex items-center text-sm font-semibold leading-6 text-gray-300 hover:text-white transition-colors"
-      >
-        {title}
-        <ChevronDownIcon className="ml-1 h-4 w-4" />
-      </button>
-      
-      {dropdownOpen === dropdownKey && (
-        <div className="absolute top-full left-0 mt-2 w-48 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
-          <div className="py-2">
-            {items.map(item => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
-                onClick={() => setDropdownOpen(null)}
-              >
-                {item.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )
+  // Client navigation for logged-in clients
+  const clientNavItems = [
+    { name: 'Dashboard', href: '/dashboard' },
+    { name: 'Meetings', href: '/dashboard?tab=meetings' },
+    { name: 'Tasks', href: '/dashboard?tab=tasks' },
+    { name: 'Analytics', href: '/dashboard?tab=analytics' },
+    { name: 'Settings', href: '/dashboard?tab=settings' },
+  ];
+
+  // Admin navigation for logged-in admins
+  const adminNavItems = [
+    { name: 'Overview', href: '/admin' },
+    { name: 'Clients', href: '/admin/clients' },
+    { name: 'Investors', href: '/admin/investors' },
+    { name: 'Analytics', href: '/admin/analytics' },
+    { name: 'Settings', href: '/admin/settings' },
+  ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 bg-black/80 backdrop-blur-md border-b border-gray-800">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div className="flex lg:flex-1">
-          <a href="/" className="-m-1.5 p-1.5">
-            <span className="text-2xl font-bold gradient-text">Capital Firm</span>
-          </a>
-        </div>
-        
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white bg-accent-600 hover:bg-accent-500 transition-colors"
-            onClick={handleMobileMenuToggle}
-            aria-label="Open main menu"
-          >
-            <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
-
-        </div>
-        
-        <div className="hidden lg:flex lg:gap-x-6" ref={dropdownRef}>
-          {/* Frontend Links - temporarily reduced */}
-          {frontendItems.slice(0, 3).map(item => renderNavItem(item))}
-          
-          {/* Backend Dropdown */}
-          {renderDropdown('Client Portal', backendItems, 'backend')}
-          
-          {/* Admin Dropdown */}
-          {renderDropdown('Admin', adminItems, 'admin')}
-          
-          {/* Account Dropdown */}
-          {renderDropdown('Account', authItems, 'auth')}
-        </div>
-        
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
-          <a
-            href="#contact"
-            className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-700 hover:to-accent-600 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-200"
-          >
-            Get Started →
-          </a>
-        </div>
-      </nav>
-      
-      {/* Mobile Menu - Full Page Overlay */}
-      <div className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ${
-        mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-      }`}>
-        {/* Full Page Background - Always covers entire screen */}
-        <div className="absolute inset-0 bg-gray-900 min-h-screen">
-          <div className="flex flex-col h-screen">
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-700 flex-shrink-0">
-              <a href="/" className="text-xl font-bold text-white">
-                Capital Firm
-              </a>
-              <button
-                type="button"
-                className="text-white hover:text-gray-300 transition-colors"
-                onClick={handleMobileMenuClose}
-              >
-                <XMarkIcon className="h-6 w-6" />
-              </button>
-            </div>
-            
-            {/* Menu Items - Takes remaining space */}
-            <div className="flex-1 overflow-y-auto">
-              <div className="py-4">
-                {/* Main Navigation */}
-                {frontendItems.map(item => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="block px-6 py-4 text-white hover:bg-gray-800 transition-colors border-b border-gray-700 text-lg"
-                    onClick={handleMobileMenuClose}
-                  >
-                    {item.name}
-                  </a>
-                ))}
-                
-                {/* Client Portal */}
-                {backendItems.map(item => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="block px-6 py-4 text-white hover:bg-gray-800 transition-colors border-b border-gray-700 text-lg"
-                    onClick={handleMobileMenuClose}
-                  >
-                    {item.name}
-                  </a>
-                ))}
-                
-                {/* Admin */}
-                {adminItems.map(item => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="block px-6 py-4 text-white hover:bg-gray-800 transition-colors border-b border-gray-700 text-lg"
-                    onClick={handleMobileMenuClose}
-                  >
-                    {item.name}
-                  </a>
-                ))}
-                
-                {/* Account */}
-                {authItems.map(item => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="block px-6 py-4 text-white hover:bg-gray-800 transition-colors border-b border-gray-700 text-lg"
-                    onClick={handleMobileMenuClose}
-                  >
-                    {item.name}
-                  </a>
-                ))}
+    <header className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-r from-accent-500 to-accent-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">CF</span>
               </div>
-            </div>
-            
-            {/* Action Buttons - Fixed at bottom */}
-            <div className="p-6 space-y-3 border-t border-gray-700 flex-shrink-0">
-              <a
-                href="/login"
-                className="block w-full text-center border border-gray-600 text-white px-6 py-4 rounded-lg font-medium hover:bg-gray-800 transition-colors text-lg"
-                onClick={handleMobileMenuClose}
-              >
-                Log in
-              </a>
-              <a
-                href="#contact"
-                className="block w-full text-center bg-accent-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-accent-700 transition-colors text-lg"
-                onClick={handleMobileMenuClose}
-              >
-                Get Started
-              </a>
-            </div>
+              <span className="text-white font-bold text-lg">Capital Firm</span>
+            </Link>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            {!isLoggedIn ? (
+              // Public navigation
+              <>
+                {publicNavItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-gray-300 hover:text-white transition-colors duration-200"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+                <div className="flex items-center space-x-4">
+                  <Link
+                    href="/login"
+                    className="text-gray-300 hover:text-white transition-colors duration-200"
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="bg-accent-600 hover:bg-accent-500 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              </>
+            ) : userRole === 'client' ? (
+              // Client navigation
+              <>
+                {clientNavItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-gray-300 hover:text-white transition-colors duration-200"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+                <div className="flex items-center space-x-4">
+                  <span className="text-gray-400 text-sm">Client Portal</span>
+                  <button className="text-gray-300 hover:text-white transition-colors duration-200">
+                    Logout
+                  </button>
+                </div>
+              </>
+            ) : userRole === 'admin' ? (
+              // Admin navigation
+              <>
+                {adminNavItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-gray-300 hover:text-white transition-colors duration-200"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+                <div className="flex items-center space-x-4">
+                  <span className="text-gray-400 text-sm">Admin Portal</span>
+                  <button className="text-gray-300 hover:text-white transition-colors duration-200">
+                    Logout
+                  </button>
+                </div>
+              </>
+            ) : null}
+          </nav>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={handleMobileMenuToggle}
+              className="text-gray-300 hover:text-white transition-colors duration-200"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-800/50 rounded-lg mt-2">
+              {!isLoggedIn ? (
+                // Public mobile navigation
+                <>
+                  {publicNavItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors duration-200"
+                      onClick={handleMobileMenuClose}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                  <div className="border-t border-gray-600 pt-2 mt-2">
+                    <Link
+                      href="/login"
+                      className="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors duration-200"
+                      onClick={handleMobileMenuClose}
+                    >
+                      Log In
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="block px-3 py-2 bg-accent-600 hover:bg-accent-500 text-white rounded-md transition-colors duration-200"
+                      onClick={handleMobileMenuClose}
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                </>
+              ) : userRole === 'client' ? (
+                // Client mobile navigation
+                <>
+                  {clientNavItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors duration-200"
+                      onClick={handleMobileMenuClose}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                  <div className="border-t border-gray-600 pt-2 mt-2">
+                    <span className="block px-3 py-2 text-gray-400 text-sm">Client Portal</span>
+                    <button className="block w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors duration-200">
+                      Logout
+                    </button>
+                  </div>
+                </>
+              ) : userRole === 'admin' ? (
+                // Admin mobile navigation
+                <>
+                  {adminNavItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors duration-200"
+                      onClick={handleMobileMenuClose}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                  <div className="border-t border-gray-600 pt-2 mt-2">
+                    <span className="block px-3 py-2 text-gray-400 text-sm">Admin Portal</span>
+                    <button className="block w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors duration-200">
+                      Logout
+                    </button>
+                  </div>
+                </>
+              ) : null}
+            </div>
+          </div>
+        )}
       </div>
     </header>
-  )
+  );
 } 
