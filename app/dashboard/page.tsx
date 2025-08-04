@@ -486,6 +486,16 @@ export default function Dashboard() {
     updateTaskStatus(draggableId, newStatus);
   };
 
+  const handleDragStart = (start: any) => {
+    // Optional: Add any logic when drag starts
+    console.log('Drag started:', start);
+  };
+
+  const handleDragUpdate = (update: any) => {
+    // Optional: Add any logic during drag
+    console.log('Drag update:', update);
+  };
+
   const updateTaskHours = (taskId: string, hours: number) => {
     setStages(prevStages => 
       prevStages.map(stage => ({
@@ -960,7 +970,7 @@ export default function Dashboard() {
               {/* Kanban Board */}
               <div>
                 <h3 className="text-lg font-semibold mb-4">Task Board</h3>
-                <DragDropContext onDragEnd={handleDragEnd}>
+                <DragDropContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragUpdate={handleDragUpdate}>
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {[
                       { status: 'not_started', title: 'Not Started', count: getTasksByStatus('not_started').length, color: 'from-gray-500 to-gray-600' },
@@ -978,7 +988,8 @@ export default function Dashboard() {
                             <div
                               ref={provided.innerRef}
                               {...provided.droppableProps}
-                              className={`space-y-3 min-h-[200px] ${snapshot.isDraggingOver ? 'bg-gray-600/30 rounded-lg' : ''}`}
+                              className={`space-y-3 min-h-[200px] p-2 ${snapshot.isDraggingOver ? 'bg-gray-600/30 rounded-lg' : ''}`}
+                              style={{ minHeight: '200px' }}
                             >
                               {filteredTasks.filter(task => task.status === column.status).map((task, index) => (
                                 <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -988,8 +999,12 @@ export default function Dashboard() {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                       className={`bg-gray-600/50 rounded-lg p-3 cursor-pointer hover:bg-gray-500/50 transition-all duration-200 border ${getPriorityBgColor(task.priority)} ${
-                                        snapshot.isDragging ? 'shadow-lg transform rotate-2' : ''
+                                        snapshot.isDragging ? 'shadow-lg transform rotate-2 z-50' : ''
                                       }`}
+                                      style={{
+                                        ...provided.draggableProps.style,
+                                        userSelect: 'none'
+                                      }}
                                       onClick={() => {
                                         setSelectedTask(task);
                                         setShowTaskModal(true);
@@ -1054,7 +1069,7 @@ export default function Dashboard() {
                               {provided.placeholder}
                               <button 
                                 onClick={() => setShowNewTaskModal(true)}
-                                className="w-full text-center text-sm text-gray-400 hover:text-gray-300 py-3 border-2 border-dashed border-gray-600/50 rounded-lg hover:border-gray-500/50 transition-all duration-200 hover:bg-gray-600/20"
+                                className="w-full text-center text-sm text-gray-400 hover:text-gray-300 py-3 border-2 border-dashed border-gray-600/50 rounded-lg hover:border-gray-500/50 transition-all duration-200 hover:bg-gray-600/20 mt-2"
                               >
                                 + Add Task
                               </button>
