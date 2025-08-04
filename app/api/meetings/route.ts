@@ -43,8 +43,12 @@ let meetings: Meeting[] = [
   }
 ];
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    // In a real app, you would get the user from the session
+    // For now, we'll return all meetings (mock data)
+    // TODO: Filter by user ID when authentication is implemented
+    
     return NextResponse.json({ meetings });
   } catch (error) {
     return NextResponse.json(

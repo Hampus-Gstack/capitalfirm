@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import AddMeetingModal from '@/components/AddMeetingModal';
 
 interface Meeting {
@@ -48,6 +49,32 @@ interface Stage {
 export default function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { data: session, status } = useSession();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (status === 'loading') return; // Still loading
+    if (!session) {
+      router.push('/login');
+    }
+  }, [session, status, router]);
+
+  // Show loading while checking authentication
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login prompt if not authenticated
+  if (!session) {
+    return null; // Will redirect to login
+  }
   
   // Generate UTM-tracked calendar links
   const generateUTMLink = (baseUrl: string, source: string) => {
@@ -294,35 +321,49 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddMeetingModal, setShowAddMeetingModal] = useState(false);
 
-  // Mock data - replace with actual API calls
+  // Load meetings from API - replace with actual API calls
   useEffect(() => {
-    const mockMeetings: Meeting[] = [
-      {
-        id: '1',
-        title: 'Investment Review Call',
-        date: '2024-01-15',
-        time: '10:00 AM',
-        attendee: 'John Smith',
-        status: 'scheduled',
-        source: 'calendly',
-        utm_source: 'capitalfirm',
-        utm_medium: 'dashboard',
-        utm_campaign: 'client_meeting'
-      },
-      {
-        id: '2',
-        title: 'Due Diligence Meeting',
-        date: '2024-01-18',
-        time: '2:00 PM',
-        attendee: 'Sarah Johnson',
-        status: 'scheduled',
-        source: 'hubspot',
-        utm_source: 'capitalfirm',
-        utm_medium: 'dashboard',
-        utm_campaign: 'client_meeting'
+    const loadMeetings = async () => {
+      try {
+        const response = await fetch('/api/meetings');
+        if (response.ok) {
+          const data = await response.json();
+          setMeetings(data.meetings || []);
+        }
+      } catch (error) {
+        console.error('Error loading meetings:', error);
+        // Fallback to mock data for now
+        const mockMeetings: Meeting[] = [
+          {
+            id: '1',
+            title: 'Investment Review Call',
+            date: '2024-01-15',
+            time: '10:00 AM',
+            attendee: 'John Smith',
+            status: 'scheduled',
+            source: 'calendly',
+            utm_source: 'capitalfirm',
+            utm_medium: 'dashboard',
+            utm_campaign: 'client_meeting'
+          },
+          {
+            id: '2',
+            title: 'Due Diligence Meeting',
+            date: '2024-01-18',
+            time: '2:00 PM',
+            attendee: 'Sarah Johnson',
+            status: 'scheduled',
+            source: 'hubspot',
+            utm_source: 'capitalfirm',
+            utm_medium: 'dashboard',
+            utm_campaign: 'client_meeting'
+          }
+        ];
+        setMeetings(mockMeetings);
       }
-    ];
-    setMeetings(mockMeetings);
+    };
+
+    loadMeetings();
   }, []);
 
   // Update URL when tab changes

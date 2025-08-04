@@ -113,7 +113,9 @@ export async function PUT(request: NextRequest) {
           utm_source: bookingSessions[sessionIndex].utm_source,
           utm_medium: bookingSessions[sessionIndex].utm_medium,
           utm_campaign: bookingSessions[sessionIndex].utm_campaign,
-          utm_content: bookingSessions[sessionIndex].utm_content
+          utm_content: bookingSessions[sessionIndex].utm_content,
+          // TODO: Add user_id when authentication is implemented
+          user_id: 'default' // This will be replaced with actual user ID
         })
       });
 
