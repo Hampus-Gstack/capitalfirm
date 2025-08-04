@@ -46,6 +46,33 @@ interface Stage {
   icon: string;
 }
 
+interface Deal {
+  id: string;
+  title: string;
+  company: string;
+  contact: string;
+  email: string;
+  phone?: string;
+  value: number;
+  stage: string;
+  probability: number;
+  closeDate: string;
+  source: string;
+  description?: string;
+  lastActivity: string;
+  createdAt: string;
+  tags: string[];
+  priority: 'low' | 'medium' | 'high';
+}
+
+interface PipelineStage {
+  id: string;
+  name: string;
+  color: string;
+  deals: Deal[];
+  order: number;
+}
+
 export default function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -296,6 +323,172 @@ export default function Dashboard() {
   const [showAddMeetingModal, setShowAddMeetingModal] = useState(false);
   const [bookingSessions, setBookingSessions] = useState<any[]>([]);
   const [showBookingSessions, setShowBookingSessions] = useState(false);
+  
+  // CRM Pipeline State
+  const [pipelineStages, setPipelineStages] = useState<PipelineStage[]>([
+    {
+      id: 'lead',
+      name: 'Leads',
+      color: 'from-blue-500 to-cyan-500',
+      order: 1,
+      deals: [
+        {
+          id: 'deal1',
+          title: 'Series A Funding',
+          company: 'TechStart Inc.',
+          contact: 'John Smith',
+          email: 'john@techstart.com',
+          phone: '+1 (555) 123-4567',
+          value: 2500000,
+          stage: 'lead',
+          probability: 20,
+          closeDate: '2024-03-15',
+          source: 'Website',
+          description: 'Looking for Series A funding to expand operations.',
+          lastActivity: '2024-01-15T10:00:00Z',
+          createdAt: '2024-01-10T09:00:00Z',
+          tags: ['tech', 'series-a', 'high-growth'],
+          priority: 'high'
+        },
+        {
+          id: 'deal2',
+          title: 'Growth Capital',
+          company: 'DataFlow Analytics',
+          contact: 'Sarah Johnson',
+          email: 'sarah@dataflow.com',
+          value: 1800000,
+          stage: 'lead',
+          probability: 15,
+          closeDate: '2024-04-01',
+          source: 'Referral',
+          description: 'Seeking growth capital for market expansion.',
+          lastActivity: '2024-01-14T14:30:00Z',
+          createdAt: '2024-01-08T11:00:00Z',
+          tags: ['data', 'growth', 'expansion'],
+          priority: 'medium'
+        }
+      ]
+    },
+    {
+      id: 'qualified',
+      name: 'Qualified',
+      color: 'from-yellow-500 to-orange-500',
+      order: 2,
+      deals: [
+        {
+          id: 'deal3',
+          title: 'Bridge Funding',
+          company: 'GreenTech Solutions',
+          contact: 'Mike Chen',
+          email: 'mike@greentech.com',
+          value: 750000,
+          stage: 'qualified',
+          probability: 45,
+          closeDate: '2024-02-28',
+          source: 'LinkedIn',
+          description: 'Bridge funding before Series B round.',
+          lastActivity: '2024-01-13T09:15:00Z',
+          createdAt: '2024-01-05T16:30:00Z',
+          tags: ['cleantech', 'bridge', 'urgent'],
+          priority: 'high'
+        }
+      ]
+    },
+    {
+      id: 'proposal',
+      name: 'Proposal',
+      color: 'from-purple-500 to-pink-500',
+      order: 3,
+      deals: [
+        {
+          id: 'deal4',
+          title: 'Seed Round',
+          company: 'FinTech Pro',
+          contact: 'Emily Davis',
+          email: 'emily@fintechpro.com',
+          value: 1200000,
+          stage: 'proposal',
+          probability: 70,
+          closeDate: '2024-02-15',
+          source: 'Conference',
+          description: 'Seed funding for fintech startup.',
+          lastActivity: '2024-01-12T15:45:00Z',
+          createdAt: '2024-01-01T10:00:00Z',
+          tags: ['fintech', 'seed', 'promising'],
+          priority: 'high'
+        }
+      ]
+    },
+    {
+      id: 'negotiation',
+      name: 'Negotiation',
+      color: 'from-orange-500 to-red-500',
+      order: 4,
+      deals: [
+        {
+          id: 'deal5',
+          title: 'Series B Round',
+          company: 'HealthTech Inc.',
+          contact: 'Alex Rodriguez',
+          email: 'alex@healthtech.com',
+          value: 5000000,
+          stage: 'negotiation',
+          probability: 85,
+          closeDate: '2024-01-30',
+          source: 'Partnership',
+          description: 'Series B funding for healthcare technology.',
+          lastActivity: '2024-01-11T11:20:00Z',
+          createdAt: '2023-12-15T14:00:00Z',
+          tags: ['healthtech', 'series-b', 'almost-closed'],
+          priority: 'high'
+        }
+      ]
+    },
+    {
+      id: 'closed',
+      name: 'Closed Won',
+      color: 'from-green-500 to-emerald-500',
+      order: 5,
+      deals: [
+        {
+          id: 'deal6',
+          title: 'Expansion Capital',
+          company: 'AI Innovations',
+          contact: 'Lisa Wang',
+          email: 'lisa@aiinnovations.com',
+          value: 3200000,
+          stage: 'closed',
+          probability: 100,
+          closeDate: '2024-01-05',
+          source: 'Direct',
+          description: 'Expansion capital for AI company - CLOSED.',
+          lastActivity: '2024-01-05T16:00:00Z',
+          createdAt: '2023-11-20T09:30:00Z',
+          tags: ['ai', 'expansion', 'closed'],
+          priority: 'medium'
+        }
+      ]
+    }
+  ]);
+  
+  const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null);
+  const [showDealModal, setShowDealModal] = useState(false);
+  const [showNewDealModal, setShowNewDealModal] = useState(false);
+  const [newDeal, setNewDeal] = useState({
+    title: '',
+    company: '',
+    contact: '',
+    email: '',
+    phone: '',
+    value: 0,
+    stage: 'lead',
+    probability: 10,
+    closeDate: '',
+    source: '',
+    description: '',
+    tags: [] as string[],
+    priority: 'medium' as 'low' | 'medium' | 'high'
+  });
 
   // Load meetings from API - replace with actual API calls
   useEffect(() => {
@@ -643,6 +836,158 @@ export default function Dashboard() {
     } catch (error) {
       console.error('Error creating meeting from session:', error);
     }
+  };
+
+  // CRM Pipeline Functions
+  const updateDealStage = (dealId: string, newStage: string) => {
+    setPipelineStages(prevStages => 
+      prevStages.map(stage => ({
+        ...stage,
+        deals: stage.deals.map(deal => 
+          deal.id === dealId 
+            ? { ...deal, stage: newStage, lastActivity: new Date().toISOString() }
+            : deal
+        ).filter(deal => deal.stage === stage.id)
+      })).map(stage => ({
+        ...stage,
+        deals: [
+          ...stage.deals,
+          ...prevStages.flatMap(s => s.deals).filter(deal => 
+            deal.id === dealId ? deal.stage === stage.id : false
+          ).map(deal => ({ ...deal, stage: newStage, lastActivity: new Date().toISOString() }))
+        ]
+      }))
+    );
+  };
+
+  const handlePipelineDragEnd = (result: DropResult) => {
+    const { destination, source, draggableId } = result;
+
+    // If dropped outside a valid droppable area
+    if (!destination) {
+      return;
+    }
+
+    // If dropped in the same position
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    // Find the deal being moved
+    const allDeals = pipelineStages.flatMap(stage => stage.deals);
+    const movedDeal = allDeals.find(deal => deal.id === draggableId);
+    
+    if (!movedDeal) {
+      return;
+    }
+
+    // Update the deal stage based on the destination
+    const newStage = destination.droppableId;
+    
+    // Update probability based on stage
+    let newProbability = movedDeal.probability;
+    switch (newStage) {
+      case 'lead': newProbability = Math.max(10, newProbability); break;
+      case 'qualified': newProbability = Math.max(25, newProbability); break;
+      case 'proposal': newProbability = Math.max(50, newProbability); break;
+      case 'negotiation': newProbability = Math.max(75, newProbability); break;
+      case 'closed': newProbability = 100; break;
+    }
+
+    // Create updated stages
+    const updatedStages = pipelineStages.map(stage => ({
+      ...stage,
+      deals: stage.deals.filter(deal => deal.id !== draggableId)
+    }));
+
+    // Add the deal to the new stage
+    const targetStageIndex = updatedStages.findIndex(stage => stage.id === newStage);
+    if (targetStageIndex !== -1) {
+      updatedStages[targetStageIndex].deals.push({
+        ...movedDeal,
+        stage: newStage,
+        probability: newProbability,
+        lastActivity: new Date().toISOString()
+      });
+    }
+
+    setPipelineStages(updatedStages);
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  const getDealPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'text-red-400 bg-red-400/10 border-red-400/20';
+      case 'medium': return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
+      case 'low': return 'text-green-400 bg-green-400/10 border-green-400/20';
+      default: return 'text-gray-400 bg-gray-400/10 border-gray-400/20';
+    }
+  };
+
+  const addNewDeal = () => {
+    const deal: Deal = {
+      id: `deal${Date.now()}`,
+      title: newDeal.title,
+      company: newDeal.company,
+      contact: newDeal.contact,
+      email: newDeal.email,
+      phone: newDeal.phone,
+      value: newDeal.value,
+      stage: newDeal.stage,
+      probability: newDeal.probability,
+      closeDate: newDeal.closeDate,
+      source: newDeal.source,
+      description: newDeal.description,
+      lastActivity: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      tags: newDeal.tags,
+      priority: newDeal.priority
+    };
+
+    setPipelineStages(prevStages => 
+      prevStages.map(stage => 
+        stage.id === newDeal.stage 
+          ? { ...stage, deals: [...stage.deals, deal] }
+          : stage
+      )
+    );
+
+    // Reset form
+    setNewDeal({
+      title: '',
+      company: '',
+      contact: '',
+      email: '',
+      phone: '',
+      value: 0,
+      stage: 'lead',
+      probability: 10,
+      closeDate: '',
+      source: '',
+      description: '',
+      tags: [],
+      priority: 'medium'
+    });
+    setShowNewDealModal(false);
   };
 
   return (
@@ -1312,29 +1657,163 @@ export default function Dashboard() {
         )}
 
         {activeTab === 'crm' && (
-          <div className="bg-gray-800 rounded-xl p-6 animate-fadeIn">
-            <h2 className="text-2xl font-bold mb-6">CRM Overview</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Total Contacts</h3>
-                <p className="text-2xl font-bold text-accent-400">156</p>
-                <p className="text-sm text-gray-400">+12 this month</p>
+          <div className="animate-fadeIn">
+            {/* CRM Header */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30 mb-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">
+                    Sales Pipeline
+                  </h2>
+                  <p className="text-gray-400 mt-1">Manage your deals and track progress</p>
+                </div>
+                <button
+                  onClick={() => setShowNewDealModal(true)}
+                  className="bg-gradient-to-r from-accent-600 to-purple-600 hover:from-accent-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center space-x-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  <span>Add Deal</span>
+                </button>
               </div>
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Active Deals</h3>
-                <p className="text-2xl font-bold text-green-400">23</p>
-                <p className="text-sm text-gray-400">In pipeline</p>
+            </div>
+
+            {/* Pipeline Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-sm rounded-xl p-6 border border-blue-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Total Deals</h3>
+                  <span className="text-2xl">💼</span>
+                </div>
+                <p className="text-3xl font-bold text-blue-400">{pipelineStages.reduce((acc, stage) => acc + stage.deals.length, 0)}</p>
+                <p className="text-sm text-gray-400">Active opportunities</p>
               </div>
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Meetings This Week</h3>
-                <p className="text-2xl font-bold text-blue-400">8</p>
-                <p className="text-sm text-gray-400">Scheduled</p>
+              <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur-sm rounded-xl p-6 border border-green-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Pipeline Value</h3>
+                  <span className="text-2xl">💰</span>
+                </div>
+                <p className="text-3xl font-bold text-green-400">
+                  {formatCurrency(pipelineStages.reduce((acc, stage) => acc + stage.deals.reduce((sum, deal) => sum + deal.value, 0), 0))}
+                </p>
+                <p className="text-sm text-gray-400">Total opportunity value</p>
               </div>
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Follow-ups</h3>
-                <p className="text-2xl font-bold text-yellow-400">15</p>
-                <p className="text-sm text-gray-400">Pending</p>
+              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm rounded-xl p-6 border border-purple-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Weighted Value</h3>
+                  <span className="text-2xl">📊</span>
+                </div>
+                <p className="text-3xl font-bold text-purple-400">
+                  {formatCurrency(pipelineStages.reduce((acc, stage) => 
+                    acc + stage.deals.reduce((sum, deal) => sum + (deal.value * deal.probability / 100), 0), 0))}
+                </p>
+                <p className="text-sm text-gray-400">Probability adjusted</p>
               </div>
+              <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm rounded-xl p-6 border border-orange-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Avg Deal Size</h3>
+                  <span className="text-2xl">📈</span>
+                </div>
+                <p className="text-3xl font-bold text-orange-400">
+                  {formatCurrency(pipelineStages.reduce((acc, stage) => acc + stage.deals.reduce((sum, deal) => sum + deal.value, 0), 0) / 
+                    Math.max(1, pipelineStages.reduce((acc, stage) => acc + stage.deals.length, 0)))}
+                </p>
+                <p className="text-sm text-gray-400">Average opportunity</p>
+              </div>
+            </div>
+
+            {/* Pipeline Board */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-600/30">
+              <DragDropContext onDragEnd={handlePipelineDragEnd}>
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                  {pipelineStages.map((stage) => (
+                    <div key={stage.id} className="min-h-[600px]">
+                      <div className={`bg-gradient-to-r ${stage.color} rounded-lg p-4 mb-4`}>
+                        <h3 className="text-lg font-semibold text-white">{stage.name}</h3>
+                        <p className="text-white/80 text-sm">
+                          {stage.deals.length} deals • {formatCurrency(stage.deals.reduce((sum, deal) => sum + deal.value, 0))}
+                        </p>
+                      </div>
+                      
+                      <Droppable droppableId={stage.id}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={`space-y-3 min-h-[500px] p-2 rounded-lg transition-all duration-200 ${
+                              snapshot.isDraggingOver ? 'bg-gray-700/30 border-2 border-dashed border-gray-500' : ''
+                            }`}
+                          >
+                            {stage.deals.map((deal, index) => (
+                              <Draggable key={deal.id} draggableId={deal.id} index={index}>
+                                {(provided, snapshot) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className={`bg-gray-700/50 rounded-lg p-4 cursor-pointer hover:bg-gray-600/50 transition-all duration-200 border border-gray-600/30 ${
+                                      snapshot.isDragging ? 'shadow-lg transform rotate-1 z-50 ring-2 ring-accent-500' : ''
+                                    }`}
+                                    style={{
+                                      ...provided.draggableProps.style,
+                                      userSelect: 'none'
+                                    }}
+                                    onClick={() => {
+                                      setSelectedDeal(deal);
+                                      setShowDealModal(true);
+                                    }}
+                                  >
+                                    <div className="space-y-3">
+                                      <div className="flex justify-between items-start">
+                                        <h4 className="font-semibold text-white truncate">{deal.title}</h4>
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getDealPriorityColor(deal.priority)}`}>
+                                          {deal.priority}
+                                        </span>
+                                      </div>
+                                      
+                                      <div className="text-sm text-gray-300">
+                                        <p className="font-medium">{deal.company}</p>
+                                        <p className="text-gray-400">{deal.contact}</p>
+                                      </div>
+                                      
+                                      <div className="flex justify-between items-center">
+                                        <span className="text-lg font-bold text-green-400">{formatCurrency(deal.value)}</span>
+                                        <span className="text-sm text-blue-400">{deal.probability}%</span>
+                                      </div>
+                                      
+                                      <div className="flex justify-between items-center text-xs text-gray-400">
+                                        <span>Close: {formatDate(deal.closeDate)}</span>
+                                        <span>{deal.source}</span>
+                                      </div>
+                                      
+                                      {deal.tags.length > 0 && (
+                                        <div className="flex flex-wrap gap-1">
+                                          {deal.tags.slice(0, 2).map((tag) => (
+                                            <span key={tag} className="px-2 py-1 bg-accent-500/20 text-accent-400 rounded-full text-xs">
+                                              {tag}
+                                            </span>
+                                          ))}
+                                          {deal.tags.length > 2 && (
+                                            <span className="px-2 py-1 bg-gray-500/20 text-gray-400 rounded-full text-xs">
+                                              +{deal.tags.length - 2}
+                                            </span>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </div>
+                  ))}
+                </div>
+              </DragDropContext>
             </div>
           </div>
         )}
@@ -1778,6 +2257,295 @@ export default function Dashboard() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Deal Detail Modal */}
+      {showDealModal && selectedDeal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 backdrop-blur-sm rounded-xl p-6 w-full max-w-2xl mx-4 border border-gray-600/30 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">Deal Details</h3>
+              <button 
+                onClick={() => setShowDealModal(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Deal Title</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white">{selectedDeal.title}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Company</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white">{selectedDeal.company}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Contact Person</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white">{selectedDeal.contact}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Email</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white">{selectedDeal.email}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Deal Value</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-green-400 font-semibold">{formatCurrency(selectedDeal.value)}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Probability</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-blue-400 font-semibold">{selectedDeal.probability}%</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Expected Close</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white">{formatDate(selectedDeal.closeDate)}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Source</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white">{selectedDeal.source}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Priority</label>
+                  <span className={`inline-flex px-3 py-2 rounded-full text-sm font-medium border ${getDealPriorityColor(selectedDeal.priority)}`}>
+                    {selectedDeal.priority}
+                  </span>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2 text-gray-300">Description</label>
+                <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white">{selectedDeal.description || 'No description provided'}</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2 text-gray-300">Tags</label>
+                <div className="flex flex-wrap gap-2">
+                  {selectedDeal.tags.map((tag) => (
+                    <span key={tag} className="px-3 py-1 bg-accent-500/20 text-accent-400 rounded-full text-sm">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Created</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-gray-400">{formatDate(selectedDeal.createdAt)}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">Last Activity</label>
+                  <p className="bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-gray-400">{formatDate(selectedDeal.lastActivity)}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setShowDealModal(false)}
+                className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* New Deal Modal */}
+      {showNewDealModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 backdrop-blur-sm rounded-xl p-6 w-full max-w-2xl mx-4 border border-gray-600/30 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">Add New Deal</h3>
+              <button 
+                onClick={() => setShowNewDealModal(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Deal Title</label>
+                  <input
+                    type="text"
+                    value={newDeal.title}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, title: e.target.value }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    placeholder="e.g., Series A Funding"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Company</label>
+                  <input
+                    type="text"
+                    value={newDeal.company}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, company: e.target.value }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    placeholder="Company name"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Contact Person</label>
+                  <input
+                    type="text"
+                    value={newDeal.contact}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, contact: e.target.value }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    placeholder="Contact name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Email</label>
+                  <input
+                    type="email"
+                    value={newDeal.email}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, email: e.target.value }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    placeholder="contact@company.com"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Deal Value ($)</label>
+                  <input
+                    type="number"
+                    value={newDeal.value}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, value: parseInt(e.target.value) || 0 }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    placeholder="1000000"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Probability (%)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={newDeal.probability}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, probability: parseInt(e.target.value) || 10 }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    placeholder="50"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Expected Close</label>
+                  <input
+                    type="date"
+                    value={newDeal.closeDate}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, closeDate: e.target.value }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Stage</label>
+                  <select
+                    value={newDeal.stage}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, stage: e.target.value }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                  >
+                    {pipelineStages.map(stage => (
+                      <option key={stage.id} value={stage.id}>{stage.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Source</label>
+                  <input
+                    type="text"
+                    value={newDeal.source}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, source: e.target.value }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                    placeholder="Website, Referral, etc."
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Priority</label>
+                  <select
+                    value={newDeal.priority}
+                    onChange={(e) => setNewDeal(prev => ({ ...prev, priority: e.target.value as 'low' | 'medium' | 'high' }))}
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-300">Phone (optional)</label>
+                <input
+                  type="tel"
+                  value={newDeal.phone}
+                  onChange={(e) => setNewDeal(prev => ({ ...prev, phone: e.target.value }))}
+                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                  placeholder="+1 (555) 123-4567"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-300">Description</label>
+                <textarea
+                  value={newDeal.description}
+                  onChange={(e) => setNewDeal(prev => ({ ...prev, description: e.target.value }))}
+                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                  rows={3}
+                  placeholder="Brief description of the deal..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-300">Tags (comma-separated)</label>
+                <input
+                  type="text"
+                  value={newDeal.tags.join(', ')}
+                  onChange={(e) => setNewDeal(prev => ({ ...prev, tags: e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag !== '') }))}
+                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                  placeholder="e.g., tech, series-a, urgent"
+                />
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setShowNewDealModal(false)}
+                className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={addNewDeal}
+                className="bg-gradient-to-r from-accent-600 to-purple-600 hover:from-accent-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
+              >
+                Add Deal
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
