@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import AddMeetingModal from '@/components/AddMeetingModal';
 
 interface Meeting {
@@ -49,32 +48,6 @@ interface Stage {
 export default function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data: session, status } = useSession();
-
-  // Temporarily disable authentication requirement for testing
-  // useEffect(() => {
-  //   if (status === 'loading') return; // Still loading
-  //   if (!session) {
-  //     router.push('/login');
-  //   }
-  // }, [session, status, router]);
-
-  // Show loading while checking authentication
-  if (status === 'loading') {
-    return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Temporarily allow access without authentication
-  // if (!session) {
-  //   return null; // Will redirect to login
-  // }
   
   // Generate UTM-tracked calendar links
   const generateUTMLink = (baseUrl: string, source: string) => {
