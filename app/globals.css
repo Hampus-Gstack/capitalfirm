@@ -234,15 +234,8 @@ body[style*="cursor: grabbing"] {
   cursor: grabbing !important;
 }
 
-/* Fix for portal positioning */
+/* Keep portal stacking high without overriding position unexpectedly */
 .ReactPortal {
-  position: relative;
-  z-index: 9999;
-}
-
-/* Disable problematic CSS properties during drag */
-[data-rbd-draggable-id][style*="position: fixed"] {
-  pointer-events: none;
   z-index: 9999;
 }
 

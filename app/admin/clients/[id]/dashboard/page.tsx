@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd'
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { StrictModeDroppable as Droppable } from '@/components/StrictModeDroppable'
+import PortalAwareDraggable from '@/components/PortalAwareDraggable'
 import { 
   PlusIcon, 
   PencilIcon, 
@@ -685,7 +686,7 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                             className="space-y-2 min-h-[200px]"
                           >
                             {stage.tasks.map((task, index) => (
-                              <Draggable key={task.id} draggableId={task.id} index={index}>
+                              <PortalAwareDraggable key={task.id} draggableId={task.id} index={index}>
                                 {(provided, snapshot) => (
                                   <div
                                     ref={provided.innerRef}
@@ -734,7 +735,7 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                                     </div>
                                   </div>
                                 )}
-                              </Draggable>
+                              </PortalAwareDraggable>
                             ))}
                             {provided.placeholder}
                           </div>
@@ -782,7 +783,7 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                             className="space-y-2 min-h-[300px]"
                           >
                             {stage.deals.map((deal, index) => (
-                              <Draggable key={deal.id} draggableId={deal.id} index={index}>
+                              <PortalAwareDraggable key={deal.id} draggableId={deal.id} index={index}>
                                 {(provided, snapshot) => (
                                   <div
                                     ref={provided.innerRef}
@@ -823,7 +824,7 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
                                     </div>
                                   </div>
                                 )}
-                              </Draggable>
+                              </PortalAwareDraggable>
                             ))}
                             {provided.placeholder}
                           </div>

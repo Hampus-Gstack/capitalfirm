@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { StrictModeDroppable as Droppable } from '@/components/StrictModeDroppable';
+import PortalAwareDraggable from '@/components/PortalAwareDraggable';
 import AddMeetingModal from '@/components/AddMeetingModal';
 
 interface Meeting {
@@ -1334,7 +1335,7 @@ export default function Dashboard() {
                               style={{ minHeight: '200px' }}
                             >
                               {filteredTasks.filter(task => task.status === column.status).map((task, index) => (
-                                <Draggable key={task.id} draggableId={task.id} index={index}>
+                                <PortalAwareDraggable key={task.id} draggableId={task.id} index={index}>
                                   {(provided, snapshot) => (
                                     <div
                                       ref={provided.innerRef}
@@ -1403,7 +1404,7 @@ export default function Dashboard() {
                                       )}
                                     </div>
                                   )}
-                                </Draggable>
+                                </PortalAwareDraggable>
                               ))}
                               {provided.placeholder}
                               <button 
@@ -1799,7 +1800,7 @@ export default function Dashboard() {
                             }`}
                           >
                             {stage.deals.map((deal, index) => (
-                              <Draggable key={deal.id} draggableId={deal.id} index={index}>
+                              <PortalAwareDraggable key={deal.id} draggableId={deal.id} index={index}>
                                 {(provided, snapshot) => (
                                   <div
                                     ref={provided.innerRef}
@@ -1852,9 +1853,9 @@ export default function Dashboard() {
                                         </div>
                                       )}
                                     </div>
-                                  </div>
-                                )}
-                              </Draggable>
+                                    </div>
+                                  )}
+                                </PortalAwareDraggable>
                             ))}
                             {provided.placeholder}
                           </div>
