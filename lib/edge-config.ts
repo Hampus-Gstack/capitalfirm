@@ -28,7 +28,11 @@ export interface AppSettings {
 export async function getAppSettings(): Promise<AppSettings> {
   try {
     const settings = await edgeConfig.get('appSettings');
-    return settings as AppSettings;
+    // Type guard to ensure settings is the correct shape
+    if (settings && typeof settings === 'object' && !Array.isArray(settings)) {
+      return settings as unknown as AppSettings;
+    }
+    throw new Error('Invalid settings format');
   } catch (error) {
     console.error('Failed to load app settings:', error);
     // Return default settings

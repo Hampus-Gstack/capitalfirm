@@ -18,9 +18,17 @@ export async function uploadFile(
       contentType: contentType || 'application/octet-stream',
     });
 
+    // Get file size from the input file if available
+    let fileSize = 0;
+    if (file instanceof File) {
+      fileSize = file.size;
+    } else if (Buffer.isBuffer(file)) {
+      fileSize = file.length;
+    }
+
     return {
       url: blob.url,
-      size: blob.size,
+      size: fileSize,
       uploadedAt: new Date(),
     };
   } catch (error) {

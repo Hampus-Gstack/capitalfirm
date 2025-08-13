@@ -10,8 +10,8 @@ import { Draggable, DraggableProps } from "react-beautiful-dnd";
 export default function PortalAwareDraggable(props: DraggableProps) {
   return (
     <Draggable {...props}>
-      {(provided, snapshot) => {
-        const child = props.children(provided, snapshot);
+      {(provided, snapshot, placeholder) => {
+        const child = props.children(provided, snapshot, placeholder);
 
         if (snapshot.isDragging) {
           // During dragging, render into a portal so position: fixed is relative to viewport

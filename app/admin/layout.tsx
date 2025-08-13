@@ -39,7 +39,7 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:w-64 lg:bg-gray-900/95 lg:backdrop-blur-sm lg:border-r lg:border-gray-700/50">
+      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-gray-900/95 backdrop-blur-sm border-r border-gray-700/50">
         <div className="flex items-center justify-between h-16 px-6 border-b border-gray-700/50">
           <div className="flex items-center">
             <BuildingOfficeIcon className="h-8 w-8 text-accent-400" />
@@ -84,7 +84,7 @@ export default function AdminLayout({
       </div>
 
       {/* Main Content */}
-      <div className="lg:pl-64">
+      <div className="pl-64">
         {/* Mobile Header */}
         <div className="lg:hidden bg-gray-800/50 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-40">
           <div className="flex items-center justify-between h-16 px-4">
@@ -107,10 +107,28 @@ export default function AdminLayout({
           </div>
         </div>
 
+        {/* Desktop Sidebar Toggle for smaller screens */}
+        <div className="hidden md:block lg:hidden bg-gray-800/50 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-40">
+          <div className="flex items-center justify-between h-16 px-4">
+            <div className="flex items-center">
+              <BuildingOfficeIcon className="h-8 w-8 text-accent-400" />
+              <span className="ml-3 text-lg font-bold text-white">Admin Panel</span>
+            </div>
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-3 bg-gray-700/50 rounded-lg text-gray-400 hover:text-white transition-colors"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
         {children}
       </div>
 
-      {/* Mobile Sidebar Overlay */}
+      {/* Mobile/Medium Sidebar Overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-[100] lg:hidden">
           {/* Backdrop */}
