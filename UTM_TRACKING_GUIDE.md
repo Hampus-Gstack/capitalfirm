@@ -10,7 +10,7 @@ The solution uses **UTM parameters** combined with **webhook integration** to tr
 
 **Original Link:** `https://zcal.co/hampusg/discovery-call`
 
-**Tracked Link:** `https://zcal.co/hampusg/discovery-call?utm_source=capitalfirm&utm_medium=dashboard&utm_campaign=client_meeting&utm_content=zcal`
+**Tracked Link:** `https://zcal.co/hampusg/discovery-call?utm_source=cursuscapital&utm_medium=dashboard&utm_campaign=client_meeting&utm_content=zcal`
 
 ## How It Works
 
@@ -56,7 +56,7 @@ Your dashboard has been updated to:
 
 ## UTM Parameters Used
 
-- **utm_source:** `capitalfirm` (your company name)
+- **utm_source:** `cursuscapital` (your company name)
 - **utm_medium:** `dashboard` (where the link was shared)
 - **utm_campaign:** `client_meeting` (type of meeting)
 - **utm_content:** `zcal` (calendar platform)
@@ -98,8 +98,8 @@ When Zcal sends a webhook, it includes:
       }
     ],
     "source": "zcal",
-    "booking_url": "https://zcal.co/hampusg/discovery-call?utm_source=capitalfirm&utm_medium=dashboard&utm_campaign=client_meeting&utm_content=zcal",
-    "utm_source": "capitalfirm",
+    "booking_url": "https://zcal.co/hampusg/discovery-call?utm_source=cursuscapital&utm_medium=dashboard&utm_campaign=client_meeting&utm_content=zcal",
+    "utm_source": "cursuscapital",
     "utm_medium": "dashboard",
     "utm_campaign": "client_meeting",
     "utm_content": "zcal"

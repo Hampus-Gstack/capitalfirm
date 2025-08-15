@@ -245,7 +245,7 @@ export default function AdminOverviewPage() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">
-                Admin Overview
+                Cursus Capital Admin
               </h1>
               <p className="text-gray-400 mt-1">Master dashboard for client management and business insights</p>
             </div>

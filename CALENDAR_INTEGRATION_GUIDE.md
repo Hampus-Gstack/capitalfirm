@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-This guide explains how to integrate your Capital Firm dashboard with external calendar systems to automatically track meetings.
+This guide explains how to integrate your Cursus Capital dashboard with external calendar systems to automatically track meetings.
 
 ## 🔗 Integration Options
 
@@ -17,7 +17,7 @@ This guide explains how to integrate your Capital Firm dashboard with external c
 
 **Example UTM Link:**
 ```
-https://calendly.com/your-calendar?utm_source=capitalfirm&utm_medium=dashboard&utm_campaign=client_meeting&utm_content=calendly
+https://calendly.com/your-calendar?utm_source=cursuscapital&utm_medium=dashboard&utm_campaign=client_meeting&utm_content=calendly
 ```
 
 ### 2. Calendly API Integration
@@ -147,7 +147,7 @@ curl -X POST https://your-domain.com/api/webhooks/calendar \
       "end_time": "2024-01-15T11:00:00Z",
       "attendees": [{"email": "test@example.com", "name": "Test User"}],
       "source": "calendly",
-      "utm_source": "capitalfirm",
+      "utm_source": "cursuscapital",
       "utm_medium": "dashboard",
       "utm_campaign": "client_meeting"
     }
@@ -158,7 +158,7 @@ curl -X POST https://your-domain.com/api/webhooks/calendar \
 
 ### UTM Parameters to Track:
 
-- `utm_source=capitalfirm` - Identifies your platform
+- `utm_source=cursuscapital` - Identifies your platform
 - `utm_medium=dashboard` - Shows it came from dashboard
 - `utm_campaign=client_meeting` - Specific campaign
 - `utm_content=calendly|hubspot|google|zcal` - Calendar source

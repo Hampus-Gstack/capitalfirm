@@ -2,7 +2,7 @@
 
 ## 🎯 **Current Status: PWA (Progressive Web App) - FREE**
 
-Your Capital Firm dashboard is now a **Progressive Web App (PWA)** that works like a native app on mobile devices!
+Your Cursus Capital dashboard is now a **Progressive Web App (PWA)** that works like a native app on mobile devices!
 
 ### **✅ What's Already Working:**
 - **Installable** - Users can add to home screen
@@ -75,8 +75,8 @@ Your Capital Firm dashboard is now a **Progressive Web App (PWA)** that works li
 ```json
 // manifest.json
 {
-  "name": "Capital Firm Dashboard",
-  "short_name": "Capital Firm",
+  "name": "Cursus Capital Dashboard",
+  "short_name": "Cursus Capital",
   "display": "standalone",
   "theme_color": "#6366f1"
 }
@@ -139,7 +139,7 @@ Your Capital Firm dashboard is now a **Progressive Web App (PWA)** that works li
 
 ## 🎯 **Quick Test:**
 
-1. **Open your website on mobile:** `https://capitalfirm-vert.vercel.app`
+1. **Open your website on mobile:** `https://cursuscapital.co`
 2. **Try the install prompt** - Should appear automatically
 3. **Add to home screen** - Test the PWA experience
 4. **Use offline** - Test cached functionality

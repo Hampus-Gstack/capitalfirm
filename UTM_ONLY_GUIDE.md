@@ -14,7 +14,7 @@ This guide shows you how to use UTM tracking with your calendar system **without
 ### **Step 1: Generate UTM Link**
 1. Go to `/test-utm` page
 2. Fill in UTM parameters:
-   - `utm_source`: capitalfirm
+   - `utm_source`: cursuscapital
    - `utm_medium`: email
    - `utm_campaign`: discovery_call
    - `utm_content`: zcal
@@ -118,12 +118,12 @@ https://your-domain.com/booking-complete
 
 ### **Email Campaign:**
 ```
-Link: https://your-domain.com/calendar-booking?utm_source=capitalfirm&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=john@startup.com&name=John%20Smith
+Link: https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=john@startup.com&name=John%20Smith
 ```
 
 ### **LinkedIn Outreach:**
 ```
-Link: https://your-domain.com/calendar-booking?utm_source=capitalfirm&utm_medium=linkedin&utm_campaign=networking&utm_content=zcal&email=sarah@company.com&name=Sarah%20Johnson
+Link: https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=linkedin&utm_campaign=networking&utm_content=zcal&email=sarah@company.com&name=Sarah%20Johnson
 ```
 
 ## 🔄 **Complete Flow Example**
@@ -134,7 +134,7 @@ Hi John,
 
 Let's schedule a discovery call to discuss your Series A funding.
 
-Book here: https://your-domain.com/calendar-booking?utm_source=capitalfirm&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=john@startup.com&name=John%20Smith
+Book here: https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=john@startup.com&name=John%20Smith
 
 Best regards,
 Hampus
@@ -162,7 +162,7 @@ Your dashboard will show:
 ```
 📋 Booking Session - John Smith (john@startup.com)
    Pending • Created via Email Campaign
-   🔵 capitalfirm 🟢 email 🟣 discovery_call 🟠 zcal
+   🔵 cursuscapital 🟢 email 🟣 discovery_call 🟠 zcal
    
    [Create Meeting] button
 ```

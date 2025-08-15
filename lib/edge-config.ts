@@ -25,6 +25,28 @@ export interface AppSettings {
   };
 }
 
+export const defaultSettings: AppSettings = {
+  companyName: 'Cursus Capital',
+  contactEmail: 'info@cursuscapital.co',
+  phoneNumber: '+1 (555) 123-4567',
+  address: '123 Investment Street, Financial District, NY 10001',
+  socialMedia: {
+    linkedin: 'https://linkedin.com/company/cursuscapital',
+    twitter: 'https://twitter.com/cursuscapital',
+    facebook: 'https://facebook.com/cursuscapital',
+  },
+  features: {
+    fileUpload: true,
+    calendarIntegration: true,
+    analytics: true,
+  },
+  limits: {
+    maxFileSize: 100, // MB
+    maxUploadsPerDay: 50,
+    allowedFileTypes: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx'],
+  },
+};
+
 export async function getAppSettings(): Promise<AppSettings> {
   try {
     const settings = await edgeConfig.get('appSettings');
@@ -36,27 +58,7 @@ export async function getAppSettings(): Promise<AppSettings> {
   } catch (error) {
     console.error('Failed to load app settings:', error);
     // Return default settings
-    return {
-      companyName: 'Capital Firm',
-      contactEmail: 'info@capitalfirm.com',
-      phoneNumber: '+1 (555) 123-4567',
-      address: '123 Business St, New York, NY 10001',
-      socialMedia: {
-        linkedin: 'https://linkedin.com/company/capitalfirm',
-        twitter: 'https://twitter.com/capitalfirm',
-        facebook: 'https://facebook.com/capitalfirm',
-      },
-      features: {
-        fileUpload: true,
-        calendarIntegration: true,
-        analytics: true,
-      },
-      limits: {
-        maxFileSize: 100, // MB
-        maxUploadsPerDay: 50,
-        allowedFileTypes: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx'],
-      },
-    };
+    return defaultSettings;
   }
 }
 

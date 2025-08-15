@@ -174,7 +174,7 @@ export default function AdminOnboardingPage() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">
-                Onboarding Data
+                Cursus Capital Onboarding
               </h1>
               <p className="text-gray-400 mt-1">View and manage all client onboarding responses</p>
             </div>

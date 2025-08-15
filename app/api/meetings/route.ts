@@ -25,7 +25,7 @@ let meetings: Meeting[] = [
     attendee: 'John Smith',
     status: 'scheduled',
     source: 'calendly',
-    utm_source: 'capitalfirm',
+    utm_source: 'cursuscapital',
     utm_medium: 'dashboard',
     utm_campaign: 'client_meeting'
   },
@@ -37,7 +37,7 @@ let meetings: Meeting[] = [
     attendee: 'Sarah Johnson',
     status: 'scheduled',
     source: 'hubspot',
-    utm_source: 'capitalfirm',
+    utm_source: 'cursuscapital',
     utm_medium: 'dashboard',
     utm_campaign: 'client_meeting'
   }

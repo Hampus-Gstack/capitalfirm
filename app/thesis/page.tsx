@@ -28,7 +28,7 @@ export default function ThesisPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <a href="/" className="text-2xl font-bold gradient-text">
-              Capital Firm
+              Cursus Capital
             </a>
             <a
               href="#contact"
@@ -162,7 +162,7 @@ export default function ThesisPage() {
       <footer className="border-t border-gray-800 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-400">
-            <p>&copy; 2024 Capital Firm. All rights reserved.</p>
+            <p>&copy; 2024 Cursus Capital. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -152,7 +152,7 @@ export default function AdminClientDashboard({ params }: { params: { id: string 
         attendee: clientName || 'Client',
         status: 'scheduled',
         source: 'zcal',
-        utm_source: 'capitalfirm',
+        utm_source: 'cursuscapital',
         utm_medium: 'email',
         utm_campaign: 'discovery_call'
       }

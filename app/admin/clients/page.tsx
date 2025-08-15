@@ -264,7 +264,7 @@ export default function AdminClientsPage() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">
-                Client Management
+                Cursus Capital Client Management
               </h1>
               <p className="text-gray-400 mt-1">Manage all your clients and their progress</p>
             </div>

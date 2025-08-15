@@ -1,7 +1,7 @@
 {
-  "name": "Capital Firm Dashboard",
-  "short_name": "Capital Firm",
-  "description": "Capital Firm client portal and project management dashboard",
+  "name": "Cursus Capital Dashboard",
+  "short_name": "Cursus Capital",
+  "description": "Cursus Capital client portal and project management dashboard",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

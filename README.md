@@ -1,6 +1,6 @@
-# Capital Firm Website
+# Cursus Capital Website
 
-A modern, professional website for Capital Firm, a financial services company. Built with Next.js, TypeScript, and Tailwind CSS.
+A modern, professional website for Cursus Capital, a financial services company. Built with Next.js, TypeScript, and Tailwind CSS.
 
 ## Features
 
@@ -23,7 +23,7 @@ A modern, professional website for Capital Firm, a financial services company. B
 1. Clone the repository:
 ```bash
 git clone <your-repo-url>
-cd capitalfirm
+cd cursuscapital
 ```
 
 2. Install dependencies:
@@ -48,7 +48,7 @@ npm run dev
 ## Project Structure
 
 ```
-capitalfirm/
+cursuscapital/
 ├── app/                 # Next.js app directory
 │   ├── globals.css     # Global styles
 │   ├── layout.tsx      # Root layout
@@ -121,7 +121,7 @@ The site includes:
 
 ## Support
 
-For questions or support, please contact us at info@capitalfirm.com
+For questions or support, please contact us at info@cursuscapital.co
 
 ## License
 

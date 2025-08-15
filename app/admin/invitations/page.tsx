@@ -28,22 +28,22 @@ export default function AdminInvitationsPage() {
       email: 'john@techstart.com',
       company: 'TechStart Inc.',
       role: 'Founder/CEO',
-      invitedBy: 'Capital Firm Team',
+      invitedBy: 'Cursus Capital Team',
       invitedAt: '2024-01-15T10:00:00Z',
       status: 'pending',
       token: 'inv_abc123',
-      signupLink: 'https://capitalfirm-vert.vercel.app/signup/inv_abc123'
+      signupLink: 'https://cursuscapital.co/signup/inv_abc123'
     },
     {
       id: '2',
       email: 'sarah@innovate.co',
       company: 'Innovate Co.',
       role: 'CTO',
-      invitedBy: 'Capital Firm Team',
+      invitedBy: 'Cursus Capital Team',
       invitedAt: '2024-01-14T14:30:00Z',
       status: 'accepted',
       token: 'inv_def456',
-      signupLink: 'https://capitalfirm-vert.vercel.app/signup/inv_def456'
+      signupLink: 'https://cursuscapital.co/signup/inv_def456'
     }
   ])
 
@@ -63,14 +63,14 @@ export default function AdminInvitationsPage() {
     e.preventDefault()
     
     const token = generateToken()
-    const signupLink = `https://capitalfirm-vert.vercel.app/signup/${token}`
+    const signupLink = `https://cursuscapital.co/signup/${token}`
     
     const newInv: Invitation = {
       id: Date.now().toString(),
       email: newInvitation.email,
       company: newInvitation.company,
       role: newInvitation.role,
-      invitedBy: 'Capital Firm Team',
+      invitedBy: 'Cursus Capital Team',
       invitedAt: new Date().toISOString(),
       status: 'pending',
       token,
@@ -117,7 +117,7 @@ export default function AdminInvitationsPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-4">Client Invitations</h1>
+              <h1 className="text-4xl font-bold text-white mb-4">Cursus Capital Client Invitations</h1>
               <p className="text-xl text-gray-300">Manage client access to your platform</p>
             </div>
             <button

@@ -64,10 +64,10 @@ export default function SignupPage() {
             <div className="w-12 h-12 bg-gradient-to-r from-accent-500 to-accent-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">CF</span>
             </div>
-            <span className="text-white font-bold text-2xl">Capital Firm</span>
+            <span className="text-white font-bold text-2xl">Cursus Capital</span>
           </Link>
           <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
-          <p className="text-gray-400">Join Capital Firm today</p>
+          <p className="text-gray-400">Join Cursus Capital today</p>
         </div>
 
         {/* Signup Form */}

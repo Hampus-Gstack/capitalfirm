@@ -82,7 +82,7 @@ export default function Dashboard() {
   // Generate UTM-tracked calendar links
   const generateUTMLink = (baseUrl: string, source: string) => {
     const utmParams = new URLSearchParams({
-      utm_source: 'capitalfirm',
+      utm_source: 'cursuscapital',
       utm_medium: 'dashboard',
       utm_campaign: 'client_meeting',
       utm_content: source
@@ -513,7 +513,7 @@ export default function Dashboard() {
             attendee: 'John Smith',
             status: 'scheduled',
             source: 'calendly',
-            utm_source: 'capitalfirm',
+            utm_source: 'cursuscapital',
             utm_medium: 'dashboard',
             utm_campaign: 'client_meeting'
           },
@@ -525,7 +525,7 @@ export default function Dashboard() {
             attendee: 'Sarah Johnson',
             status: 'scheduled',
             source: 'hubspot',
-            utm_source: 'capitalfirm',
+            utm_source: 'cursuscapital',
             utm_medium: 'dashboard',
             utm_campaign: 'client_meeting'
           }
@@ -999,14 +999,14 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <h1 className="text-3xl font-bold bg-gradient-to-r from-accent-400 to-purple-400 bg-clip-text text-transparent">
-              Capital Firm Dashboard
+              Cursus Capital Dashboard
             </h1>
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => {
                   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
                   if (isIOS) {
-                    alert(`📱 Install Capital Firm App on iOS:
+                    alert(`📱 Install Cursus Capital App on iOS:
 
 1. Tap the Share button (square with arrow) at the bottom
 2. Scroll down and tap "Add to Home Screen"
@@ -1015,7 +1015,7 @@ export default function Dashboard() {
 
 💡 Tip: You can also tap "Add to Favorites" for quick access.`);
                   } else {
-                    alert(`📱 Install Capital Firm App on Android:
+                    alert(`📱 Install Cursus Capital App on Android:
 
 1. Tap the menu (three dots) in the top right
 2. Tap "Add to Home screen" or "Install app"

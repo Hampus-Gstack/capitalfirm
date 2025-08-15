@@ -1,69 +1,45 @@
-# Storage Setup Guide
+# Vercel Blob Storage Setup for Cursus Capital
 
-## ✅ Blob Storage - COMPLETED
+## Overview
+This guide will help you set up Vercel Blob Storage for file uploads in your Cursus Capital application.
 
-Your Blob storage has been successfully created via CLI:
+## Prerequisites
+- Vercel account
+- Cursus Capital project deployed on Vercel
 
-- **Store Name**: `capitalfirm-files`
-- **Store ID**: `store_01y8J81T4Lj6YEPi`
-- **Environment**: Production, Preview, Development
-- **Token**: Added to `.env.local`
+## Step 1: Create Blob Store
+1. Go to your Vercel dashboard
+2. Select your Cursus Capital project
+3. Go to Storage tab
+4. Click "Create Store"
+5. **Store Name**: `cursuscapital-files`
+6. **Region**: Choose closest to your users
+7. Click "Create"
 
-## 🔧 Edge Config - Manual Setup Required
+## Step 2: Get Environment Variables
+1. In your blob store settings, copy the following:
+   - `BLOB_READ_WRITE_TOKEN`
+   - `BLOB_READ_WRITE_TOKEN_VERCEL`
 
-Since Edge Config creation is not available via CLI yet, you need to create it manually:
+## Step 3: Update Environment Variables
+1. Visit: https://vercel.com/hampus-grunes-projects/cursuscapital
+2. Go to Settings > Environment Variables
+3. Add the following variables:
+   - `BLOB_READ_WRITE_TOKEN` = [your_token]
+   - `BLOB_READ_WRITE_TOKEN_VERCEL` = [your_vercel_token]
 
-### Step 1: Go to Vercel Dashboard
-1. Visit: https://vercel.com/hampus-grunes-projects/capitalfirm
-2. Click on "Storage" tab
-3. Click "Create" on "Edge Config"
+## Step 4: Create Edge Config
+1. Go to Vercel Dashboard > Edge Config
+2. Click "Create Config"
+3. Name it: `cursuscapital-config`
+4. Add your configuration
 
-### Step 2: Create Edge Config
-1. Name it: `capitalfirm-config`
-2. Select environments: Production, Preview, Development
-3. Click "Create"
+## Step 5: Test Upload
+1. Deploy your changes
+2. Test file upload functionality
+3. Verify files appear in your blob store
 
-### Step 3: Get Environment Variable
-1. After creation, copy the `EDGE_CONFIG` URL
-2. Add it to your `.env.local` file:
-   ```
-   EDGE_CONFIG=your_edge_config_url_here
-   ```
-
-## 🚀 Test Your Setup
-
-### Test Blob Storage
-```bash
-# Test file upload
-curl -X POST http://localhost:3000/api/upload \
-  -F "file=@test-image.jpg" \
-  -F "category=image"
-```
-
-### Test Edge Config
-```bash
-# The edge config will be available in your app
-# Check the lib/edge-config.ts file for usage
-```
-
-## 📊 Current Status
-
-- ✅ **Blob Storage**: Ready to use
-- ⏳ **Edge Config**: Needs manual creation
-- ✅ **Environment Variables**: Blob token configured
-- ⏳ **Environment Variables**: Edge Config URL needed
-
-## 💰 Cost Summary
-
-- **Blob Storage**: FREE (100GB storage + 100GB bandwidth)
-- **Edge Config**: FREE (100KB storage)
-- **Total Cost**: $0
-
-## 🎯 Next Steps
-
-1. Create Edge Config in Vercel dashboard
-2. Add EDGE_CONFIG to environment variables
-3. Test file uploads in your admin settings
-4. Deploy your changes
-
-Your file hosting system is ready! 🎉 
+## Troubleshooting
+- Ensure environment variables are set correctly
+- Check blob store permissions
+- Verify API routes are working 

@@ -44,7 +44,7 @@ interface Settings {
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<Settings>({
     general: {
-      companyName: 'Capital Firm',
+      companyName: 'Cursus Capital',
       timezone: 'America/New_York',
       currency: 'USD',
       language: 'en'

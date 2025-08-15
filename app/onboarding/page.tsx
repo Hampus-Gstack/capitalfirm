@@ -41,7 +41,7 @@ export default function OnboardingPage() {
           
           <div className="text-center mb-12">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              Capital Firm
+              Cursus Capital
             </h1>
             <p className="text-2xl text-gray-300 mb-4">Onboarding Process</p>
             <p className="text-xl text-accent-400">Get started with your capital raising journey</p>
@@ -105,7 +105,7 @@ export default function OnboardingPage() {
                   frameBorder="0"
                   allowFullScreen
                   className="w-full h-full"
-                  title="Capital Firm Onboarding Video"
+                  title="Cursus Capital Onboarding Video"
                 ></iframe>
               </div>
               

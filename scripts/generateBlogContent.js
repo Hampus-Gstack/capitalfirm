@@ -206,7 +206,7 @@ function generateBlogPost(id) {
     readTime,
     category: topic.category,
     content,
-    author: "Capital Firm Team",
+    author: "Cursus Capital Team",
     featured: Math.random() < 0.2 // 20% chance of being featured
   };
 }

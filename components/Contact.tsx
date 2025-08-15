@@ -54,7 +54,7 @@ export default function Contact() {
                 </div>
                 <div className="flex items-center gap-3">
                   <EnvelopeIcon className="h-5 w-5 text-accent-500" />
-                  <span className="text-gray-300">hello@capitalfirm.com</span>
+                  <span className="text-gray-300">hello@cursuscapital.co</span>
                 </div>
               </div>
               

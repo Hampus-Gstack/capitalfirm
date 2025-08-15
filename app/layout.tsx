@@ -7,23 +7,30 @@ import SWRegister from './sw-register'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://capitalfirm-vert.vercel.app'),
-  title: 'Capital Firm - Raise Capital with an Unfair Advantage',
-  description: 'Revolutionize your fundraising journey with our results-driven approach. Unlocking access to capital globally for private equity, venture capital funds and emerging businesses.',
-  keywords: 'capital raising, fundraising, private equity, venture capital, investment, capital access, fundraising services',
-  authors: [{ name: 'Capital Firm' }],
+  metadataBase: new URL('https://cursuscapital.co'),
+  title: 'Cursus Capital - Raise Capital with an Unfair Advantage',
+  description: 'Transform your capital raising with our comprehensive platform. Get investor-ready, track meetings, and close deals faster.',
+  keywords: ['capital raising', 'investor relations', 'startup funding', 'venture capital', 'investment platform'],
+  authors: [{ name: 'Cursus Capital' }],
+  creator: 'Cursus Capital',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://cursuscapital.co',
+    title: 'Cursus Capital'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cursus Capital - Raise Capital with an Unfair Advantage',
+    description: 'Transform your capital raising with our comprehensive platform. Get investor-ready, track meetings, and close deals faster.',
+    images: ['https://cursuscapital.co/og-image.jpg'],
+  },
   robots: 'index, follow',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Capital Firm'
-  },
-  openGraph: {
-    title: 'Capital Firm - Raise Capital with an Unfair Advantage',
-    description: 'Revolutionize your fundraising journey with our results-driven approach. Unlocking access to capital globally for private equity, venture capital funds and emerging businesses.',
-    type: 'website',
-    locale: 'en_US',
+    title: 'Cursus Capital'
   },
 }
 

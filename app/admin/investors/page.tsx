@@ -178,7 +178,7 @@ export default function InvestorsPage() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white">Investor Rolodex</h1>
+            <h1 className="text-3xl font-bold text-white">Cursus Capital Investor Rolodex</h1>
             <p className="text-gray-400 mt-2">Manage investor relationships and find perfect matches</p>
           </div>
           <button

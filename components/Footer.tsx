@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <span className="text-2xl font-bold gradient-text">Capital Firm</span>
+            <span className="text-2xl font-bold gradient-text">Cursus Capital</span>
             <p className="text-sm leading-6 text-gray-300">
               Revolutionizing fundraising with technology-driven approaches and proven results.
             </p>
@@ -127,7 +127,7 @@ export default function Footer() {
         </div>
         <div className="mt-16 border-t border-gray-800 pt-8 sm:mt-20 lg:mt-24">
           <p className="text-xs leading-5 text-gray-400">
-            &copy; 2024 Capital Firm. All rights reserved. Designed with ❤️ for capital raising excellence.
+            &copy; 2024 Cursus Capital. All rights reserved. Designed with ❤️ for capital raising excellence.
           </p>
         </div>
       </div>

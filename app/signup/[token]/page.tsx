@@ -18,7 +18,7 @@ export default function ClientSignupPage({ params }: { params: { token: string }
   const [isLoading, setIsLoading] = useState(false)
   const [isValidToken, setIsValidToken] = useState(false)
   const [invitationData, setInvitationData] = useState({
-    invitedBy: 'Capital Firm Team',
+    invitedBy: 'Cursus Capital Team',
     companyName: 'Your Company',
     role: 'Founder/CEO'
   })
@@ -92,7 +92,7 @@ export default function ClientSignupPage({ params }: { params: { token: string }
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Welcome to
-              <span className="gradient-text block">Capital Firm</span>
+              <span className="gradient-text block">Cursus Capital</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               You've been invited to join our client portal. Complete your account setup to access your personalized dashboard.

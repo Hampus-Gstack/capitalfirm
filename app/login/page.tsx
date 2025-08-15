@@ -55,7 +55,7 @@ export default function LoginPage() {
             <div className="w-12 h-12 bg-gradient-to-r from-accent-500 to-accent-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">CF</span>
             </div>
-            <span className="text-white font-bold text-2xl">Capital Firm</span>
+            <span className="text-white font-bold text-2xl">Cursus Capital</span>
           </Link>
           <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
           <p className="text-gray-400">Sign in to your account</p>
@@ -178,8 +178,8 @@ export default function LoginPage() {
           <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4">
             <p className="text-gray-400 text-sm mb-2">Demo Credentials:</p>
             <div className="text-xs text-gray-500 space-y-1">
-              <p><strong>Client:</strong> client@capitalfirm.com / password123</p>
-              <p><strong>Admin:</strong> admin@capitalfirm.com / password123</p>
+              <p><strong>Client:</strong> client@cursuscapital.co / password123</p>
+              <p><strong>Admin:</strong> admin@cursuscapital.co / password123</p>
             </div>
           </div>
         </div>

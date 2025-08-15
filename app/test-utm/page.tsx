@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 export default function TestUTMPage() {
   const [utmParams, setUtmParams] = useState({
-    utm_source: 'capitalfirm',
+    utm_source: 'cursuscapital',
     utm_medium: 'email',
     utm_campaign: 'discovery_call',
     utm_content: 'zcal',
@@ -78,7 +78,7 @@ export default function TestUTMPage() {
                 value={utmParams.utm_source}
                 onChange={(e) => handleParamChange('utm_source', e.target.value)}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-accent-500 transition-colors"
-                placeholder="capitalfirm"
+                placeholder="cursuscapital"
               />
             </div>
 
@@ -177,7 +177,7 @@ export default function TestUTMPage() {
             <button
               onClick={() => {
                 setUtmParams({
-                  utm_source: 'capitalfirm',
+                  utm_source: 'cursuscapital',
                   utm_medium: 'email',
                   utm_campaign: 'discovery_call',
                   utm_content: 'zcal',

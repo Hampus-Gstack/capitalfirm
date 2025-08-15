@@ -20,7 +20,7 @@ export interface CloudinaryUploadResult {
 
 export async function uploadToCloudinary(
   file: File | Buffer,
-  folder: string = 'capitalfirm',
+  folder: string = 'cursuscapital',
   options: any = {}
 ): Promise<CloudinaryUploadResult> {
   try {
@@ -61,7 +61,7 @@ export async function uploadToCloudinary(
 
 export async function uploadImage(
   file: File | Buffer,
-  folder: string = 'capitalfirm/images'
+  folder: string = 'cursuscapital/images'
 ): Promise<CloudinaryUploadResult> {
   return uploadToCloudinary(file, folder, {
     resource_type: 'image',
@@ -74,7 +74,7 @@ export async function uploadImage(
 
 export async function uploadVideo(
   file: File | Buffer,
-  folder: string = 'capitalfirm/videos'
+  folder: string = 'cursuscapital/videos'
 ): Promise<CloudinaryUploadResult> {
   return uploadToCloudinary(file, folder, {
     resource_type: 'video',

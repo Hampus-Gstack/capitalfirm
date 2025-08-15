@@ -87,7 +87,7 @@ export default function Header() {
               <div className="w-8 h-8 bg-gradient-to-r from-accent-500 to-accent-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">CF</span>
         </div>
-              <span className="text-white font-bold text-lg">Capital Firm</span>
+              <span className="text-white font-bold text-lg">Cursus Capital</span>
             </Link>
         </div>
         

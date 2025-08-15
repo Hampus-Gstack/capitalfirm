@@ -48,7 +48,7 @@ export default function PWAInstall() {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     
     if (isIOS) {
-      alert(`📱 Install Capital Firm App on iOS:
+      alert(`📱 Install Cursus Capital App on iOS:
 
 1. Tap the Share button (square with arrow) at the bottom
 2. Scroll down and tap "Add to Home Screen"
@@ -57,7 +57,7 @@ export default function PWAInstall() {
 
 💡 Tip: You can also tap "Add to Favorites" for quick access.`);
     } else {
-      alert(`📱 Install Capital Firm App on Android:
+      alert(`📱 Install Cursus Capital App on Android:
 
 1. Tap the menu (three dots) in the top right
 2. Tap "Add to Home screen" or "Install app"
@@ -78,7 +78,7 @@ export default function PWAInstall() {
             <span className="text-white text-lg">📱</span>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white">Install Capital Firm App</h3>
+            <h3 className="text-sm font-semibold text-white">Install Cursus Capital App</h3>
             <p className="text-xs text-gray-400">Get quick access to your dashboard</p>
           </div>
         </div>

@@ -77,7 +77,7 @@ export default function AdminLayout({
             </div>
             <div>
               <p className="text-sm font-medium text-white">Admin User</p>
-              <p className="text-xs text-gray-400">admin@capitalfirm.com</p>
+              <p className="text-xs text-gray-400">admin@cursuscapital.co</p>
             </div>
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function AdminLayout({
                 </div>
                 <div>
                   <p className="text-sm font-medium text-white">Admin User</p>
-                  <p className="text-xs text-gray-400">admin@capitalfirm.com</p>
+                  <p className="text-xs text-gray-400">admin@cursuscapital.co</p>
                 </div>
               </div>
             </div>

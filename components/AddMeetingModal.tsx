@@ -155,7 +155,7 @@ export default function AddMeetingModal({ isOpen, onClose, onAddMeeting }: AddMe
                   type="text"
                   value={newMeeting.utm_source}
                   onChange={(e) => setNewMeeting({...newMeeting, utm_source: e.target.value})}
-                  placeholder="capitalfirm"
+                  placeholder="cursuscapital"
                   className="w-full bg-gray-700/50 border border-gray-600/50 rounded px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-transparent"
                 />
               </div>
