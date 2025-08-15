@@ -33,7 +33,7 @@ Your dashboard has been updated to:
 **Note:** Zcal webhook support may require contacting their support team.
 
 1. Contact Zcal support to enable webhook notifications
-2. Configure the webhook URL: `https://your-domain.com/api/webhooks/calendar`
+2. Configure the webhook URL: `https://cursuscapital.co/api/webhooks/calendar`
 3. Set up authentication (if required by Zcal)
 
 ### 3. Test the Integration
@@ -158,7 +158,7 @@ When Zcal sends a webhook, it includes:
 Add these to your `.env` file:
 
 ```env
-NEXT_PUBLIC_APP_URL=https://your-domain.com
+NEXT_PUBLIC_APP_URL=https://cursuscapital.co
 ```
 
 ## Support

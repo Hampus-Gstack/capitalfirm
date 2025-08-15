@@ -12,7 +12,7 @@ This guide shows you how to achieve **fully automatic meeting tracking** using U
 
 ### **Step 1: Landing Page with UTM Tracking**
 ```
-https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=prospect@company.com&name=John%20Doe
+https://cursuscapital.co/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=prospect@company.com&name=John%20Doe
 ```
 
 ### **Step 2: Automatic Session Creation**
@@ -82,7 +82,7 @@ Best regards,
 
 **Your tracked link:**
 ```
-https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=prospect@company.com&name=John%20Doe
+https://cursuscapital.co/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=prospect@company.com&name=John%20Doe
 ```
 
 ## 🔧 **Setup Instructions**
@@ -91,14 +91,14 @@ https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=ema
 
 In your Zcal settings, set the redirect URL after booking to:
 ```
-https://your-domain.com/booking-complete
+https://cursuscapital.co/booking-complete
 ```
 
 ### **Step 2: Create Your Email Links**
 
 Use this format for your email links:
 ```
-https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email={PROSPECT_EMAIL}&name={PROSPECT_NAME}
+https://cursuscapital.co/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email={PROSPECT_EMAIL}&name={PROSPECT_NAME}
 ```
 
 ### **Step 3: Test the Flow**
@@ -132,17 +132,17 @@ https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=ema
 
 ### **Email Campaign:**
 ```
-Link: https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=january_promo&utm_content=zcal&email=john@startup.com&name=John%20Smith
+Link: https://cursuscapital.co/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=january_promo&utm_content=zcal&email=john@startup.com&name=John%20Smith
 ```
 
 ### **LinkedIn Outreach:**
 ```
-Link: https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=linkedin&utm_campaign=networking&utm_content=zcal&email=sarah@company.com&name=Sarah%20Johnson
+Link: https://cursuscapital.co/calendar-booking?utm_source=cursuscapital&utm_medium=linkedin&utm_campaign=networking&utm_content=zcal&email=sarah@company.com&name=Sarah%20Johnson
 ```
 
 ### **Blog Post:**
 ```
-Link: https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=blog&utm_campaign=content_marketing&utm_content=zcal&email=reader@domain.com&name=Blog%20Reader
+Link: https://cursuscapital.co/calendar-booking?utm_source=cursuscapital&utm_medium=blog&utm_campaign=content_marketing&utm_content=zcal&email=reader@domain.com&name=Blog%20Reader
 ```
 
 ## 🔄 **Complete Flow Example**
@@ -153,7 +153,7 @@ Hi John,
 
 Let's schedule a discovery call to discuss your Series A funding.
 
-Book here: https://your-domain.com/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=john@startup.com&name=John%20Smith
+Book here: https://cursuscapital.co/calendar-booking?utm_source=cursuscapital&utm_medium=email&utm_campaign=discovery_call&utm_content=zcal&email=john@startup.com&name=John%20Smith
 
 Best regards,
 Hampus

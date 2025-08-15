@@ -31,7 +31,7 @@ https://calendly.com/your-calendar?utm_source=cursuscapital&utm_medium=dashboard
 
 2. **Configure Webhooks:**
    - Go to Calendly Webhooks
-   - Add webhook URL: `https://your-domain.com/api/webhooks/calendar`
+   - Add webhook URL: `https://cursuscapital.co/api/webhooks/calendar`
    - Select events: `invitee.created`, `invitee.canceled`
 
 3. **Environment Variables:**
@@ -51,7 +51,7 @@ https://calendly.com/your-calendar?utm_source=cursuscapital&utm_medium=dashboard
 
 2. **Configure Webhooks:**
    - Go to HubSpot Webhooks
-   - Add endpoint: `https://your-domain.com/api/webhooks/calendar`
+   - Add endpoint: `https://cursuscapital.co/api/webhooks/calendar`
    - Select events: `meeting.created`, `meeting.updated`
 
 3. **Environment Variables:**
@@ -90,7 +90,7 @@ https://calendly.com/your-calendar?utm_source=cursuscapital&utm_medium=dashboard
    - Get your API key and webhook URL
 
 2. **Configure Webhooks:**
-   - Add webhook endpoint: `https://your-domain.com/api/webhooks/calendar`
+   - Add webhook endpoint: `https://cursuscapital.co/api/webhooks/calendar`
    - Select meeting events
 
 3. **Environment Variables:**
@@ -136,7 +136,7 @@ const calendarLinks = {
 Test your webhook endpoint:
 
 ```bash
-curl -X POST https://your-domain.com/api/webhooks/calendar \
+curl -X POST https://cursuscapital.co/api/webhooks/calendar \
   -H "Content-Type: application/json" \
   -d '{
     "event_type": "meeting.created",
